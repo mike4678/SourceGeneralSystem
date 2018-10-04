@@ -33,13 +33,23 @@ if ($state == '1')
 	if( count($addr) > 0 ) 
 	{
 		header("Location: login.php?ref=/".$addr[1]."/".$addr[2]);
-	} else { header("Location: login.php"); }
+		
+	} else { 
+		
+		header("Location: login.php"); }
 	
 } else { 
+	
 	setcookie("state", time(), time()+3600);  //更新时间
 }
 //******* 处理页面请求
-	if($addr[1] == 'exit') { echo '<script language="JavaScript">location.replace("logout.php");</script>'; }
+	if($addr[1] == 'exit') 
+	{ 
+		
+		echo '<script language="JavaScript">location.replace("logout.php");</script>'; 
+		
+	}
+	
 	if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航必须参数
 	{ 
 		$data = $dou->convert($addr[1],$addr[2]);
@@ -83,11 +93,15 @@ if ($state == '1')
           ?> 
             <ul class="bread">
                 <?php 
-				if ($addr[1] != "") {
-				echo $dou->navigation($tab,$list);
+				if ($addr[1] != "") 
+				{
+					
+					echo $dou->navigation($tab,$list);
+					
 				} else
 				 {
 					echo "<li><a href='admin.php' class='icon-home'> 开始</a></li><li>后台首页</li>";
+					
 					}
 				 ?>
             </ul></div></div></div>
@@ -97,10 +111,14 @@ $bottom = $dou->PageLoading($data[2],$data[3]);
 $file = dirname(__FILE__) . '/' . $bottom; 
 if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
 {  
-include 'system/404.php';   //如果不存在则跳转到错误界面
+	
+	include 'system/404.php';   //如果不存在则跳转到错误界面
+	
 } else 
-	{     
-	 include $bottom;
+	{    
+	
+		include $bottom;
+	
 	}
 ?>
 </div>

@@ -41,7 +41,7 @@ function AccountState()
 		$_COOKIE['state'] = empty($_COOKIE['state']) ? '' : $_COOKIE['state'];
 		if($_COOKIE['state'] == NULL )  //已经登陆过，且记录还存在
 		{
-			header("Location: ../login.php"); //重定向浏览器到播放界面
+			header("Location: ../login.php"); //重定向浏览器
 			}	
 }
 
@@ -925,6 +925,9 @@ box-shadow: 1px 1px 1px #CCC;
 
 
 <script language="JavaScript" type="text/javascript" src="../js/jquery-1.7.min.js"></script>
+	<script>
+function info(message) { art.dialog.open(message, {width: 420, height: 400}); }
+</script>	
 <script type="text/javascript"> 
 
 <!--
@@ -1372,7 +1375,7 @@ foreach ($able as $key=>$value) {
 
 		?>
 
-    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :"<a href='"."http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."/phpinfo' target='_blank'>PHPINFO</a>";?>
+    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'/phpinfo\')"> PHPINFO</a>';?>
 
     </td>
 
@@ -1557,7 +1560,8 @@ foreach ($able as $key=>$value) {
 
 	<tr>
 		<td>默认支持函数（enable_functions）：</td>
-		<td colspan="3"><a href='<?php echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];?>/Function' target='_blank' class='static'>请点这里查看详细！</a></td>		
+		<td colspan="3"><?php echo '<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'/Function\')"> 请点这里查看详细！</a>'; ?></td>	
+		
 	</tr>
 	<tr>
 		<td>被禁用的函数（disable_functions）：</td>

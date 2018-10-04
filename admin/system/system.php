@@ -8,11 +8,13 @@ if (!defined('source'))
 if($_SERVER["REQUEST_METHOD"] == "GET")
 { 
 	$status = $dou->Info('server_status');
+	$IndexStatus = $dou->Info('index_status');
 	$dou->CheckUploadSize();  //上传大小检查，如果超过设定，则自动修改为正常值
 	if($_COOKIE['set'] == NULL && $_COOKIE['up'] == NULL)
 	{
 		$dou->cookie("set", 'active');
 		$dou->cookie("up", '');
+		$dou->cookie("adv", '');
 	}
 	
 }
@@ -88,6 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
 						$dou->cookie("set", 'active' , 300);
 						$dou->cookie("up", '' , 300);
+						$dou->cookie("adv", '' , 300);
 						//echo '<script language="JavaScript">window.location.href="admin.php?/system/setting"</script>';
 					}
 			break;
@@ -107,9 +110,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
 						$dou->cookie("set", '', 300);
 						$dou->cookie("up", 'active' , 300);
+						$dou->cookie("adv", '' , 300);
 						//echo '<script language="JavaScript">window.location.href="admin.php?/system/setting"</script>';
 					}
 				}
+			break;
+			
+		case 'tab-adv':  //高级设置
+			if($_POST['activeIndex'] == 'yes') //网站当前状态
+			{
+				$state = '0';    //开放
+				if($_POST['tableSelect'] == NULL) 
+				{
+					$sql = "UPDATE system_setting 
+				  		  SET value = CASE vars 
+				  		 WHEN 'index_status' THEN '".$state."' 
+				 		END 
+						 WHERE vars IN ('index_status')";
+				} else 
+					{
+						$sql = "UPDATE system_setting 
+				  		  		SET value = CASE vars 
+				  		 		WHEN 'index_status' THEN '".$state."' 
+								WHEN 'index_page' THEN '".$_POST['tableSelect']."' 
+				 				END 
+						 		WHERE vars IN ('index_status','index_page')";					
+					}
+
+			} else { 
+				
+				$state = '1';
+				$sql = "UPDATE system_setting 
+				  		  SET value = CASE vars 
+				  		 WHEN 'index_status' THEN '".$state."'  
+				 		END 
+						 WHERE vars IN ('index_status')";
+				   
+				}  //禁用
+			
+				if (!$dou->query($sql)) 
+				{
+					echo '<script language="JavaScript">window.alert("更新失败")</script>';
+					} else {
+						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
+						$dou->cookie("set", '', 300);
+						$dou->cookie("up", '' , 300);
+						$dou->cookie("adv", 'active' , 300);
+						//echo '<script language="JavaScript">window.location.href="admin.php?/system/setting"</script>';
+					}
 			break;
 			
 		case 'tab-user':
@@ -152,6 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		default:
 			$dou->cookie("set", 'active');
 			$dou->cookie("up", '');
+			$dou->cookie("adv", '');
 			break;
 			
 			
@@ -163,6 +212,7 @@ $data = array
 (
 "TabName"=>array("TabName"=>"系统设置"), //第一个为标题
 		   array("Name"=>"基础设置","tab"=>'#tab-set',"active"=>$_COOKIE['set']), //往后的为选项夹
+		   array("Name"=>"高级设置","tab"=>'#tab-adv',"active"=>$_COOKIE['adv']), //往后的为选项夹
 		   array("Name"=>"用户设置","tab"=>'#tab-email',"active"=>''),
 		   array("Name"=>"上传设置","tab"=>'#tab-upload',"active"=>$_COOKIE['up'])	
 );
@@ -338,6 +388,65 @@ $(function () {
          </form>	
         	
         </div>
+		<div class="tab-panel <?php echo $_COOKIE['adv']; ?>" id="tab-adv">
+                 <form method="post" class="form-x" action="#">
+                 <input type="hidden" value="tab-adv" id="Tab" name="Tab">
+				<div class="form-group">
+                	<div class="label"><label>首页功能</label></div>
+                	<div class="field">
+                        <div class="button-group button-group-small radio">
+                        <?php 
+	switch ($IndexStatus) {
+	case 1:
+		echo  "<label class='button'><input name='activeIndex' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button active'><input name='activeIndex' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
+		break;
+	case 0:
+		echo "<label class='button active'><input name='activeIndex' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button'><input name='activeIndex' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
+		break;
+		 }
+?>
+          </div>
+                    </div>
+          </div>
+          <div class="form-group">
+           <div class="label"><label for="sitename">已安装首页风格</label></div>
+                	<div class="field">
+                        <div class="button-group button-group-small radio"> 
+            <?php
+			if($dou -> Info("index_status") == 1)				
+			{
+				
+				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px" disable readonly><option value=>功能未启用</option>';
+				
+			} else {
+				
+				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
+					if($dou -> Info("index_page_all") == NULL)							 
+					{
+						echo '<option value=>未安装任何包含首页风格的模块或功能</option>';
+					}	else {
+						$pieces = explode("|", $dou ->Info("index_page_all"));
+						foreach($pieces as $val){
+							$IndexData = explode(";", $val);
+  							echo '<option value='.$IndexData[2].'>'.$IndexData[1].'('.$IndexData[2].')</option>';
+						}
+					}
+				
+				}
+			?>
+            </select></div>
+                    </div>
+          </div>
+           <div class="form-group">
+           <div class="label"><label for="sitename">当前风格</label></div>
+           <div class="field">
+             <input type="text" class="input" id="IndexStyle" name="IndexStyle" size="50"  value="<?php echo $dou ->Info("index_page"); ?>" disable readonly> 
+           </div>
+          </div>
+           <div class="form-button"><button class="button bg-main" type="submit">应用</button></div>
+         </form>	
+        	
+        </div>  
         <div class="tab-panel <?php echo $_COOKIE['up']; ?>" id="tab-upload">
          <form method="post" class="form-x" action="#">
          <input type="hidden" value="tab-upload" id="Tab" name="Tab">
