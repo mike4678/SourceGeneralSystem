@@ -260,7 +260,8 @@ class System extends DbMysql
 		$staus = $this->Info('server_status');
 		if($staus == "1") 
 		{
-			header("Location: kernl/error.php?code=503"); //重定向浏览器
+			echo $this->Sys_ErrorPage(503);
+			exit;
 		}
 	}
 
@@ -323,24 +324,33 @@ class System extends DbMysql
 	/* ---------------------------------------------------- */
 	function CheckUpdate()
 	{
-		$opts = array(
-			'http'=>array(
-			'method'=>"GET",
-			'timeout'=>600,
-			)
-		);
-		$context = stream_context_create($opts);
 		
-		$url = 'http://service.csource.com.cn/update/check.php?product=music'; 
-		$html = file_get_contents($url,false, $context); 
-		$str = strtr($html, "\t", ' ');
-		$encode = mb_detect_encoding($str, array("ASCII","UTF-8","GB2312","GBK","BIG5"));
-		if($encode != "UTF-8")
+		if(strtolower($this -> Info("update_status")) == 'custom')  //定制版
 		{
-  			$str = iconv("GBK","UTF-8",$str);
-		}
-		$return_data = json_decode($str,true);
-		echo '<a href="javascript:info(\'http://service.csource.com.cn/update/update.php?product=music\')" >'.$return_data['version'].'</a>'; 
+			echo '定制版请联系开发者获取更新';
+			
+		} else {
+			
+			$opts = array(
+							'http'=>array(
+							'method'=>"GET",
+							'timeout'=>600,
+							)
+						);
+		
+			$context = stream_context_create($opts);
+			$url = 'http://service.csource.com.cn/update/check.php?product=' . $this -> Info("update_status"); 
+			$html = file_get_contents($url,false, $context); 
+			$str = strtr($html, "\t", ' ');
+			$encode = mb_detect_encoding($str, array("ASCII","UTF-8","GB2312","GBK","BIG5"));
+				if($encode != "UTF-8")
+				{
+  					$str = iconv("GBK","UTF-8",$str);
+				}
+			$return_data = json_decode($str,true);
+			echo '<a href="javascript:info(\'http://service.csource.com.cn/update/update.php?product=' . $this -> Info("update_status") . '\')" >' . $return_data['version'] . '</a>'; 
+			
+			}
 
 	}
 	
@@ -408,84 +418,13 @@ class System extends DbMysql
 		
 	}	
 	/* ---------------------------------------------------- */
-	
-	
-		
-		//获取域名中间部分
-	/* ---------------------------------------------------- */
 
-	function Get_domain($url)  
-	{  
-		$pattern = "/[\/w-]+\/.(com|net|org|gov|biz|com.tw|com.hk|com.ru|net.tw|net.hk|net.ru|info|cn|com.cn|net.cn|org.cn|gov.cn|mobi|name|sh|ac|la|travel|tm|us|cc|tv|jobs|asia|hn|lc|hk|bz|com.hk|ws|tel|io|tw|ac.cn|bj.cn|sh.cn|tj.cn|cq.cn|he.cn|sx.cn|nm.cn|ln.cn|jl.cn|hl.cn|js.cn|zj.cn|ah.cn|fj.cn|jx.cn|sd.cn|ha.cn|hb.cn|hn.cn|gd.cn|gx.cn|hi.cn|sc.cn|gz.cn|yn.cn|xz.cn|sn.cn|gs.cn|qh.cn|nx.cn|xj.cn|tw.cn|hk.cn|mo.cn|org.hk|is|edu|mil|au|jp|int|kr|de|vc|ag|in|me|edu.cn|co.kr|gd|vg|co.uk|be|sg|it|ro|com.mo)(\/.(cn|hk))*/";  
-		preg_match($pattern, $url, $matches);  
-		if(count($matches) > 0)  
-		{  
-			return $matches[0];  
-		}else {  
-			$rs = parse_url($url);  
-			$main_url = $rs["host"];  
-			if(!strcmp(long2ip(sprintf("%u",ip2long($main_url))),$main_url))  
-			{  
-				return $main_url;  
-			}else {  
-				$arr = explode(".",$main_url);  
-				$count = count($arr);  
-				$endArr = array("com","net","org");//com.cn net.cn 等情况  
-				if (in_array($arr[$count-2],$endArr))  
-				{  
-					$domain = $arr[$count-3].".".$arr[$count-2].".".$arr[$count-1];  
-				}else {  
-					$domain = $arr[$count-2].".".$arr[$count-1];  
-				}  
-				return $domain;  
-			}  
-		}  
-	}  
-	/* ---------------------------------------------------- */
-		
-	
-		
-		//订单识别
-	/* ---------------------------------------------------- */
-	
-	function Analyse($data)
-	{
-		$temp = explode(".",$data);
-		$query = $this -> query("select * from dd_sell where identifier = '$temp[0]'");	
-		if( $this -> affected_rows() == NULL ) 
-		{
-			return $temp[0];
-		} else {
-			$row = $this->fetch_array($query); 
-			return $row[0];
-		}
-		
-	}
-	/* ---------------------------------------------------- */
-		
-		
-		//订单商家信息读取
-	/* ---------------------------------------------------- */
-	
-	function Sell()
-	{
-		$query = $this -> query("select * from dd_sell");	
-		if( $this -> affected_rows() == NULL ) 
-		{
-			return null;
-		} else {
-			$row = $this->fetch_array_all("dd_sell"); 
-			return $row;
-		}
-		
-	}
-	/* ---------------------------------------------------- */
-		
 		
 		//随机字符生成
 	/* ---------------------------------------------------- */	
 	
-	function generate_password( $length = 8 ) {
+	function generate_password( $length = 8 ) 
+	{
     // 密码字符集，可任意添加你需要的字符
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -501,8 +440,108 @@ class System extends DbMysql
 
     return $password;
 	}
+	/* ---------------------------------------------------- */
+	
+		//首页错误页生成
+	/* ---------------------------------------------------- */	
+	
+	function Index_ErrorPage ( $code = 3 ) 
+	{
+    	// 根据错误码生成对应的错误文本
+    	switch($code) //判断错误码
+		{
+			
+			case '307':    
+				$errorcode = "<span>3</span><span>0</span><span>7</span>";
+				$data = "如果您看到此页面，是由于启用了首页模块，但所设置的页面系统未搜索到，如果您是网站管理员请检查所设置页面是否可以访问";
+				$title = "";
+				break;
+			case '301':    
+				$errorcode = "<span>3</span><span>0</span><span>1</span>";
+				$data = "如果您看到此页面，是由于启用了首页模块，但并未设置相应页面，如果您是网站管理员可到系统设置中进行设置";
+				$title = "";
+				break;
+			case '404':    
+				$errorcode = "<span>4</span><span>0</span><span>4</span>";
+				$data = "这是系统默认首页，如果您看到此页面说明当前网站服务是正常的，但未设置前端主页！";
+				$title = "Page No Found!";
+				break;	
+		}
+		
+		$Page = '<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><link href="../css/error.css" rel="stylesheet" type="text/css" media="all" /><body><div class="w3layouts-bg"><h1 class="header-w3ls">Error Page</h1><div class="agileits-content"><h2>' . $errorcode . '</h2></div><div class="w3layouts-right"><div class="w3ls-text"><h3>sorry !</h3><h4 class="w3-agileits2">' . $title . '</h4><p>' . $data . '</p><p class="copyright">'. $this->Info(bottom) . '</p></div></div><div class="clearfix"></div></div></body></html>';
+		
+		return $Page;
+		
+	}
+		/* ---------------------------------------------------- */
+	
+		
+		//系统错误页生成
+	/* ---------------------------------------------------- */	
+	
+	function Sys_ErrorPage ( $code = 3 ) 
+	{
+    	// 根据错误码生成对应的错误文本
+    	switch($code) //判断错误码
+		{
+			
+			case '503':
+				$title = '系统正在维护中！';
+				$content = $this->Info('server_infomaction');
+				$this -> WriteLog('GET', '访问请求由于 系统维护中 被拦截<br />','error.php');
+				break;
+			
+			case '402':
+				$title = '获取歌曲信息失败';
+				$content = '歌曲受版权保护，管理员已禁止该歌曲播放与下载功能！';
+				break;
+		
+			case '342':
+				$title = '系统数据检查失败';
+				$content = '检测到一个或多个核心数据字段丢失，请删除kernl目录下的conf文件，重新安装系统！';
+				break;	
+		
+			case '336:1':
+				$title = '操作非法';
+				$content = '当前操作不在系统许可范围内，请检查后重试！';
+				break;
+	
+			case '336:2':
+				$title = '操作非法';
+				$content = 'Session值校验异常，请检查后重试！';
+				break;	
+		
+			case '336:3':
+				$title = '操作非法';
+				$content = '用户检查失败,系统安装未完成！';
+				break;		
+		
+			case '336:4':
+				$title = '路径检查失败';
+				$content = '路径检查失败，系统仅支持在一级目录下安装！';
+				break;	
+		
+			case '195':
+				$title = '浏览器检查失败！';
+				$content = '当前浏览器版本不受支持，请更新浏览器或更换为更安全的Google浏览器';
+				break;		
+		
+			case '330':
+				$title = '管理员已禁用留言板';
+				$content = '管理员已禁用留言板，如需帮助请与网站管理员联系！&nbsp; &nbsp; <a href="../index.php">返回首页</a>';
+				break;			
+		
+		}
+		$time = date("y/m/d H:i:s",time());
+		$Page = '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>' . $title . '</title></head><body><div id="main"><header id="header"><h1><span class="sub"> ' . $title . '</span></h1></header><div id="content"><p>[ 错误原因 ] ' . $content . ' <br /> [ 出错时间 ] ' . $time  . ' [ 访问IP ] ' . $_SERVER["REMOTE_ADDR"] . '</p>----------------------------------------------------------------<p class="copyright">'. $this->Info(bottom) . '</p></div></div></html>' ;
+		
+		return $Page;
+		
+	}
 		/* ---------------------------------------------------- */
 }
+
+
 
 
 

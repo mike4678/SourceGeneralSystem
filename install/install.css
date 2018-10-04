@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0;padding:0;list-style:none;border:0;}
+body{font: 12px/150% Arial, sans-serif;background:#444;}
+a{color:#09c;}
+cite{font-style:normal;}
+.head{height:80px;border-bottom:1px solid #00b2e8;background:#18d;}
+.main{}
+.box{width:920px;margin:0 auto;padding:0 20px;}
+h1{float:left;height:54px;color:#fff;font:bold 16px/80px "微软雅黑", "Microsoft YaHei";overflow:hidden;}
+.hLink{float:right;color:#b0e4ef;line-height:25px;}
+.hLink a, .hLink span{color:#cee;margin:0 5px;text-decoration:none;}
+.hLink a:hover{text-decoration:underline;}
+.nav{clear:both;float:left;width:920px;height:26px;-overflow:hidden;}
+.nav li{float:right;text-align:center;line-height:25px;margin-left:5px;}
+.nav li a{display:block;width:100px;height:25px;border:1px solid #b0e4ef;border-bottom:none;background:#eff;color:#666;cursor:pointer;text-decoration:none;}
+.nav li a.selected{height:26px;position:relative;background:#444;border-color:#00b2e8;color:#eee;}
+.foot{clear:both;text-align:right;color:#cee;padding:10px 0;}
+.foot{font-size:11px;line-height:20px;clear:both;text-align:right;color:#dee;padding:10px 0;}
+.foot a{color:#dee;text-decoration:none;}
+h2{border-bottom:1px dashed #444;font:bold 14px/30px "微软雅黑", "Microsoft YaHei";}
+.content{margin-top:35px;background:#fff;padding:10px;line-height:180%;color:#333;zoom:1;overflow:auto;}
+.content p{padding:6px 0 0;}
+.loginBox {padding:0 30px 20px;line-height:18px;color:#666;}
+.loginBox p{clear:both;margin-top:14px;*margin-top:10px;}
+.loginBox input, .loginBox label{vertical-align:middle;cursor:pointer;}
+.loginBox label{float:left;width:100px;padding-right:5px;line-height:26px;*line-height:30px;text-align:right;font-weight:bold;}
+.loginBox input{width:194px;height:18px;padding:3px 5px;margin-right:5px;font:bold 16px/18px verdana, sans-serif;border:1px solid #ccc;}
+.loginBox input.submit{width:80px;height:31px;font-size:14px;border:none;color:#333;margin-right:5px;background:url(../images/content.gif) no-repeat;}
+.notice {min-height:200px;-height:200px;border:1px solid #b0e4ef;background:#eff;padding:5px;}

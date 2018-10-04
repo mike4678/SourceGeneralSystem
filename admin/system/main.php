@@ -33,7 +33,7 @@ function info(message) { art.dialog.open(message, {title: '更新说明',width: 
                     </tr>
                     <tr><td align="right">程序语言：</td><td>PHP(<?PHP echo PHP_VERSION ?>)</td>
                       <td align="right">系统版本:</td>
-                      <td><?php echo $dou->Info('version'); ?>&nbsp;&nbsp;( 最新版本：定制版请联系开发者获取更新 )</a></td>
+                      <td><?php echo $dou->Info('version'); ?>&nbsp;&nbsp;( 最新版本：<?php echo $dou->CheckUpdate(); ?> )</a></td>
                     </tr>
                     <tr><td align="right">数据库：</td><td>MySQL</td>
                     <td colspan="2" align="right"><a href='admin.php?/system/info'>More...</a></td>

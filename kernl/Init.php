@@ -61,8 +61,23 @@ if (Debug == "on") {
 // 实例化类
 $dou = new System(DBSERVER, USER, PASSWORD, DB, 'utf8');
 
+//校验基础表数据是否存在
+$sql = "SHOW TABLES;";
+$arr = array('admin_user','adminlist','content_data','report','search_keyword','system_log','system_setting',' table_list');
+$result = $dou->query($sql);
+$count = 0;
+while($row = $dou->fetch_array($result))
+{
+	if($row['Tables_in_music'] == $arr[$count] ) 
+	{
+		$count = $count + 1;
+	} else { 
+		$row['Tables_in_music'];
+			$arr[$count];
+		//header("Location: ".HttpsCheck(). $_SERVER['HTTP_HOST'] ."/kernl/error.php?code=342"); //重定向浏览器
+	}
 
-
+}
 define('source', 'service.csource.com.cn');
 define('key', $dou->Info('encrypted')); //初始化加密key
 
