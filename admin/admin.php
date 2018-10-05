@@ -13,6 +13,7 @@ require("../kernl/Init.php");
     <link rel="stylesheet" href="../css/pintuer.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="../css/popup.css">
+	<link rel="stylesheet" href="../css/puyuetian.css">
     <!-- script src="../js/jquery.js"></script -->
     <script type="text/javascript" src="http://api.csource.com.cn/1.8.1/jquery-1.8.1.min.js"></script>
     <script src="../js/pintuer.js"></script>

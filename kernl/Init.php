@@ -12,6 +12,12 @@ date_default_timezone_set('PRC');
 $root_url = strtolower(dirname(HttpsCheck() . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'])) . '/';
 define('ROOT_PATH', str_replace(strtolower('kernl/Init.PHP'), '', str_replace('\\', '/', strtolower(__FILE__))));
 
+//全局通用数组
+$_G = array();
+
+//框架运行的目录路径
+$_G['SYSTEM']['PATH'] = str_replace(strtolower('kernl/Init.PHP'), '', str_replace('\\', '/', strtolower(__FILE__)));
+
 //检测是否为https模式
 function HttpsCheck()
     {

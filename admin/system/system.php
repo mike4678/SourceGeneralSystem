@@ -482,17 +482,3 @@ $(function () {
         </div>
       </div>
     </div>
-    
-   
-  
-<script>
-function BugSelectFix()      //修正如果默认选择站外方式，站外地址框不显示的Bug
-{
-	if (document.getElementById('Select').options[2].selected == true) 
-	{
-		document.getElementById('w').style.display = ''; 
-	}
-}
-
-	BugSelectFix();
-</script>	

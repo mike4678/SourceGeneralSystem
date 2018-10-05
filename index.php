@@ -10,7 +10,7 @@ if($dou -> Info("index_status") == 1 ) //网站状态检查
 	{
 		if($dou -> Info("index_page") != NULL)
 		{
-			$file = dirname(__FILE__) . '/' . $dou -> Info("index_page"); 
+			$file = $_G['SYSTEM']['PATH'] . $dou -> Info("index_page"); 
 			if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
 			{  
 				
