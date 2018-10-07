@@ -4,13 +4,6 @@ if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
 //初始化相关参数信息
-
-if($_SERVER["REQUEST_METHOD"] == "GET")
-{ 
-
-	
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$old_pwd = PwdEnc(empty($_POST['old_pwd']) ? '' : $_POST['old_pwd'],$dou->Info('encrypted')); //旧密码
 			$new_pwd = empty($_POST['new_pwd']) ? '' : $_POST['new_pwd'];
@@ -48,11 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 	}
 
+
+//更新变量值
+$_G['IPS']['STATUS'] = $dou->Info('ipfirewall_status');
+$_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
 ?>
-<style>
-.delimg{margin-left:20px; color:#090; cursor:pointer}
-</style>
-<script type="text/javascript" src="../../js/jquery.form.js"></script>
       <div class="tab-body">
         <br />
         <div class="tab-panel " id="tab-ips">
@@ -63,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 	<div class="field">
                         <div class="button-group button-group-small radio">
                         <?php 
-	switch ($status) {
+	switch ($_G['IPS']['STATUS']) {
 	case 1:
-		echo  "<label class='button'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button active'><input name='pintuer' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
+		echo  "<label class='button'><input name='status' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button active'><input name='status' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
 		break;
 	case 0:
-		echo "<label class='button active'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button'><input name='pintuer' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
+		echo "<label class='button active'><input name='status' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button'><input name='status' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
 		break;
 		 }
 ?>
@@ -80,12 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 	<div class="field">
                         <div class="button-group button-group-small radio">
                         <?php 
-	switch ($status) {
+	switch ($_G['IPS']['MODE']) {
 	case 1:
-		echo  "<label class='button'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 白名单</label><label class='button active'><input name='pintuer' value='no' type='radio'><span class='icon icon-check'></span> 黑名单</label>";
+		echo  "<label class='button'><input name='mode' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 白名单</label><label class='button active'><input name='mode' value='no' type='radio'><span class='icon icon-check'></span> 黑名单</label><div class='label' id='info' style='width:500px;margin-top:5px;margin-left:5px;'>&nbsp;白名单：仅允许特定IP访问&nbsp;/ 黑名单：不允许特定IP访问</div>";
 		break;
 	case 0:
-		echo "<label class='button active'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 白名单</label><label class='button'><input name='pintuer' value='no' type='radio'><span class='icon icon-check'></span> 黑名单</label>";
+		echo "<label class='button active'><input name='mode' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 白名单</label><label class='button'><input name='mode' value='no' type='radio'><span class='icon icon-check'></span> 黑名单</label><div id='info' style='width:500px;margin-top:5px;margin-left:5px;'>&nbsp;白名单：仅允许特定IP访问&nbsp;/ 黑名单：不允许特定IP访问</div>";
 		break;
 		 }
 ?>
@@ -122,7 +115,7 @@ if (!file_exists('backup')) {
                 <div class="form-group" style="margin-top:6px" >
                 	<div class="label"><label>操作</label></div>
                 	<div class="field">
-                       <input name="databasebak" type="submit" class="button" id="databasebak" value="添加" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="编辑" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="删除" />
+                       <input type="button" class="button checkall" value="添加" onclick="add()" />&nbsp;&nbsp;<input type="button" class="button checkall" value="编辑" onclick="add()" />&nbsp;&nbsp;<input type="button" class="button checkall" value="删除" onclick="add()" />
                     </div>
                 </div>
                 <div class="form-button"><button class="button bg-main" type="submit">应用</button></div> 
@@ -133,3 +126,25 @@ if (!file_exists('backup')) {
         </div>
       </div>
     </div>
+<script>
+function info(message) { art.dialog.tips(message,5); }
+	
+function add() { art.dialog.open('system/MusicEdit.php?m=add', {title: '新增歌曲',width: 420, height: 635}); }
+	
+function edit(music_id) { art.dialog.open('system/MusicEdit.php?m=edit&id='+music_id, {title: '修改歌曲信息',width: 420}); }
+	
+function Del(addr) 
+{
+	art.dialog.confirm('你确定要删除这首歌曲吗？', function () {
+		window.location.href='http://' + window.location.host + addr;
+		//art.dialog.content('http://' + window.location.host + addr);// 填充对话框内容
+		//art.dialog.open('http://' + window.location.host + addr)
+		//myDialog.dialog.close();
+    //art.dialog.tips('执行确定操作');
+}, function () {
+	art.dialog.close();
+    art.dialog.tips('操作被用户取消！');
+});
+}
+	
+</script>

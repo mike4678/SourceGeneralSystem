@@ -90,4 +90,8 @@ define('key', $dou->Info('encrypted')); //初始化加密key
 //结束php部分初始化，初始化页面顶部信息
 header('Cache-Control:no-cache,must-revalidate');    
 header('Pragma:no-cache'); //设置无缓存
+
+//初始化IPS
+$_G['IPS']['STATUS'] = $dou->Info('ipfirewall_status');
+$_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
 ?>
