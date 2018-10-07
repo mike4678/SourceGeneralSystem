@@ -67,24 +67,7 @@ class System extends DbMysql
 						echo '<script language="JavaScript">window.alert("删除成功！")</script>';
     					echo '<script language="JavaScript">self.location=document.referrer;</script>';
 						
-					} else {
-						if($table == 'music_list') 
-						{
-							$music_info = $this->Load_MusicInfo($term);
-							if(!unlink("../".$music_info[3])) 
-							{
-								echo '<script language="JavaScript">window.alert("文件删除失败！")</script>';
-							}
-						}	
-						
-						$sql = "delete from ".$table." where ".$hterm." = '" .$term. "';";
-						if (!$this->query($sql)) 
-						{
-   							echo '<script language="JavaScript">window.alert("删除失败！")</script>';
-     					}
-					}
-    				echo '<script language="JavaScript">window.alert("删除成功！")</script>';
-    				echo '<script language="JavaScript">self.location=document.referrer;</script>'; 
+					} 
 				break;
 				} 
 		}
@@ -100,31 +83,29 @@ class System extends DbMysql
 			echo '<script language="JavaScript">window.alert("初始化页面失败！");history.back(-1);</script>';
  	 	} else { 
 			$tab = ""; //初始化变量
-			$query = $this->select_all('table_list'); //顶部标题部分
-			$infor = array(); 
-			
-			while (	$row = $this->fetch_array($query))   
+			$TableData = explode("|", $this -> Info("system_table"));
+			foreach($TableData as $val)
 			{
-				
-				if($table == $row[0]) {	
-				$tab.= "<li class='active'><a href=".$row[2]." class=".$row[1]."> ".$row[0]."</a><ul>"; 
-				$list = $this->select('adminlist', '*', "adminlist.table = '".$table."' ORDER BY count ASC;", $debug = ''); //生成左边列表部分
-				$infor1 = array(); 
-				while ( $row1 = $this->fetch_array($list) )  
-				{
-					if($table_list == $row1['menu'])
+				$row = explode(";", $val);
+				if($table == $row[0]) 
+				{	
+					$tab.= "<li class='active'><a href=".$row[2]." class=".$row[1]."> ".$row[0]."</a><ul>"; 
+					$list = $this->select('adminlist', '*', "adminlist.table = '".$table."' ORDER BY count ASC;", $debug = ''); //生成左边列表部分
+					$infor1 = array(); 
+					while ( $row1 = $this->fetch_array($list) )  
 					{
-						$tab.= "<li class='active'><a href=".$row1['url']."> ".$row1['menu']."</a></li>";
-					}else {
-						$tab.= "<li><a href=".$row1['url']."> ".$row1['menu']."</a></li>";
+						if($table_list == $row1['menu'])
+						{
+							$tab.= "<li class='active'><a href=".$row1['url']."> ".$row1['menu']."</a></li>";
+						}else {
+							$tab.= "<li><a href=".$row1['url']."> ".$row1['menu']."</a></li>";
 						}
 					}				
-				$tab.= "</li></ul>";
+					$tab.= "</li></ul>";
 				}else {
 					$tab.= "<li><a href='".$row[2]."' class='".$row[1]."'> ".$row[0]."</a></li>";
-					}
+				}
 			}
-
    		}
 		return $tab;
 	}
@@ -144,8 +125,8 @@ class System extends DbMysql
 				echo "<li><a href=".$row[1].">".$row[2]."管理</a></li>"; 
 				echo "<li>".$table_list."</li>";
 				break;
-				}
 			}
+		}
 	}
 
 	function convert($table,$table_list)  //将英文名称转换为中文

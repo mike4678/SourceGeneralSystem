@@ -41,7 +41,7 @@ if ($state == '1')
 	
 } else { 
 	
-	setcookie("state", time(), time()+3600);  //更新时间
+	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
 //******* 处理页面请求
 	if($addr[1] == 'exit') 

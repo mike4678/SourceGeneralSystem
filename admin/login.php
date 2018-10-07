@@ -21,9 +21,10 @@ if($_COOKIE['state'] != NULL )  //已经登陆过，且记录还存在
 		}
 	} else {
 		echo '<script language="JavaScript">window.alert("Session异常，请重新登陆！")</script>';
-		setcookie("usr", '', time()-3600*24*365);  
-		setcookie("pwd", '', time()-3600*24*365);  //一个小时3600*一天24小时*365天
-		setcookie("state", '', time()-3600*24*365);
+		
+		$dou->cookie("usr", '', time()-3600*24*365);
+		$dou->cookie("pwd", '', time()-3600*24*365);    //一个小时3600*一天24小时*365天
+		$dou->cookie("state", '', time()-3600*24*365);
 		}
 }	
 ?>

@@ -46,9 +46,9 @@ if( $dou -> affected_rows() == NULL)
 	session_start(); //标志Session的开始 
 	if($_POST['checkbox'] = 'on')   //判断是否记住登陆信息
 	{
-		setcookie("usr", $username, time()+3600);  
-		setcookie("pwd", $passcode, time()+3600);  //一个小时3600*一天24小时*365天
-		setcookie("state", time(), time()+3600);
+		$dou->cookie("usr", $username, time()+3600);
+		$dou->cookie("pwd", $passcode, time()+3600); //一个小时3600*一天24小时*365天
+		$dou->cookie("state", time(), time()+3600);		
 		$_SESSION['username'] = $username; 
 		$iipp = $dou->Get_LocalIP(); //获取登录者ip
 		$time = constant("Time"); //获取登录时间
