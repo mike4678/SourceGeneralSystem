@@ -1,170 +1,59 @@
-<script>
-$().ready(function(){
- if($.browser.safari || $.browser.mozilla){
-  $('#dtb-msg1 .compatible').show();
-  $('#dtb-msg1 .notcompatible').hide();
-  $('#drop_zone_home').hover(function(){
-   $(this).children('p').stop().animate({top:'0px'},200);
-  },function(){
-   $(this).children('p').stop().animate({top:'0px'},200);
-  });
-  //功能实现
-  $(document).on({
-   dragleave:function(e){
-    e.preventDefault();
-    $('.dashboard_target_box').removeClass('over');
-   },
-   drop:function(e){
-    e.preventDefault();
-    //$('.dashboard_target_box').removeClass('over');
-   },
-   dragenter:function(e){
-    e.preventDefault();
-    $('.dashboard_target_box').addClass('over');
-   },
-   dragover:function(e){
-    e.preventDefault();
-    $('.dashboard_target_box').addClass('over');
-   }
-  });
-  var box = document.getElementById('target_box');
-  box.addEventListener("drop",function(e){
-   e.preventDefault();
-   //获取文件列表
-   //console.log(e.dataTransfer.files);
-   var fileList = e.dataTransfer.files;
-   var img = document.createElement('img');
-   //检测是否是拖拽文件到页面的操作
-   if(fileList.length == 0){
-    $('.dashboard_target_box').removeClass('over');
-    return;
-   }
-   
-   if($.browser.safari){
-    //Chrome8+
-    img.src = window.webkitURL.createObjectURL(fileList[0]);
-   }else if($.browser.mozilla){
-    //FF4+
-    img.src = window.URL.createObjectURL(fileList[0]);
-   }else{
-    //实例化file reader对象
-    var reader = new FileReader();
-    reader.onload = function(e){
-     img.src = this.result;
-     $(document.body).appendChild(img);
-    }
-    reader.readAsDataURL(fileList[0]);
-   }
-   var xhr = new XMLHttpRequest();
-   xhr.open("post", "system/Upload.php", true);
-   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-   xhr.upload.addEventListener("progress", function(e){
-    $("#dtb-msg3").hide();
-	$('#dtb-msg1 .compatible').hide();
-    $('#dtb-msg1 .notcompatible').show();
-    $("#dtb-msg4 span").show();
-    $("#dtb-msg4").children('span').eq(1).css({width:'0px'});
-    $('.show').html('');
-    if(e.lengthComputable){
-     var loaded = Math.ceil((e.loaded / e.total) * 100);
-     $("#dtb-msg4").children('span').eq(1).css({width:(loaded*2)+'px'});
-    }
-   }, false);
-   xhr.addEventListener("load", function(e){
-    $('.dashboard_target_box').removeClass('over');
-    $("#dtb-msg3").show();
-    $("#dtb-msg4 span").hide();
-	  $('#dtb-msg1 .compatible').show();
-  $('#dtb-msg1 .notcompatible').hide();
-    var result = jQuery.parseJSON(e.target.responseText);
-    alert(result.info);
-    $('.show').append(result.img);
-   }, false);
-   
-   var fd = new FormData();
-   fd.append('xfile', fileList[0]);
-   xhr.send(fd);
-  },false);
- }else{
-  $('#dtb-msg1 .compatible').hide();
-  $('#dtb-msg1 .notcompatible').show();
- }
-});
-
-//点击按钮弹出文件选择窗口
-$(document).ready(function (){
-$("#uploadVideo").click(function (){ 
-var fileInput = document.getElementById("fileInput");//隐藏的file文本ID 
-fileInput.click();//加一个触发事件
+<script type="text/javascript" src="../../js/jquery.form.js"></script>
+<script language=javascript>   //文件上传处理
+$(function () {
+	var bar = $('.bar');
+	var percent = $('.percent');
+	var showimg = $('#showimg');
+	var progress = $(".progress");
+	var files = $(".files");
+	var btn = $(".btn span");
+	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?frame=module' method='post' enctype='multipart/form-data'></form>");
+    $("#fileupload").change(function(){
+		$("#myupload").ajaxSubmit({
+			dataType:  'json',
+			beforeSend: function() {
+        		showimg.empty();
+				progress.show();
+        		var percentVal = '0%';
+        		bar.width(percentVal);
+        		percent.html(percentVal);
+				btn.html("上传中...");
+    		},
+    		uploadProgress: function(event, position, total, percentComplete) {
+        		var percentVal = percentComplete + '%';
+        		bar.width(percentVal);
+        		percent.html(percentVal);
+    		},
+			success:function(data) {
+				var img = "../images/"+data.pic;
+				showimg.html("<input type='hidden' name='path' value='"+img+"'><img src='"+img+"'><span class='delimg' rel='"+data.pic+"'>删除</span>");
+				$("#fileupload").hide();
+				progress.hide();
+			},
+			error:function(xhr){
+				btn.html("上传失败");
+				bar.width('0')
+				files.html(xhr.responseText);
+			}
+		});
+		
+	});
+		
 }); 
-}); 
-
-
-//选择完文件上传
-function FileUpload_onselect()
-        {
-   var fileObj = document.getElementById("fileInput").files[0]; // js 获取文件对象
-   console.log(fileObj);
-   var xhr = new XMLHttpRequest();
-   xhr.open("post", "Upload.php", true);
-   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-   xhr.upload.addEventListener("progress", function(e){
-    $("#dtb-msg3").hide();
-	$('#dtb-msg1 .compatible').hide();
-    $('#dtb-msg1 .notcompatible').show();
-    $("#dtb-msg4 span").show();
-    $("#dtb-msg4").children('span').eq(1).css({width:'0px'});
-    $('.show').html('');
-    if(e.lengthComputable){
-     var loaded = Math.ceil((e.loaded / e.total) * 100);
-     $("#dtb-msg4").children('span').eq(1).css({width:(loaded*2)+'px'});
-    }
-   }, false);
-   xhr.addEventListener("load", function(e){
-    $('.fileInput').removeClass('over');
-    $("#dtb-msg3").show();
-    $("#dtb-msg4 span").hide();
-	  $('#dtb-msg1 .compatible').show();
-  $('#dtb-msg1 .notcompatible').hide();
-    var result = jQuery.parseJSON(e.target.responseText);
-    //alert(result.info);
-	alert(result.path);
-    $('.show').append(result.img);
-   }, false);
-   
-   var fd = new FormData();
-   fd.append('xfile', fileObj);
-   xhr.send(fd);
-  }
 </script>
 <style>
-.dashboard_target_box{
-	border: 3px dashed #E5E5E5;
-	text-align: center;
-	position: absolute;
-	z-index: 2000;
-	cursor: pointer;
-	width: 400px;
-	left: 50%;
-	margin-left: -200px;  /*此处的负值是宽度的一半*/
-}
-.dashboard_target_box.over{border:3px dashed #000;background:#ffa}
-.dashboard_target_messages_container{display:inline-block;margin:12px 0 0;position:relative;text-align:center;height:44px;overflow:hidden;z-index:2000}
-.dashboard_target_box_message{
-	position:relative;
-	margin:5px auto;
-	font:15px/18px helvetica,arial,sans-serif;
-	font-size:15px;
-	color:#999;
-	font-weight:normal;
-	width:150px;
-	line-height:40px
-}
-.dashboard_target_box.over #dtb-msg1{color:#000;font-weight:bold}
-.dashboard_target_box.over #dtb-msg3{color:#ffa;border-color:#ffa}
-#dtb-msg2{color:orange}
-#dtb-msg3{display:block;border-top:1px #EEE dotted;padding:8px 24px}
-</style>
+.btn{position: relative;overflow: hidden;margin-right: 4px;display:inline-block;*display:inline;padding:4px 10px 4px;font-size:14px;line-height:18px;*line-height:20px;color:#fff;text-align:center;vertical-align:middle;cursor:pointer;background:#5bb75b;border:1px solid #cccccc;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#b3b3b3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.btn input{position: absolute;top: 0; right: 0;margin: 0;border:solid transparent;opacity: 0;filter:alpha(opacity=0); cursor: pointer;}
+.progress{position:relative; margin-left:0px;margin-top:2px;width:280px;padding: 1px; border-radius:3px; display:none}
+.bar {background-color: green; display:block; width:0%; height:20px; border-radius:3px; }
+.percent{position:absolute; height:20px; display:inline-block; top:0px; left:45%; color:#000 }
+.files{height:22px; line-height:22px; margin:10px 0}
+input[type="file"]{
+	margin-top:5px;
+border-style: solid;
+	border-width: 1px;
+	}
+</style>	
   <?php 
   $data = array
   (
@@ -175,27 +64,20 @@ function FileUpload_onselect()
   $dou->FormCreate($data);
   ?>
       <div class="tab-body">
-        <br />
-<form id="contact" action="#" method="post" >
+<form id="ModuleUpload" action="#" method="post" class="form-x">
         <div class="tab-panel active" id="tab-get">
-        <p style='font-size:28px;text-align:center;'>模块在线安装</p><br />
-         <div id="target_box" class="dashboard_target_box">
- <div id="drop_zone_home" class="dashboard_target_messages_container">
-  <p id="dtb-msg1" class="dashboard_target_box_message">
-   <span class="compatible">拖动文件到这里</span><span class="notcompatible" style="display:none">正在处理</span>
-  </p>
- </div>
- <p id="dtb-msg4" class="dashboard_target_box_message" style="position:relative">
-  <span style="display:none;width:200px;height:5px;background:#ccc;left:-25px;position:absolute;z-index:1"></span>
-  <span style="display:none;width:0px;height:5px;background:#09F;left:-25px;position:absolute;z-index:2"></span>
- </p>
- 	<p id=dtb-msg3 style='text-align:center'><a id='uploadVideo' class='button button-big' href='#'>上传模块</a><br /><br /></p>
-    <input type="file" style="display: none" id="fileInput" onchange="FileUpload_onselect()"/>
-</div>
-
-  </p>
-    </div>
-        
+		<div class="form-group">
+        <div class="label"><label>模块上传</label></div>
+        <div class="field">
+		<input id="fileupload" type="file" name="mypic">
+        	<div class="progress" style="display:none">
+    		<span class="bar"></span><span class="percent">0%</span >
+			</div>
+        <div id="showimg"></div>
+                    <div class="files"></div>
+                    </div>
+    	</div>
+        </div>
         <div class="tab-panel" id="tab-post">
 <div class="label" style="border-bottom: solid 1px #458fce;">
 	<label class="label">当前模块</label></div>
