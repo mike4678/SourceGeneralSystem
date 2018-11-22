@@ -38,26 +38,6 @@ if($action=='delfile'){
 				echo '删除失败.';
 				}
 		break;
-		
-		case 'music':
-			$filename = $_POST['imagename'];
-			if(!empty($filename)){
-				unlink("../../upload/".$filename);
-				echo '1';
-			}else{
-				echo '删除失败.';
-				}
-		break;
-			
-		case 'lrc':
-			$filename = $_POST['imagename'];
-			if(!empty($filename)){
-				unlink("../../upload/".$filename);
-				echo '1';
-			}else{
-				echo '删除失败.';
-				}
-		break;	
 	
 	}
 }else{
@@ -84,35 +64,27 @@ if($action=='delfile'){
 				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
 				break;
 				
-			case 'lrc':
+			case 'module':
 				$type = strstr($picname, '.');
-				if ($type != ".lrc") {
-					echo '文件格式不对！';
+				if ($type != ".zip" ) {
+					echo '错误的文件格式！';
 					exit;
 				}
 				$rand = rand(100, 999);
 				$pics = date("YmdHis") . $rand . $type;
 				//上传路径
-				$pic_path = "../../upload/". $pics;
-				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
-				break;
-				
-			case 'music':
-				$type = strstr($picname, '.');
-				$file_name = explode("|",$dou -> Info('upload_name'));
-				foreach ($file_name as $value) 
+				$pic_path = "../../tmp/". $pics;
+				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);	
+				$moduledata = 'Init '.$picname.' files \r\n';
+				$moduledata.= 'file size:'.round($picsize/1024,2);
+				$zip = new ZipArchive();
+				if($zip -> open($pic_path) != true)
 				{
-					if ($type != "." . $value) 
-					{
-					echo '文件格式不对！';
-					exit;
-					}
+					$moduledata.= '<br>Could not open archive';
 				}
-				$rand = rand(100, 999);
-				$pics = date("YmdHis") . $rand . $type;
-				//上传路径
-				$pic_path = "../../upload/". $pics;
-				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
+				$zip -> extractTo('../../module/'.$picname);
+				$zip -> close();
+				$moduledata.= '<br>File Init Complete!';
 				break;
 		}
 	}
@@ -120,7 +92,8 @@ if($action=='delfile'){
 	$arr = array(
 		'name'=>$picname,
 		'pic'=>$pics,
-		'size'=>$size
+		'size'=>$size,
+		'status'=>$moduledata
 	);
 	echo json_encode($arr);
 }

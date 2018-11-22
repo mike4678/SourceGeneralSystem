@@ -45,9 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			//页面条数显示数检查
 			if( $_POST['disp'] == 0 || $_POST['disp'] == NULL || is_int($_POST['disp']) == False) 
 			{
-				$Page_Display == 20;
+				$Page_Display = 20;
 				
-			} else { $Page_Display == $_POST['disp']; }
+			} else { $Page_Display = $_POST['disp']; }
+			
 			
 			//检查结束
 			

@@ -3,7 +3,6 @@
 $(function () {
 	var bar = $('.bar');
 	var percent = $('.percent');
-	var showimg = $('#showimg');
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
@@ -12,7 +11,6 @@ $(function () {
 		$("#myupload").ajaxSubmit({
 			dataType:  'json',
 			beforeSend: function() {
-        		showimg.empty();
 				progress.show();
         		var percentVal = '0%';
         		bar.width(percentVal);
@@ -25,15 +23,14 @@ $(function () {
         		percent.html(percentVal);
     		},
 			success:function(data) {
-				var img = "../images/"+data.pic;
-				showimg.html("<input type='hidden' name='path' value='"+img+"'><img src='"+img+"'><span class='delimg' rel='"+data.pic+"'>删除</span>");
-				$("#fileupload").hide();
-				progress.hide();
+				//$("#fileupload").hide();
+				//progress.hide();
+				files.html(data.status);
 			},
 			error:function(xhr){
 				btn.html("上传失败");
 				bar.width('0')
-				files.html(xhr.responseText);
+				files.html("上传失败！错误：" + xhr.responseText);
 			}
 		});
 		
@@ -44,13 +41,13 @@ $(function () {
 <style>
 .btn{position: relative;overflow: hidden;margin-right: 4px;display:inline-block;*display:inline;padding:4px 10px 4px;font-size:14px;line-height:18px;*line-height:20px;color:#fff;text-align:center;vertical-align:middle;cursor:pointer;background:#5bb75b;border:1px solid #cccccc;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#b3b3b3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 .btn input{position: absolute;top: 0; right: 0;margin: 0;border:solid transparent;opacity: 0;filter:alpha(opacity=0); cursor: pointer;}
-.progress{position:relative; margin-left:0px;margin-top:2px;width:280px;padding: 1px; border-radius:3px; display:none}
+.progress{position:relative; margin-left:0px;margin-top:2px;width:280px;padding: 1px; border-radius:3px;}
 .bar {background-color: green; display:block; width:0%; height:20px; border-radius:3px; }
 .percent{position:absolute; height:20px; display:inline-block; top:0px; left:45%; color:#000 }
 .files{height:22px; line-height:22px; margin:10px 0}
 input[type="file"]{
 	margin-top:5px;
-border-style: solid;
+	border-style: solid;
 	border-width: 1px;
 	}
 </style>	
@@ -70,13 +67,17 @@ border-style: solid;
         <div class="label"><label>模块上传</label></div>
         <div class="field">
 		<input id="fileupload" type="file" name="mypic">
-        	<div class="progress" style="display:none">
+        	<div class="progress">
     		<span class="bar"></span><span class="percent">0%</span >
 			</div>
-        <div id="showimg"></div>
-                    <div class="files"></div>
-                    </div>
+        </div>
     	</div>
+		<div class="form-group">
+         <div class="label"><label>当前状态</label></div>
+          <div class="field">
+          <textarea name="sys" cols="50" rows="5" class="files" id="files" style="width:400px; height:350px"></textarea>
+           </div>
+        </div>	
         </div>
         <div class="tab-panel" id="tab-post">
 <div class="label" style="border-bottom: solid 1px #458fce;">

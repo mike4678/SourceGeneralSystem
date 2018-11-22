@@ -1,5 +1,5 @@
 <?php 
-//error_reporting(0);
+error_reporting(0);
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
@@ -13,6 +13,8 @@ if($dou->content($addr[2],'list_name') == 'error')
 	$table = $dou->content($addr[2],'table');
 	
 }
+
+
 
 //处理页码
 $PageNum = $dou->AddrConvery($_GET);
@@ -33,19 +35,19 @@ switch ($_SERVER['REQUEST_METHOD'])  //获取操作方式
 	{
 		if(strstr($PageNum[count($addr) - 1], 'id') != "") //如果带有id字样
 		{
-			$dou->DelData($table_name,'querycode',str_replace('id','',$PageNum[count($addr) - 1]),'GET');
+			$dou->DelData($table_name,'id',str_replace('id','',$PageNum[count($addr) - 1]),'GET');
 		}
 	} else {
 			if(strstr($PageNum[3], 'id') != "") //如果带有id字样
 			{
-			$dou->DelData($table_name,'querycode',str_replace('id','',$PageNum[3]),'GET');
+			$dou->DelData($table_name,'id',str_replace('id','',$PageNum[3]),'GET');
 			}
 		}
 		break;
 
 	case 'POST':
 	$ID_Dele = implode("','",$_POST['id']);  
-	$dou->DelData($table_name,'querycode',$ID_Dele,'POST'); 
+	$dou->DelData($table_name,'id',$ID_Dele,'POST'); 
 	break;	
 }
 ?>
@@ -83,7 +85,6 @@ $sql = "select * from $table_name limit $offset,$Page_size";
 $result = $dou->query($sql); 
 while ($row = $dou->fetch_array($result)) 
 { 
-	
 	//处理值的带入
 	preg_match_all("|{(.*)}|U", $table, $out, PREG_PATTERN_ORDER); //寻找文本中的{}字段内容
 	$tlist = 0;
@@ -99,18 +100,6 @@ while ($row = $dou->fetch_array($result))
 			
 		$tlist = $tlist + 1;
 	} 
-	
-	//处理函数执行
-	preg_match_all("|<!(.*)!>|U", $value, $out, PREG_PATTERN_ORDER); //寻找文本中的<!!>字段内容
-	//print_r($out);
-	//echo $out[1][1];
-	$Get_Dom = $dou -> Get_domain($out[1][0]);
-	$Ana = $dou -> Analyse($Get_Dom);
-	$value = str_ireplace("<!".$out[1][0]."!>",$Ana,$value);	
-	//print_r($dou -> Analyse('taobao'));
-	//print_r($out[1][0]);
-
-	
 	$value = str_ireplace('$_SERVER[PHP_SELF]?$_SERVER[QUERY_STRING]',$_SERVER[PHP_SELF]."?".$_SERVER[QUERY_STRING],$value);
 	//$value = preg_replace($name,$data,$table);
 	echo $value;
