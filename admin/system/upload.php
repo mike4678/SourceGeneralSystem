@@ -19,9 +19,21 @@ if ($state == '1')
 //******* 处理登陆状态
 
 // 参数检查
-$dou -> CheckUploadSize();   //检查如果上传大小异常，则自动修复
-
+if($dou -> CheckUploadSize() != NULL)   //检查如果上传大小异常，则自动修复
+{
+	echo "上传参数异常，请检查！";
+	exit();
+}
+	
 //初始化参数
+//回传参数
+//旧版 frame=module
+//新版 act=del|add&ifr=xxx(对应数据库)
+
+
+
+
+
 $action = empty($_GET['act']) ? '' : $_GET['act'];
 $frame =  $_GET['frame'];
 $syssize = $dou -> Info('upload_size');
@@ -75,16 +87,16 @@ if($action=='delfile'){
 				//上传路径
 				$pic_path = "../../tmp/". $pics;
 				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);	
-				$moduledata = 'Init '.$picname.' files \r\n';
-				$moduledata.= 'file size:'.round($picsize/1024,2);
+				$moduledata = 'Init '.$picname.' files  &#10';
+				$moduledata.= 'File Size:'.round($picsize/1024,2)." KB";
 				$zip = new ZipArchive();
 				if($zip -> open($pic_path) != true)
 				{
-					$moduledata.= '<br>Could not open archive';
+					$moduledata.= ' &#10Could not open archive';
 				}
 				$zip -> extractTo('../../module/'.$picname);
 				$zip -> close();
-				$moduledata.= '<br>File Init Complete!';
+				$moduledata.= '&#10File Init Complete!';
 				break;
 		}
 	}

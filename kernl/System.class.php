@@ -220,7 +220,7 @@ class System extends DbMysql
 	{
 		$File_size = $this->Info('upload_size');
 		$PHP_Size = str_replace("M","",ini_get('post_max_size'));
-		if($File_size > $PHP_Size) 
+		if($File_size == NULL || $File_size == 0 || $File_size > $PHP_Size) 
 		{
 			$size = $PHP_Size - 1;
 			$sql = "update system_setting set value = '". $size ."' where vars = 'upload_size';";
@@ -228,7 +228,7 @@ class System extends DbMysql
 			{
 				echo '参数检测发现异常，但尝试修复失败！';
 			}
-		}
+		} 
 	}
 
 	/* ---------------------------------------------------- */
@@ -520,6 +520,23 @@ class System extends DbMysql
 		
 	}
 		/* ---------------------------------------------------- */
+		
+		//上传大小检查
+		/* ---------------------------------------------------- */
+		function UploadFrameFix() 
+		{
+			$UploadFrame = $this->Info('upload_frame');
+			if($UploadFrame == NULL ) 
+			{
+				$sql = "update system_setting set value = 'system;.png*.jpg*.gif;../../images/|module;.zip;../../module/|' where vars = 'upload_frame';";
+				if(!$this->query($sql))
+				{
+					echo 'null';
+				}
+			} 
+		}
+
+	/* ---------------------------------------------------- */
 
 }
 

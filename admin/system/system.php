@@ -223,6 +223,10 @@ $dou->FormCreate($data);
 <style>
 .delimg{margin-left:20px; color:#090; cursor:pointer}
 </style>
+<script>
+function info(message) { art.dialog.open(message, {width: 420, height: 400}); }
+</script>	
+
 <script type="text/javascript" src="../../js/jquery.form.js"></script>
 <script language=javascript>   //文件上传处理
 $(function () {
@@ -450,17 +454,11 @@ $(function () {
         </div>  
         <div class="tab-panel <?php echo $_COOKIE['up']; ?>" id="tab-upload">
          <form method="post" class="form-x" action="#">
-         <input type="hidden" value="tab-upload" id="Tab" name="Tab">
-          <div class="form-group">
-           <div class="label"><label for="sitename">允许文件名</label></div>
-           <div class="field">
-            <input type="text" class="input" id="file_name" name="file_name" size="50" placeholder="填写允许上传的后缀名，多个后缀通过|分割" data-validate="required:请填写允许上传的后缀名,多个后缀通过|分割" value=<?php echo $dou->Info('upload_name'); ?> />
-           </div>
-          </div>
+         <input type="hidden" value="tab-upload" id="Tab" name="Tab">				
           <div class="form-group">
            <div class="label"><label for="sitename">允许单个文件大小(MB)</label></div>
            <div class="field">
-            <input type="text" class="input" id="file_size" name="file_size" size="40" placeholder="填写允许上传的文件大小,单位MB" data-validate="required:请填写允许上传的文件大小,单位MB" value=<?php echo $dou->Info('upload_size'); ?> />
+            <input type="text" class="input" id="file_size" name="file_size" size="20" placeholder="填写允许上传的文件大小,单位MB" data-validate="required:请填写允许上传的文件大小,单位MB" value=<?php echo $dou->Info('upload_size'); ?> />
            </div>
           </div>
            <div class="form-group">
@@ -477,7 +475,33 @@ $(function () {
              <a href="http://bbs.csource.com.cn/read-273-1.html" target="_blank">(如何修改该值？)</a>
            </div>
           </div>
-           <div class="form-button"><button class="button bg-main" type="submit">提交</button></div>
+		  <div class="form-group">
+           <div class="label"><label for="sitename">后台上传框架</label></div>
+             <div class="field">
+				 <?php
+
+				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
+					if($dou -> Info("upload_frame") == NULL)  //如果为空自动修复							 
+					{
+						if($dou -> UploadFrameFix() == 'null') 
+						{
+							die("参数读取发生错误，请与管理员联系");
+						}
+						
+					}	else {
+						$pieces = explode("|", $dou ->Info("upload_frame"));
+						foreach($pieces as $val){
+							$IndexData = explode(";", $val);
+  							echo '<option value='.$IndexData[0].'>'.$IndexData[0].'('.str_replace("*","、",$IndexData[1]).')</option>';
+						}
+					}
+				
+			?>	
+				</select><br />
+				<input name="databasebak" type="submit" class="button" id="databasebak" value="添加" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="编辑" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="删除" />	
+				</div>
+                </div>
+		  <div class="form-button"><button class="button bg-main" type="submit">提交</button></div>	  
          </form>
         </div>
         </div>
