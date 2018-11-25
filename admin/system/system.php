@@ -15,6 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 		$dou->cookie("set", 'active');
 		$dou->cookie("up", '');
 		$dou->cookie("adv", '');
+		$dou->cookie("email", '');
 	}
 	
 }
@@ -223,10 +224,6 @@ $dou->FormCreate($data);
 <style>
 .delimg{margin-left:20px; color:#090; cursor:pointer}
 </style>
-<script>
-function info(message) { art.dialog.open(message, {width: 420, height: 400}); }
-</script>	
-
 <script type="text/javascript" src="../../js/jquery.form.js"></script>
 <script language=javascript>   //文件上传处理
 $(function () {
@@ -236,7 +233,7 @@ $(function () {
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
-	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?frame=system' method='post' enctype='multipart/form-data'></form>");
+	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=system' method='post' enctype='multipart/form-data'></form>");
     $("#fileupload").change(function(){
 		$("#myupload").ajaxSubmit({
 			dataType:  'json',
@@ -270,7 +267,7 @@ $(function () {
 	
 	$(".delimg").live('click',function(){
 		var pic = $(this).attr("rel");
-		$.post("system/upload.php?act=delfile&frame=system",{imagename:pic},function(msg){
+		$.post("system/upload.php?act=del&ifr=system",{imagename:pic},function(msg){
 			if(msg==1){
 				files.html("删除成功.&nbsp;&nbsp;<a href='javascript:history.go(0)'>刷新</a>");
 				showimg.empty();
@@ -476,29 +473,18 @@ $(function () {
            </div>
           </div>
 		  <div class="form-group">
-           <div class="label"><label for="sitename">后台上传框架</label></div>
+           <div class="label"><label for="sitename">上传参数</label></div>
              <div class="field">
 				 <?php
-
-				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
-					if($dou -> Info("upload_frame") == NULL)  //如果为空自动修复							 
+					echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
+				 	$UData = $dou -> UploadFrame();
+				 	foreach ($UData as $value)
 					{
-						if($dou -> UploadFrameFix() == 'null') 
-						{
-							die("参数读取发生错误，请与管理员联系");
-						}
-						
-					}	else {
-						$pieces = explode("|", $dou ->Info("upload_frame"));
-						foreach($pieces as $val){
-							$IndexData = explode(";", $val);
-  							echo '<option value='.$IndexData[0].'>'.$IndexData[0].'('.str_replace("*","、",$IndexData[1]).')</option>';
-						}
+						echo '<option value='.$value[0].'>'.$value[0].'('.$value[1].')</option>';
 					}
-				
-			?>	
+				?>
 				</select><br />
-				<input name="databasebak" type="submit" class="button" id="databasebak" value="添加" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="编辑" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="删除" />	
+				<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=add', {title: '新增上传框架', width: 420, height: 400})" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('system/uploadframe.php?m=edit', {title: '修改上传框架', width: 420, height: 402})" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=del', {title: '删除上传框架', width: 420, height: 235})" value="删除" />	
 				</div>
                 </div>
 		  <div class="form-button"><button class="button bg-main" type="submit">提交</button></div>	  

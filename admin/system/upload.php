@@ -21,8 +21,7 @@ if ($state == '1')
 // 参数检查
 if($dou -> CheckUploadSize() != NULL)   //检查如果上传大小异常，则自动修复
 {
-	echo "上传参数异常，请检查！";
-	exit();
+	die ("上传参数异常，请检查！");
 }
 	
 //初始化参数
@@ -30,13 +29,9 @@ if($dou -> CheckUploadSize() != NULL)   //检查如果上传大小异常，则�
 //旧版 frame=module
 //新版 act=del|add&ifr=xxx(对应数据库)
 
-
-
-
-
-$action = empty($_GET['act']) ? '' : $_GET['act'];
-$frame =  $_GET['frame'];
-$syssize = $dou -> Info('upload_size');
+$action = empty($_GET['act']) ? '' : $_GET['act'];   //操作方式
+$frame =  $_GET['ifr']; //框架
+$syssize = $dou -> Info('upload_size');  //上传大小
 
 if($action=='delfile'){
 	switch($frame)
