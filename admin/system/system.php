@@ -480,7 +480,7 @@ $(function () {
 				 	$UData = $dou -> UploadFrame();
 				 	foreach ($UData as $value)
 					{
-						echo '<option value='.$value[0].'>'.$value[0].'('.$value[1].')</option>';
+						echo '<option value='.$value[0].'>'.$value[0].'('.str_replace("*","、",$value[1]).')</option>';
 					}
 				?>
 				</select><br />

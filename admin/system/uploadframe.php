@@ -4,30 +4,14 @@ require("../../kernl/Init.php");
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
-print_r($dou -> UploadFrame());
 //初始化接口列表
-$select =  '<select>';
-	if($dou -> Info("upload_frame") == NULL)  //如果为空自动修复							 
-	{
-		if($dou -> UploadFrameFix() == 'null') 
-		{
-			die("参数读取发生错误，请与管理员联系");
-		}
-						
-	}	else {
-			$pieces = explode("|", $dou ->Info("upload_frame"));
-				foreach($pieces as $val)
-				{
-					if($val == NULL)
-					{
-						break;
-					}
-					$IndexData = explode(";", $val);
-  					$select.='<option value='.$IndexData[0].'>'.$IndexData[0].'('.str_replace("*","、",$IndexData[1]).')</option>';
-					$filepath[count($filepath)] = $IndexData[2];
-					$fileico[count($fileico)] = str_replace("*","、",$IndexData[1]);
-				}
-			}
+$select = '<select onchange="SelectEdit('.$UFData.');">';
+$UData = $dou -> UploadFrame();
+foreach ($UData as $value)
+{
+	$select.='<option value='.$value[0].'>'.$value[0].'('.str_replace("*","、",$value[1]).')</option>';
+	$UFData = json_encode($UData);
+}
 $select.='</select>';
 
 //请求方式处理
@@ -35,26 +19,27 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 {
 	switch($_GET['m']) {	
 	case 'add':
-	$edit = '<div class="UserEdit" style="display:none">  ';
-	$add = '<div class="UserAdd">  ';
-    $del = '<div class="UserDel" style="display:none">  ';
+	$edit = '<div class="Edit" style="display:none">  ';
+	$add = '<div class="Add">  ';
+    $del = '<div class="Del" style="display:none">  ';
 	break;
 	
 	case 'edit':
-	$del = '<div class="UserDel" style="display:none">  ';
-	$edit = '<div class="UserEdit">  ';
-	$add = '<div class="UserAdd" style="display:none">  ';
+	$del = '<div class="Del" style="display:none">  ';
+	$edit = '<div class="Edit">  ';
+	$add = '<div class="Add" style="display:none">  ';
 	break;
 	
 	case 'del':
-	$edit = '<div class="UserEdit" style="display:none">  ';
-	$add = '<div class="UserAdd" style="display:none">  ';
-    $del = '<div class="UserDel">  ';
+	$edit = '<div class="Edit" style="display:none">  ';
+	$add = '<div class="Add" style="display:none">  ';
+    $del = '<div class="Del">  ';
 	break;		
 			
 	default: 
-	$edit = '<div class="UserEdit" style="display:none">  ';
-	$add = '<div class="UserAdd">  ';
+	$edit = '<div class="Edit" style="display:none">  ';
+	$add = '<div class="Add">  ';
+	$del = '<div class="Del" style="display:none">  ';
 	break;
 	} 
 }
@@ -64,12 +49,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Untitled Document</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../../css/setting.css" rel="stylesheet" type="text/css" />
+<script>
+function SelectEdit(data) {
+        if (document.getElementById('Select').options[1].selected == true) {
+            document.getElementById('Upload').style.display = 'none';
+			document.getElementById('Address').style.display = '';
+			
+        } else if (document.getElementById('Select').options[0].selected == true) {
+            document.getElementById('Address').style.display = 'none';
+			 document.getElementById('Upload').style.display = '';
+
+        } 
+    }	
+</script>
 </head>
 <body>
 <?php echo $add; ?>
@@ -97,10 +94,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <?php echo $select;	?>
     </fieldset>  
     <fieldset>支持后缀名
-        <input name="musicname" type="text"  id="music" placeholder="支持后缀名" tabindex="1" value="<?php echo $fileico[0]; ?>"/>
+        <input name="musicname" type="text"  id="music" placeholder="支持后缀名" tabindex="1" value="<?php echo str_replace("*","、",$IndexData[1]); ?>"/>
     </fieldset>
     <fieldset>存储路径
-        <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="2" value="<?php echo $filepath[0]; ?>"/>
+        <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="2" value="<?php echo $IndexData[1]; ?>"/>
     </fieldset>
    <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">修改</button>
