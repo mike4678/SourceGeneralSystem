@@ -55,94 +55,49 @@ if($action == NULL || $frame == NULL )
 
 if( $action == 'add' )
 {
-	
-	$type = pathinfo($picname, PATHINFO_EXTENSION);
-	
-	
-	explode('*', $fileico[$key]);
-	
-	if ($type != ".zip" ) 
+	//文件大小检查
+	$picname = $_FILES['mypic']['name'];
+	$picsize = $_FILES['mypic']['size'];
+	if ($picname != "") 
 	{
-		die('错误的文件格式！') ;
+		if ($picsize > $syssize * 1024 * 1024) 
+		{
+			die('文件大小超过系统限制');
+		}
 	} 
+	
+	//文件格式检查
+	$type = pathinfo($picname, PATHINFO_EXTENSION);
+	$tmp = explode('*', $fileico[$key]);
+	for ($x=0; count($tmp); $x++) 
+	{
+  		if ($type != $x ) 
+		{
+			die('错误的文件格式！') ;
+		} 
+	} 
+	
+	//文件上传并保存
 	$rand = rand(100, 999);
 	$pics = date("YmdHis") . $rand . $type;
 	//上传路径
-	$pic_path = "../../tmp/". $pics;
-	move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);	
+	$pic_path = $filepath[$key] . $pics;
+	move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
 	
-} elseif ( $action == 'del' ) 
-	
-{
-	
-}
-	
-
-
-
-
-if($action=='delfile'){
-	switch($frame)
+	if($frame == 'module')  //如果为模块，则执行解压操作
 	{
-		case 'system':
-			$filename = $_POST['imagename'];
-			if(!empty($filename)){
-				unlink("../../images/".$filename);
-				echo '1';
-			}else{
-				echo '删除失败.';
-				}
-		break;
-	
-	}
-}else{
-	$picname = $_FILES['mypic']['name'];
-	$picsize = $_FILES['mypic']['size'];
-	if ($picname != "") {
-		if ($picsize > $syssize * 1024 * 1024) {
-			echo '文件大小超过系统限制';
-			exit;
-		} 
-		
-		switch($frame) 
+		$moduledata = 'Init '.$picname.' files  &#10';
+		$moduledata.= 'File Size:'.round($picsize/1024,2)." KB";
+		$zip = new ZipArchive();
+		if($zip -> open($pic_path) != true)
 		{
-			case 'system':
-				$type = strstr($picname, '.');
-				if ($type != ".png" && $type != ".gif") {
-					echo '文件格式不对！';
-					exit;
-				}
-				$rand = rand(100, 999);
-				$pics = date("YmdHis") . $rand . $type;
-				//上传路径
-				$pic_path = "../../images/". $pics;
-				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
-				break;
-				
-			case 'module':
-				$type = strstr($picname, '.');
-				if ($type != ".zip" ) {
-					echo '错误的文件格式！';
-					exit;
-				}
-				$rand = rand(100, 999);
-				$pics = date("YmdHis") . $rand . $type;
-				//上传路径
-				$pic_path = "../../tmp/". $pics;
-				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);	
-				$moduledata = 'Init '.$picname.' files  &#10';
-				$moduledata.= 'File Size:'.round($picsize/1024,2)." KB";
-				$zip = new ZipArchive();
-				if($zip -> open($pic_path) != true)
-				{
-					$moduledata.= ' &#10Could not open archive';
-				}
-				$zip -> extractTo('../../module/'.$picname);
-				$zip -> close();
-				$moduledata.= '&#10File Init Complete!';
-				break;
+			$moduledata.= ' &#10Could not open archive';
 		}
+		$zip -> extractTo('../../module/'.$picname);
+		$zip -> close();
+		$moduledata.= '&#10File Init Complete!';
 	}
+	
 	$size = round($picsize/1024,2);
 	$arr = array(
 		'name'=>$picname,
@@ -151,5 +106,18 @@ if($action=='delfile'){
 		'status'=>$moduledata
 	);
 	echo json_encode($arr);
+
+} elseif ( $action == 'del' ) 
+	
+{
+	$filename = $_POST['imagename'];
+	if(!empty($filename))
+	{
+		unlink($filepath[$key].$filename);
+		echo '1';
+	} else {
+		echo '删除失败.';
+	}
+	
 }
 ?>
