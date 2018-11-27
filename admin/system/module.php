@@ -6,7 +6,7 @@ $(function () {
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
-	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?frame=module' method='post' enctype='multipart/form-data'></form>");
+	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=module' method='post' enctype='multipart/form-data'></form>");
     $("#fileupload").change(function(){
 		$("#myupload").ajaxSubmit({
 			dataType:  'json',

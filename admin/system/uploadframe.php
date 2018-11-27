@@ -5,14 +5,21 @@ if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
 //初始化接口列表
-$select = '<select onchange="SelectEdit('.$UFData.');">';
+$select = '<select onchange="SelectEdit();" id="attrib">';
 $UData = $dou -> UploadFrame();
+$x=0;
 foreach ($UData as $value)
 {
-	$select.='<option value='.$value[0].'>'.$value[0].'('.str_replace("*","、",$value[1]).')</option>';
-	$UFData = json_encode($UData);
+	
+	$select.='<option value='.$x.'>'.$value[0].'('.$value[1].')</option>';
+	$x++;
+	
 }
 $select.='</select>';
+
+//传递参数到js
+$UFData = json_encode($UData);
+echo '<script> var data= '.$UFData.';</script>';
 
 //请求方式处理
 if($_SERVER["REQUEST_METHOD"] == "GET") 
@@ -54,32 +61,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../../css/setting.css" rel="stylesheet" type="text/css" />
-<script>
-function SelectEdit(data) {
-        if (document.getElementById('Select').options[1].selected == true) {
-            document.getElementById('Upload').style.display = 'none';
-			document.getElementById('Address').style.display = '';
-			
-        } else if (document.getElementById('Select').options[0].selected == true) {
-            document.getElementById('Address').style.display = 'none';
-			 document.getElementById('Upload').style.display = '';
-
-        } 
-    }	
-</script>
 </head>
+<script>
+function SelectEdit() 
+{
+	 var rtl = document.getElementById("attrib"); 
+	 document.getElementsByName("musicname")[1].value = data[rtl.value][1];
+	 document.getElementsByName("singername")[1].value = data[rtl.value][2];
+
+}   
+	
+</script>	
 <body>
 <?php echo $add; ?>
 <form id="contact" action="#" method="post" >  
     <h4>新增上传参数</h4>  
   <fieldset id="Address">上传接口名
-        <input name="path_address" type="text" placeholder="上传接口名" tabindex="0" />
+        <input name="path_address" type="text" placeholder="上传接口名" tabindex="1" />
     </fieldset>  
     <fieldset>支持后缀名
-      <input name="musicname" type="text" required="required" id="music" placeholder="支持后缀名" tabindex="1" />
+      <input name="musicname" type="text" required="required" id="music" placeholder="支持后缀名，格式为.xxx，多个用、分割" tabindex="2" />
     </fieldset>
     <fieldset>存储路径
-      <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="2" />
+      <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="3" />
     </fieldset>
   <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">新增</button>
@@ -94,10 +98,10 @@ function SelectEdit(data) {
     <?php echo $select;	?>
     </fieldset>  
     <fieldset>支持后缀名
-        <input name="musicname" type="text"  id="music" placeholder="支持后缀名" tabindex="1" value="<?php echo str_replace("*","、",$IndexData[1]); ?>"/>
+        <input name="musicname" type="text"  id="music" placeholder="支持后缀名" tabindex="1" value="<?php echo $UData[0][1]; ?>" />
     </fieldset>
     <fieldset>存储路径
-        <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="2" value="<?php echo $IndexData[1]; ?>"/>
+        <input name="singername" type="text" id="singer" placeholder="存储路径" tabindex="2" value="<?php echo $UData[0][2]; ?>" />
     </fieldset>
    <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">修改</button>
@@ -116,5 +120,4 @@ function SelectEdit(data) {
 </form>
 </div>
 </body>
-
 </html>
