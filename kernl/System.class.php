@@ -567,6 +567,50 @@ class System extends DbMysql
 		}
 
 		/* ---------------------------------------------------- */
+				
+		// 上传框架处理
+		/* ---------------------------------------------------- */
+		function UploadFrameServicing($method,$data) 
+		{
+			switch($method)
+			{
+				case 'add':
+					break;
+				
+				case 'edit':
+					break;
+					
+				case 'del':
+					
+					
+			}
+			
+			
+			if($this -> Info("upload_frame") == NULL)  //如果为空自动修复							 
+			{
+				if($this -> UploadFrameFix() == 'null') 
+				{
+					die("参数读取发生错误，请与管理员联系");
+				}
+						
+			} else {
+				
+				$pieces = explode("|", $this ->Info("upload_frame"));
+				foreach($pieces as $val)
+				{
+					if($val == NULL)
+					{
+						break;
+					}
+						$IndexData = explode(";", $val);
+						$uploadData[] = array ($IndexData[0],$IndexData[1],$IndexData[2]);
+				}
+			
+			}
+			return $uploadData;
+		}
+
+		/* ---------------------------------------------------- */
 
 }
 ?>
