@@ -28,20 +28,17 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 	case 'add':
 		$buttom = '新增';
 		$Title = '新增上传参数';
+		$UData = '';
 	break;
 	
 	case 'edit':
 		$buttom = '修改';	
 		$Title = '修改上传参数设置';
-		echo '<script language="JavaScript">document.getElementsByName("path_address")[1].style.display = "none"</script>';	
 	break;
 	
 	case 'del':
 		$buttom = '删除';
 		$Title = '删除上传参数';
-		echo '<script language="JavaScript">document.getElementsByName("musicname")[1].style.display = "none"</script>';
-		echo '<script language="JavaScript">document.getElementsByName("singername")[1].style.display = "none"</script>';
-		echo '<script language="JavaScript">document.getElementsByName("path_address")[1].style.display = "none"</script>';	
 	break;		
 			
 	default: 
@@ -59,18 +56,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 }
 
 //生成页面代码
-$content = "<div class=\"Add\">
+$content = "<div class=\"Frame\">
    			<form id=\"contact\" action=\"#\" method=\"post\" >  
     		<h4>".$Title."</h4>  
-    		<fieldset id=\"Address\">上传接口名
+    		<fieldset name=\"Address\">上传接口名
 			".$select."
         	<input name=\"path_address\" type=\"text\" placeholder=\"上传接口名\" tabindex=\"1\" />
 			</fieldset>  
-    		<fieldset>支持后缀名
-      		<input name=\"musicname\" type=\"text\" required=\"required\" id=\"music\" placeholder=\"支持后缀名，格式为.xxx，多个用、分割\" tabindex=\"2\" value=".$UData[0][1]."/>
+    		<fieldset name=\"name\">支持后缀名
+      		<input name=\"musicname\" type=\"text\" required=\"required\" id=\"music\" placeholder=\"支持后缀名，格式为.xxx，多个用、分割\" tabindex=\"2\" value=".$UData[0][1].">
 			</fieldset>
-    		<fieldset>存储路径
-      		<input name=\"singername\" type=\"text\" id=\"singer\" placeholder=\"存储路径\" tabindex=\"3\" value=".$UData[0][2]."/>
+    		<fieldset name=\"path\">存储路径
+      		<input name=\"singername\" type=\"text\" id=\"singer\" placeholder=\"存储路径\" tabindex=\"3\" value=".$UData[0][2].">
     		</fieldset>
   			<fieldset>
       		<button name=\"submit\" type=\"submit\" id=\"contact-submit\" data-submit=\"...Sending\" value=\"".$buttom."\">".$buttom."</button>
@@ -87,13 +84,46 @@ $content = "<div class=\"Add\">
 <script>
 function SelectEdit() 
 {
-	 var rtl = document.getElementById("attrib"); 
-	 document.getElementsByName("musicname")[1].value = data[rtl.value][1];
-	 document.getElementsByName("singername")[1].value = data[rtl.value][2];
+	 var rtl = document.getElementById("attrib").value; 
+	 document.getElementsByName("musicname")[0].value = data[rtl][1];
+	 document.getElementsByName("singername")[0].value = data[rtl][2];
 
-}   
+}
+	
+var $_GET = (function(){
+    var url = window.document.location.href.toString();
+    var u = url.split("?");
+    if(typeof(u[1]) == "string"){
+        u = u[1].split("&");
+        var get = {};
+        for(var i in u){
+            var j = u[i].split("=");
+            get[j[0]] = j[1];
+        }
+        return get;
+    } else {
+        return {};
+    }
+})();	
 </script>	
 <body>
 <?php echo $content; ?>
+<script>
+if ($_GET['m'] == 'edit')
+{
+	document.getElementsByName("path_address")[0].style.display = "none";
+	
+}	else if ($_GET['m'] == 'del') 
+	
+{
+	document.getElementsByName("path_address")[0].style.display = "none";
+	document.getElementsByTagName("fieldset")[1].style = 'display:none';
+	document.getElementsByTagName("fieldset")[2].style = 'display:none';
+	
+} 	else 
+{
+	document.getElementById("attrib").style.display = "none";
+}
+</script>
 </body>
 </html>
