@@ -528,7 +528,7 @@ class System extends DbMysql
 			$UploadFrame = $this->Info('upload_frame');
 			if($UploadFrame == NULL ) 
 			{
-				$sql = "update system_setting set value = 'system;.png*.jpg*.gif;../../images/|module;.zip;../../module/|' where vars = 'upload_frame';";
+				$sql = "update system_setting set value = 'system;.png、.jpg、.gif;../../images/|module;.zip;../../module/|' where vars = 'upload_frame';";
 				if(!$this->query($sql))
 				{
 					echo 'null';
