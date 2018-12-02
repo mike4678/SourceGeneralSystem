@@ -393,9 +393,14 @@ class System extends DbMysql
 		
 	}
 	
-	function Get_IpList($fwlist)   //获取当前列表中的ip信息
+	function Get_IpList()   //获取当前模式下的ip信息
 	{
 		
+		
+		$query = $this->query("select * from system_ips where type = ".$this -> Info("ipfirewall_mode"));
+		$row = $this->fetch_array($query);
+		$ReturnData[] = array ($row[0]);
+		return $ReturnData;
 		
 	}	
 	/* ---------------------------------------------------- */
