@@ -104,7 +104,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				echo '<script language="JavaScript">window.alert("当前允许上传文件大小超过PHP系统限定值！")</script>';
 				echo '<script language="JavaScript">window.history.back();</script>';
 			} else {
-				$sql = "UPDATE system_setting SET value = CASE vars WHEN 'upload_size' THEN '".$_POST['file_size']."'  WHEN 'upload_name' THEN '".$_POST['file_name']."' END WHERE vars IN ('upload_size','upload_name')";
+				$sql = "UPDATE system_setting 
+						SET value = CASE vars 
+						WHEN 'upload_size' THEN '".$_POST['file_size']."'  
+						END WHERE vars IN ('upload_size','upload_name')";
 				if (!$dou->query($sql)) 
 				{
 					echo '<script language="JavaScript">window.alert("更新失败")</script>';
@@ -125,10 +128,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				if($_POST['tableSelect'] == NULL) 
 				{
 					$sql = "UPDATE system_setting 
-				  		  SET value = CASE vars 
-				  		 WHEN 'index_status' THEN '".$state."' 
-				 		END 
-						 WHERE vars IN ('index_status')";
+				  		    SET value = CASE vars 
+				  		    WHEN 'index_status' THEN '".$state."' 
+				 		    END 
+						    WHERE vars IN ('index_status')";
 				} else 
 					{
 						$sql = "UPDATE system_setting 
@@ -143,10 +146,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				
 				$state = '1';
 				$sql = "UPDATE system_setting 
-				  		  SET value = CASE vars 
-				  		 WHEN 'index_status' THEN '".$state."'  
+				  		SET value = CASE vars 
+				  		WHEN 'index_status' THEN '".$state."'  
 				 		END 
-						 WHERE vars IN ('index_status')";
+						WHERE vars IN ('index_status')";
 				   
 				}  //禁用
 			

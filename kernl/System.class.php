@@ -4,7 +4,7 @@
 /* 程序功能: 所有核心函数的调用均在此页面中
 /* 程序开发: Source
 /* 联系方式: 542112943@qq.com
-/* Date: 1970-01-01 / 2016-08-30
+/* Date: 1970-01-01 / 2019-01-01
 /* ---------------------------------------------------- */
 /* 使用条款:
 /* 1.该软件免费使用.
@@ -572,42 +572,56 @@ class System extends DbMysql
 		/* ---------------------------------------------------- */
 		function UploadFrameServicing($method,$data) 
 		{
+			$ReturnData = $this -> UploadFrame();
 			switch($method)
 			{
 				case 'add':
+					$SystemUploadFrame = $this ->Info("upload_frame");
+					$sql = "update system_setting set value = '".$SystemUploadFrame.$data."' where vars = 'upload_frame';";
 					break;
 				
 				case 'edit':
+					$pieces = explode(";", $data);
+					$EditData = str_replace($pieces[0],$ReturnData[$pieces[0]][0],$data); //第一次替换，将数值替换成框架名
+					$pieces1 = explode(";", $EditData); //分割替换后的数据
+					$ReturnData[$pieces[0]] = array($pieces1[0],$pieces1[1],$pieces1[2]); //写入替换数组
+					$SystemUploadFrame = "";
+					foreach($ReturnData as $val)  //输出成命令行形式
+					{
+	
+						if(strpos($val[2], "|") === false) //确保单个框架结尾都有分隔符号
+						{
+							$val[2] = $val[2]."|";
+						}
+						
+						$SystemUploadFrame.= $val[0].";".$val[1].";".$val[2];
+					}
+					$sql = "update system_setting set value = '".$SystemUploadFrame."' where vars = 'upload_frame';";	
 					break;
 					
 				case 'del':
-					
+					$SystemUploadFrame = "";
+					unset($ReturnData[$data]);
+					foreach ($ReturnData as $value)
+					{
+	
+						$SystemUploadFrame.= $value[0].";".$value[1].";".$value[2]."|";
+
+					}
+					$sql = "update system_setting set value = '".$SystemUploadFrame."' where vars = 'upload_frame';";
+					break;
 					
 			}
 			
-			
-			if($this -> Info("upload_frame") == NULL)  //如果为空自动修复							 
+			if(!$this->query($sql))
 			{
-				if($this -> UploadFrameFix() == 'null') 
-				{
-					die("参数读取发生错误，请与管理员联系");
-				}
-						
+				return 'failed';
+				
 			} else {
 				
-				$pieces = explode("|", $this ->Info("upload_frame"));
-				foreach($pieces as $val)
-				{
-					if($val == NULL)
-					{
-						break;
-					}
-						$IndexData = explode(";", $val);
-						$uploadData[] = array ($IndexData[0],$IndexData[1],$IndexData[2]);
-				}
-			
+				echo '<script language="JavaScript">window.alert("操作成功！")</script>';
 			}
-			return $uploadData;
+			
 		}
 
 		/* ---------------------------------------------------- */

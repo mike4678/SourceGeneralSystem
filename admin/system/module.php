@@ -56,7 +56,8 @@ input[type="file"]{
   (
   "TabName"=>array("TabName"=>"模块管理"), //第一个为标题
    array("Name"=>"模块安装","tab"=>'#tab-get',"active"=>'active'), //往后的为选项夹
-   array("Name"=>"模块管理","tab"=>'#tab-post',"active"=>'')	
+   array("Name"=>"模块管理","tab"=>'#tab-post',"active"=>''),
+   array("Name"=>"模块中心","tab"=>'http://service.csource.com.cn/module',"active"=>'')	
   );
   $dou->FormCreate($data);
   ?>
@@ -133,6 +134,7 @@ input[type="file"]{
 	echo $var;		
 			
 ?>
-		  </div>      </div>
+		  </div>
+	</div>
         </form>
     </div>

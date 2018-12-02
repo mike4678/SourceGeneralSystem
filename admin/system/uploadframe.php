@@ -5,7 +5,7 @@ if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
 //初始化接口列表
-$select = '<select onchange="SelectEdit();" id="attrib">';
+$select = '<select name="attrib" id="attrib" onchange="SelectEdit();" >';
 $UData = $dou -> UploadFrame();
 $x=0;
 foreach ($UData as $value)
@@ -22,9 +22,8 @@ $UFData = json_encode($UData);
 echo '<script> var data= '.$UFData.';</script>';
 
 //请求方式处理
-if($_SERVER["REQUEST_METHOD"] == "GET") 
-{
-	switch($_GET['m']) {	
+switch($_GET['m']) 
+{	
 	case 'add':
 		$buttom = '新增';
 		$Title = '新增上传参数';
@@ -45,19 +44,39 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 		echo '<script language="JavaScript">window.alert("无效的参数请求")</script>';
 		exit;
 	break;
-	} 
-}
-
-
+} 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-
+	switch($_GET['m']) {	
+	case 'add':
+		$data = $_POST['path_address'] . ';' . 	$_POST['musicname'] .  ';' . $_POST['singername'] .  '|';
+		if($dou -> UploadFrameServicing('add',$data) != 'failed')
+		{
+			echo '<script language="JavaScript">parent.location.reload()</script>';
+		}
+		break;
+	
+	case 'edit':
+		$data = $_POST['attrib'] . ';' . 	$_POST['musicname'] .  ';' . $_POST['singername'] .  '|';
+		if($dou -> UploadFrameServicing('edit',$data) != 'failed')
+		{
+			echo '<script language="JavaScript">parent.location.reload()</script>';
+		}		
+		break;
+	
+	case 'del':
+		if($dou -> UploadFrameServicing('del',$_POST['attrib']) != 'failed')
+		{
+			echo '<script language="JavaScript">parent.location.reload()</script>';
+		}	
+		break;		
+	} 
 }
 
 //生成页面代码
 $content = "<div class=\"Frame\">
-   			<form id=\"contact\" action=\"#\" method=\"post\" >  
+   			<form id=\"contact\" action=\"\" method=\"post\" >  
     		<h4>".$Title."</h4>  
     		<fieldset name=\"Address\">上传接口名
 			".$select."
@@ -109,6 +128,7 @@ var $_GET = (function(){
 <body>
 <?php echo $content; ?>
 <script>
+//界面显示方式处理	
 if ($_GET['m'] == 'edit')
 {
 	document.getElementsByName("path_address")[0].style.display = "none";

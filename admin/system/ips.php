@@ -115,7 +115,7 @@ if (!file_exists('backup')) {
                 <div class="form-group" style="margin-top:6px" >
                 	<div class="label"><label>操作</label></div>
                 	<div class="field">
-                       <input type="button" class="button checkall" value="添加" onclick="add()" />&nbsp;&nbsp;<input type="button" class="button checkall" value="编辑" onclick="add()" />&nbsp;&nbsp;<input type="button" class="button checkall" value="删除" onclick="add()" />
+				<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=add', {title: '新增上传框架', width: 420, height: 400})" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('system/uploadframe.php?m=edit', {title: '修改上传框架', width: 420, height: 402})" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=del', {title: '删除上传框架', width: 420, height: 235})" value="删除" />	
                     </div>
                 </div>
                 <div class="form-button"><button class="button bg-main" type="submit">应用</button></div> 
