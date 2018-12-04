@@ -354,6 +354,10 @@ class System extends DbMysql
 	
 		
 		//IP管理核心部分
+		//type 定义
+		// 0   白名单
+		// 1   黑名单
+		// 2   双向
 	/* ---------------------------------------------------- */
 	function Get_LocalIP()          //获取客户端IP
 	{
@@ -377,30 +381,49 @@ class System extends DbMysql
 		
 	}
 	
-	function AddIP_Firewall($ip,$fwlist)    //将一个IP添加到一个列表中
+	function IPFirewallControl($method, $ip , $mode)    //IP新增删除修改
 	{
-		
+		if($method != "" && $ip != "")
+		{
+			
+			switch($method)
+			{
+				case 'add':
+					$sql = "INSERT INTO `system_ips` (`iptable`, `type`) VALUES ('".$ip."', '".$mode."');";
+					break;
+				
+				case 'edit':
+					$sql = "UPDATE `system_ips` SET `type`='".$mode."' WHERE `iptable`='".$ip."';";	
+					break;
+					
+				case 'del':
+					$sql = "DELETE FROM `system_ips` WHERE `iptable`='".$ip."';";
+					break;
+					
+			}
+			
+			if(!$this->query($sql))
+			{
+				return 'failed';
+				
+			} else {
+				
+				echo '<script language="JavaScript">window.alert("操作成功！")</script>';
+			}
+			
+		} else {
+			
+			die("参数数据错误！<a href='javascript:history.go(-1)'>点击返回</a>");
+			
+		}
 	
-	}
-	
-	function DelIP_Firewall($ip,$fwlist)    //将一个IP从一个列表中删除
-	{
-		
-	}
-	
-	function EditIP_Firewall($ip,$fwlist)    //修改一个列表中的某一个IP信息
-	{
-		
 	}
 	
 	function Get_IpList()   //获取当前模式下的ip信息
 	{
 		
-		
-		$query = $this->query("select * from system_ips where type = ".$this -> Info("ipfirewall_mode"));
-		$row = $this->fetch_array($query);
-		$ReturnData[] = array ($row[0]);
-		return $ReturnData;
+		$IPListRow = $this->fetch_array_all('system_ips');
+		return $IPListRow;
 		
 	}	
 	/* ---------------------------------------------------- */

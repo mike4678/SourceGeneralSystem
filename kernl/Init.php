@@ -69,18 +69,18 @@ $dou = new System(DBSERVER, USER, PASSWORD, DB, 'utf8');
 
 //校验基础表数据是否存在
 $sql = "SHOW TABLES;";
-$arr = array('admin_user','adminlist','content_data','report','search_keyword','system_log','system_setting',' table_list');
+$arr = array('admin_user','adminlist','content_data','system_log','system_setting','system_ips');
 $result = $dou->query($sql);
 $count = 0;
 while($row = $dou->fetch_array($result))
 {
-	if($row['Tables_in_music'] == $arr[$count] ) 
+	if($row[0] == $arr[$count] ) 
 	{
-		$count = $count + 1;
+		$count++;
 	} else { 
-		$row['Tables_in_music'];
+		$row[0];
 			$arr[$count];
-		//header("Location: ".HttpsCheck(). $_SERVER['HTTP_HOST'] ."/kernl/error.php?code=342"); //重定向浏览器
+			//header("Location: ".HttpsCheck(). $_SERVER['HTTP_HOST'] ."/kernl/error.php?code=342"); //重定向浏览器
 	}
 
 }
