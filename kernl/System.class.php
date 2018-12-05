@@ -255,7 +255,7 @@ class System extends DbMysql
 	function AccountState() 
 	{
 		$_COOKIE['state'] = empty($_COOKIE['state']) ? '' : $_COOKIE['state'];
-		if($_COOKIE['state'] != NULL )  //已经登陆过，且记录还存在
+		if($_COOKIE['state'] != ''  )  //已经登陆过，且记录还存在
 		{
 			$user = $_COOKIE['usr'];
 			$pwd = $_COOKIE['pwd'];
@@ -267,14 +267,14 @@ class System extends DbMysql
 				if( $this -> affected_rows() == NULL ) 
 				{
 				echo '<script language="JavaScript">window.alert("账户信息验证失败，请重新登陆！")</script>';
-				return '1';
+				return '';
 				} 
 			} else {
 				echo '<script language="JavaScript">window.alert("Session失败，请重新登陆！")</script>';
-				return '1';
+				return '';
 				}
 		} else {
-			return '1';
+			return '';
 			}	
 	}
 
@@ -346,6 +346,15 @@ class System extends DbMysql
 	function TableCheck($table)   
 	{
 		
+		$result = $dou -> query("SELECT * FROM ".$table );
+  		while($row = $dou -> fetch_array($result))
+  		{     
+			if(!$row)
+			{         
+				die('系统初始化出现异常错误，请删除kernl目录下config文件后，尝试重新安装，如果仍看到此提示，请与管理员联系！');
+				
+			}    
+  		}
 		
 	}
 	
@@ -378,6 +387,77 @@ class System extends DbMysql
 	
 	function Check_IPStatus()     //检查当前IP是否被限制
 	{
+		
+		if($_G['IPS']['MODE'] == 1)
+		{
+			$Data = $this -> Get_IpList(); //服务端IP
+			$Check_IP_Arrary = explode('.',$this -> Get_LocalIP()); //当前客户端IP
+			$ALLOWED_IP = ''; //允许IP列表
+			foreach ($ata as $value)
+			{
+				if($value['type'] == '2' || $value['type'] == $_G['IPS']['MODE'])
+				{
+				$ALLOWED_IP.= array($value['iptable']);
+				} 
+								
+			}
+
+			//允许访问的ip
+		
+			//ip参数拆分成数组
+			if(!in_array($Data,$ALLOWED_IP)) 
+			{
+  				$bl = false;
+  				foreach ($ALLOWED_IP as $val)
+				{
+    				if(strpos($val,'*') !== false)
+					{
+      					//发现有*号替代符
+      					$arr = array();
+      					$arr = explode('.', $val);
+      					$bl = true;
+      					//用于记录循环检测中是否有匹配成功的
+						for ($i=0;$i<4;$i++)
+						{
+        					if($arr[$i] != '*')
+							{
+          						//不等于* 就要进来检测，如果为*符号替代符就不检查
+          						if($arr[$i] != $Check_IP_Arrary[$i])
+								{
+									$bl = false;
+            						break;
+            						//终止检查本个ip 继续检查下一个ip
+          						}
+        					}
+      					}
+      				//end for
+      					if($bl)
+						{
+        					//如果是true则终止匹配
+        					break;
+      					}
+    				}
+  				}
+  					//end foreach
+  				if(!$bl)
+				{
+					if($_G['IPS']['MODE'] == 0)
+					{
+						
+						
+					}
+					$return = array(
+       						'status'=>2,
+       						'msg'=>'该IP无权限访问',
+       						'data'=>$Data
+       							);
+    				echo json_encode($return);
+    				exit();
+  				}
+			}
+		}
+		
+		
 		
 	}
 	
@@ -435,17 +515,17 @@ class System extends DbMysql
 	function generate_password( $length = 8 ) 
 	{
     // 密码字符集，可任意添加你需要的字符
-    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#￥%&*()<>?{}[]|';
 
-    $password = '';
-    for ( $i = 0; $i < $length; $i++ ) 
-    {
+    	$password = '';
+    	for ( $i = 0; $i < $length; $i++ ) 
+    	{
         // 这里提供两种字符获取方式
         // 第一种是使用 substr 截取$chars中的任意一位字符；
         // 第二种是取字符数组 $chars 的任意元素
         // $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-        $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
-    }
+        	$password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+    	}
 
     return $password;
 	}

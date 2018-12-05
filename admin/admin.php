@@ -43,6 +43,7 @@ if ($state == '1')
 	
 	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
+	
 //******* 处理页面请求
 	if($addr[1] == 'exit') 
 	{ 
@@ -124,9 +125,7 @@ if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
 	
 } else 
 	{    
-	
 		include $bottom;
-	
 	}
 ?>
 </div>

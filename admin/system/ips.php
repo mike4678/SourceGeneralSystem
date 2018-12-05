@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 //更新变量值
 $_G['IPS']['STATUS'] = $dou->Info('ipfirewall_status');
 $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
+echo '<script> var status= '.$_G['IPS']['STATUS'].'; var mode='.$_G['IPS']['MODE'].';</script>';
 ?>
       <div class="tab-body">
         <br />
@@ -61,16 +62,8 @@ $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
                 	<div class="label"><label>IP防火墙状态</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-                        <?php 
-	switch ($_G['IPS']['STATUS']) {
-	case 1:
-		echo  "<label class='button'><input name='status' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button active'><input name='status' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>";
-		break;
-	case 0:
-		echo "<label class='button active'><input name='status' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button'><input name='status' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>";
-		break;
-		 }
-?>
+						<label id='run' class='button'><input name='status' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label id='stop' class='button'><input name='status' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>	
+
           </div>
                     </div>
                 </div>
@@ -78,16 +71,8 @@ $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
                 	<div class="label"><label>IP防火墙模式</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-                        <?php 
-	switch ($_G['IPS']['MODE']) {
-	case 1:
-		echo  "<label class='button'><input name='mode' value='0' checked='checked' onclick='javascript:Tips(1)' type='radio' ><span class='icon icon-check'></span> 白名单</label><label class='button active'><input name='mode' value='1' onclick='javascript:Tips(2)' type='radio' ><span class='icon icon-check'></span> 黑名单</label><div class='label' id='info' name='info' style='width:500px;margin-top:5px;margin-left:10px;'></div>";
-		break;
-	case 0:
-		echo "<label class='button active'><input name='mode' value='0' checked='checked' onclick='javascript:Tips(1)' type='radio'><span class='icon icon-check'></span> 白名单</label><label class='button'><input name='mode' value='1' onclick='javascript:Tips(2)' type='radio'><span class='icon icon-check'></span> 黑名单</label><div id='info' name='info' style='width:500px;margin-top:5px;margin-left:10px;'></div>";
-		break;
-		 }
-?>
+							<label id='black' class='button'><input name='mode' value='0' checked='checked' onclick='javascript:Tips(1)' type='radio' ><span class='icon icon-check'></span> 白名单</label><label id='block' class='button'><input name='mode' value='1' onclick='javascript:Tips(2)' type='radio' ><span class='icon icon-check'></span> 黑名单</label><div class='label' id='info' name='info' style='width:500px;margin-top:5px;margin-left:10px;'></div>
+
           </div>
                     </div>
                 </div>
@@ -125,6 +110,29 @@ $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
       </div>
     </div>
 <script>
+window.onload = function()
+{
+   if('status' == 0)
+   {
+	   document.getElementById("run").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("stop").className = "button active";
+   }
+	
+	if('mode' == 0)
+   {
+	   document.getElementById("black").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("block").className = "button active";
+   }
+	
+}	
 function Tips(data) //名单提示信息
 {
 	if(data == 1)

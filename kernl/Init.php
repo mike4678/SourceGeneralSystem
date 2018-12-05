@@ -49,7 +49,7 @@ if(file_exists(strtolower($file)) != TRUE)  //如果不存在则跳转到安装�
 	require_once 'Conf.php';
 	}
 
-//初始化模块
+//初始化核心模块
 $arr = array('Connect','System','Account','Mobile');
 for ($i = 0 ; $i < count($arr); $i++){
 	require($arr[$i].'.Class.php');
@@ -76,12 +76,18 @@ while($row = $dou->fetch_array($result))
 {
 	if($row[0] == $arr[$count] ) 
 	{
+		$TableData = $dou -> query("SELECT * FROM ".$row[0] );
+  		while($TableRow = $dou -> fetch_array($TableData))
+  		{     
+			if(!$TableRow)
+			{         
+				die('系统初始化出现异常错误，请删除kernl目录下config文件后，尝试重新安装，如果仍看到此提示，请与管理员联系！');
+				
+			}    
+  		} 
+		
 		$count++;
-	} else { 
-		$row[0];
-			$arr[$count];
-			//header("Location: ".HttpsCheck(). $_SERVER['HTTP_HOST'] ."/kernl/error.php?code=342"); //重定向浏览器
-	}
+	} 
 
 }
 define('source', 'service.csource.com.cn');

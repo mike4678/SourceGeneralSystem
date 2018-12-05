@@ -4,7 +4,7 @@ require("../kernl/Init.php"); //初始化基础参数
 
 //判断之前的登陆状态
 $_COOKIE['state'] = empty($_COOKIE['state']) ? '' : $_COOKIE['state'];
-if($_COOKIE['state'] != NULL )  //已经登陆过，且记录还存在
+if($_COOKIE['state'] != '' )  //已经登陆过，且记录还存在
 {
 	$user = $_COOKIE['usr'];
 	$pwd = $_COOKIE['pwd'];
@@ -28,7 +28,7 @@ if($_COOKIE['state'] != NULL )  //已经登陆过，且记录还存在
 		}
 }	
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
