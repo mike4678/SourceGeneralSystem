@@ -5,16 +5,15 @@ if (!defined('source'))
 //初始化相关参数信息
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-	if($_POST['status'] == NULL)
+	if(!isset($_POST['status']))
 	{
 		$sql = "UPDATE system_setting 
 				SET value = CASE vars 
 				WHEN 'ipfirewall_mode' THEN '".$_POST['mode']."'
 				END 
 				WHERE vars IN ('ipfirewall_mode')";
-		
-		
-	} else if($_POST['mode'] == NULL) 
+
+	} else if(!isset($_POST['mode'])) 
 		
 	{
 		
@@ -23,8 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				WHEN 'ipfirewall_status' THEN '".$_POST['status']."'
 				END 
 				WHERE vars IN ('ipfirewall_status')";
-		
-		
+
 	} else 
 		
 	{
@@ -53,7 +51,7 @@ echo '<script> var stat = '.$dou->Info('ipfirewall_status').'; var mode = '.$dou
 <script>
 function MoniterStatus()
 {
-   if('stat' == 0)
+   if(stat == 0)
    {
 	   document.getElementById("run").className = "button active";
 	   
@@ -63,7 +61,7 @@ function MoniterStatus()
 	   document.getElementById("stop").className = "button active";
    }
 	
-	if('mode' == 0)
+	if(mode == 0)
    {
 	   document.getElementById("black").className = "button active";
 	   
@@ -115,11 +113,10 @@ function Tips(data) //名单提示信息
                         <div class="button-group button-group-small radio">
                         <select name="tableSelect" size="10" id="tableSelect" class='select' style="margin-top:6px">
            				 <?php
-							echo '<script>javascript:MoniterStatus();</script>';
 							$UData = $dou -> Get_IpList();
 							foreach ($UData as $value)
 							{
-								if($value['type'] == '2' || $value['type'] == $_G['IPS']['MODE'])
+								if($value['type'] == '2' || $value['type'] == $dou->Info('ipfirewall_mode'))
 								{
 									echo '<option value='.$value['iptable'].'>'.$value['iptable'].'</option>';
 								} 
@@ -143,3 +140,4 @@ function Tips(data) //名单提示信息
         </div>
       </div>
     </div>
+<script>MoniterStatus()</script>
