@@ -1,5 +1,4 @@
 <?php 
-error_reporting(0);
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 $data = array

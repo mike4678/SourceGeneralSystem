@@ -1,5 +1,4 @@
 <?php 
-error_reporting(0);
 require("../kernl/Init.php"); 
 ?>
 <!DOCTYPE html>
@@ -20,16 +19,14 @@ require("../kernl/Init.php");
     <script src="../js/respond.js"></script>
     <script src="../js/artDialog.js?skin=default"></script>
     <script src="../js/iframeTools.js"></script>
-		
 </head>
-
 <body>
 <?php 
 //******* 处理登陆状态
 $state = $dou -> AccountState();
 $addr = $dou->AddrConvery($_GET);	 //初始化参数
 	
-if ($state == '1') 
+if ($state == 'Access denied') 
 {
 	if( count($addr) > 0 ) 
 	{
@@ -120,7 +117,6 @@ $bottom = $dou->PageLoading($data[2],$data[3]);
 $file = dirname(__FILE__) . '/' . $bottom; 
 if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
 {  
-	
 	include 'system/404.php';   //如果不存在则跳转到错误界面
 	
 } else 

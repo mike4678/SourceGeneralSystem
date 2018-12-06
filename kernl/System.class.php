@@ -254,30 +254,40 @@ class System extends DbMysql
 	/* ---------------------------------------------------- */
 	function AccountState() 
 	{
-		$_COOKIE['state'] = empty($_COOKIE['state']) ? '' : $_COOKIE['state'];
-		if($_COOKIE['state'] != ''  )  //已经登陆过，且记录还存在
+		if(isset($_COOKIE['state']))
 		{
-			$user = $_COOKIE['usr'];
-			$pwd = $_COOKIE['pwd'];
-			$time = $_COOKIE['state'];
-			$now = time();
-			if($time > $now - 3600) 
+			if($_COOKIE['state'] != 'Access denied'  )  //已经登陆过，且记录还存在
 			{
-				$this -> query("select * from admin_user where username = '$user' and password = '$pwd'");		
-				if( $this -> affected_rows() == NULL ) 
+				$user = $_COOKIE['usr'];
+				$pwd = $_COOKIE['pwd'];
+				$time = $_COOKIE['state'];
+				$now = time();
+				if($time > $now - 3600) 
 				{
-				echo '<script language="JavaScript">window.alert("账户信息验证失败，请重新登陆！")</script>';
-				return '';
-				} 
-			} else {
-				echo '<script language="JavaScript">window.alert("Session失败，请重新登陆！")</script>';
-				return '';
+					$this -> query("select * from admin_user where username = '$user' and password = '$pwd';");
+					if( $this -> affected_rows() != 1 ) 
+					{
+						echo '<script language="JavaScript">window.alert("账户信息验证失败，请重新登陆！")</script>';
+						return 'Access denied';
+					} 
+				} else {
+					echo '<script language="JavaScript">window.alert("账户session校验失败，请重新登陆！")</script>';
+					$this -> cookie("usr", '', time()-3600*24*365);
+					$this -> cookie("pwd", '', time()-3600*24*365);    //一个小时3600*一天24小时*365天
+					$this -> cookie("state", '', time()-3600*24*365);
+					return 'Access denied';
 				}
-		} else {
-			return '';
+			} else {
+				
+				return 'Access denied';
 			}	
+			
+		} else {
+			
+			return 'Access denied';
+		}
 	}
-
+	
 	/* ---------------------------------------------------- */
 	
 		
@@ -580,11 +590,6 @@ class System extends DbMysql
 				$this -> WriteLog('GET', '访问请求由于 系统维护中 被拦截<br />','error.php');
 				break;
 			
-			case '402':
-				$title = '获取歌曲信息失败';
-				$content = '歌曲受版权保护，管理员已禁止该歌曲播放与下载功能！';
-				break;
-		
 			case '342':
 				$title = '系统数据检查失败';
 				$content = '检测到一个或多个核心数据字段丢失，请删除kernl目录下的conf文件，重新安装系统！';

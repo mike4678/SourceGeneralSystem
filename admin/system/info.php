@@ -18,7 +18,6 @@
 /* 您可能是下一个?
 /* ---------------------------------------------------- */
 
-error_reporting(0); //抑制所有错误信息
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 @header("content-Type: text/html; charset=utf-8"); //语言强制

@@ -3,30 +3,11 @@ error_reporting(0);
 require("../kernl/Init.php"); //初始化基础参数
 
 //判断之前的登陆状态
-$_COOKIE['state'] = empty($_COOKIE['state']) ? '' : $_COOKIE['state'];
-if($_COOKIE['state'] != '' )  //已经登陆过，且记录还存在
+$state = $dou -> AccountState();
+if ($state != 'Access denied') 
 {
-	$user = $_COOKIE['usr'];
-	$pwd = $_COOKIE['pwd'];
-	$time = $_COOKIE['state'];
-	$now = time();
-	if($time > $now - 3600) 
-	{
-		$dou -> query("select * from admin_user where username = '$user' and password = '$pwd'");		
-		if( $dou -> affected_rows() == NULL ) 
-		{
-			echo '<script language="JavaScript">window.alert("账户信息验证失败，请重新登陆！")</script>';
-		} else {
-			header("Location: admin.php"); //重定向浏览器到播放界面
-		}
-	} else {
-		echo '<script language="JavaScript">window.alert("Session异常，请重新登陆！")</script>';
-		
-		$dou->cookie("usr", '', time()-3600*24*365);
-		$dou->cookie("pwd", '', time()-3600*24*365);    //一个小时3600*一天24小时*365天
-		$dou->cookie("state", '', time()-3600*24*365);
-		}
-}	
+	header("Location: admin.php"); //重定向浏览器到播放界面
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

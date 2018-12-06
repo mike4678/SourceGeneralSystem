@@ -1,20 +1,13 @@
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>服务正在维护</title>
 <?php
-	error_reporting(0);
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 $addr = $dou->AddrConvery($_GET);
 $data = $dou->convert($addr[1],$addr[2],$query);
-$tab = $data[2];
-$list = $data[3];
-
 $sql = "select page from Menu_list where Menu_list.table = '".$data[2]."' AND Menu_list.list = '".$data[3]."';"; 
 $result = $dou -> query($sql);
 while ($row = $dou -> fetch_array($result)) 
 {  
-$file = $row['page'];
+	$file = $row['page'];
 }
 ?>
 

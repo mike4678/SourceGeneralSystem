@@ -9,7 +9,6 @@
 //初始化
 date_default_timezone_set('PRC');
 require_once '../../kernl/Conf.php';
-error_reporting(0);
 
 //模块初始化
 $arr = array('Connect','System');

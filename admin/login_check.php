@@ -1,7 +1,4 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php 
-error_reporting(0); //无错误
-
 //载入函数PHP
 require("../kernl/Init.php"); //初始化基础参数
 
@@ -18,17 +15,10 @@ if( key == NULL)
 }
 
 //判断最基本的两个值是否为空
-if (empty($username))  //判断POST回来的用户名是否为空
+if (empty($username) || empty($PWD))  //判断POST回来的用户名或密码是否为空
 { 
-	echo '<script language="JavaScript">window.alert("用户名不能为空！")</script>';
-	echo '<script language="JavaScript">location.replace("login.php");</script>';
-} else {
-	if (empty($PWD)) //判断POST回来的密码是否为空
-	{ 
-		echo '<script language="JavaScript">window.alert("密码不能为空！")</script>';
-		echo '<script language="JavaScript">location.replace("login.php");</script>';
-   	}
-}
+	echo '<script language="JavaScript">window.alert("用户名或密码不能为空！");location.replace("login.php");<</script>';
+} 
 
 //首先更改用户tocket
 $passcode = PwdEnc($PWD, key); //加密密码，同时将明文密码清除掉
@@ -46,9 +36,9 @@ if( $dou -> affected_rows() == NULL)
 	session_start(); //标志Session的开始 
 	if($_POST['checkbox'] = 'on')   //判断是否记住登陆信息
 	{
-		$dou->cookie("usr", $username, time()+3600);
-		$dou->cookie("pwd", $passcode, time()+3600); //一个小时3600*一天24小时*365天
-		$dou->cookie("state", time(), time()+3600);		
+		$dou->cookie("usr", $username, time()+36000);
+		$dou->cookie("pwd", $passcode, time()+36000); //一个小时3600*一天24小时*365天
+		$dou->cookie("state", time(), time()+36000);		
 		$_SESSION['username'] = $username; 
 		$iipp = $dou->Get_LocalIP(); //获取登录者ip
 		$time = constant("Time"); //获取登录时间
