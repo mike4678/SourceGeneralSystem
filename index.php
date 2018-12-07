@@ -1,6 +1,13 @@
 <?php
-//error_reporting(0);
 require("kernl/Init.php"); //初始化基础参数
+//判断拦截状态
+$value = json_decode($dou -> Check_IPStatus());
+if($value -> status == '2')
+{
+	echo $dou -> Sys_ErrorPage(500);
+	exit;
+}
+//开始加载首页
 $dou -> CheckServerState(); //网站状态检查
 if($dou -> Info("index_status") == 1 ) //网站状态检查
 {

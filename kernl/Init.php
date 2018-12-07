@@ -100,4 +100,5 @@ header('Pragma:no-cache'); //设置无缓存
 //初始化IPS
 $_G['IPS']['STATUS'] = $dou->Info('ipfirewall_status');
 $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
+$_G['IPS']['ClientIP'] = $dou->Get_LocalIP();
 ?>

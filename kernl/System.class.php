@@ -398,77 +398,86 @@ class System extends DbMysql
 	function Check_IPStatus()     //检查当前IP是否被限制
 	{
 		
-		if($_G['IPS']['MODE'] == 1)
+		if($this -> Info('ipfirewall_status') == 0)
 		{
+			
 			$Data = $this -> Get_IpList(); //服务端IP
 			$Check_IP_Arrary = explode('.',$this -> Get_LocalIP()); //当前客户端IP
-			$ALLOWED_IP = ''; //允许IP列表
-			foreach ($ata as $value)
+			$List_IP = ''; //黑白名单列表
+			$Allow = false;
+			foreach ($Data as $value)
 			{
-				if($value['type'] == '2' || $value['type'] == $_G['IPS']['MODE'])
+				if($value['type'] == '2' || $value['type'] == $this -> Info('ipfirewall_mode'))
 				{
-				$ALLOWED_IP.= array($value['iptable']);
-				} 
-								
+					$List_IP[] = explode('.',$value['iptable']);
+				} 	
 			}
 
-			//允许访问的ip
-		
-			//ip参数拆分成数组
-			if(!in_array($Data,$ALLOWED_IP)) 
+			foreach ($List_IP as $value)
 			{
-  				$bl = false;
-  				foreach ($ALLOWED_IP as $val)
+				$Allow_Number = 0; //匹配次数
+				$TDF_Number = 0;  //替代符出现次数				
+				for ($i=0;$i<4;$i++)
 				{
-    				if(strpos($val,'*') !== false)
+					if($value[$i] != '*')
 					{
-      					//发现有*号替代符
-      					$arr = array();
-      					$arr = explode('.', $val);
-      					$bl = true;
-      					//用于记录循环检测中是否有匹配成功的
-						for ($i=0;$i<4;$i++)
+
+          				if($Check_IP_Arrary[$i] == $value[$i])
 						{
-        					if($arr[$i] != '*')
-							{
-          						//不等于* 就要进来检测，如果为*符号替代符就不检查
-          						if($arr[$i] != $Check_IP_Arrary[$i])
-								{
-									$bl = false;
-            						break;
-            						//终止检查本个ip 继续检查下一个ip
-          						}
-        					}
-      					}
-      				//end for
-      					if($bl)
-						{
-        					//如果是true则终止匹配
-        					break;
-      					}
-    				}
-  				}
-  					//end foreach
-  				if(!$bl)
-				{
-					if($_G['IPS']['MODE'] == 0)
-					{
+									
+							$Allow_Number++;
+						}
 						
-						
+        			} else {  //发现*号，记录该符号出现次数
+								
+						$TDF_Number++;
 					}
-					$return = array(
-       						'status'=>2,
-       						'msg'=>'该IP无权限访问',
-       						'data'=>$Data
-       							);
-    				echo json_encode($return);
-    				exit();
-  				}
+      			}
+				if($TDF_Number != 0) 
+				{
+					if($Allow_Number + $TDF_Number == 4)
+					{
+						$Allow = 'TRUE';
+
+					} 
+						
+				} elseif($Allow_Number == 4) 
+				{
+					$Allow = 'TRUE';
+					
+				} 
+
+			}
+			
+			switch ($this -> Info('ipfirewall_mode'))
+			{
+				case '0':
+					if($Allow != 'TRUE') 
+					{
+						$return = array(
+       									'status'=>2,
+       									'msg'=>'该IP无权限访问',
+       									'data'=>$Check_IP_Arrary
+       									);
+    					return json_encode($return);
+						exit();
+					}
+					break;
+					
+				case '1':
+					if($Allow == 'TRUE') 
+					{
+						$return = array(
+       									'status'=>2,
+       									'msg'=>'该IP无权限访问',
+       									'data'=>$Check_IP_Arrary
+       									);
+    					return json_encode($return);
+						exit();
+					}
+					break;
 			}
 		}
-		
-		
-		
 	}
 	
 	function IPFirewallControl($method, $ip , $mode)    //IP新增删除修改
@@ -623,7 +632,12 @@ class System extends DbMysql
 			case '330':
 				$title = '管理员已禁用留言板';
 				$content = '管理员已禁用留言板，如需帮助请与网站管理员联系！&nbsp; &nbsp; <a href="../index.php">返回首页</a>';
-				break;			
+				break;	
+				
+			case '500':
+				$title = 'Access Denied';
+				$content = '您无权使用所提供的凭据查看此目录或页面。';
+				break;					
 		
 		}
 		$time = date("y/m/d H:i:s",time());
@@ -736,6 +750,23 @@ class System extends DbMysql
 			}
 			
 		}
+
+		/* ---------------------------------------------------- */
+			
+		// 模块安装与卸载
+		/* ---------------------------------------------------- */
+		function ModuleInstall($path) 
+		{
+			if(!file_exists($path . '/install.json')) 						 
+			{
+
+				die("Install Failed！The File Was Not Module.");
+						
+			} else { //解析install.json
+				$str = file_get_contents($path . '/install.json');
+				print_r($str);
+			}
+		}	
 
 		/* ---------------------------------------------------- */
 

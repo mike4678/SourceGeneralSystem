@@ -60,9 +60,10 @@ input[type="file"]{
    array("Name"=>"模块中心","tab"=>'http://service.csource.com.cn/module',"active"=>'')	
   );
   $dou->FormCreate($data);
+  
   ?>
       <div class="tab-body">
-<form id="ModuleUpload" action="#" method="post" class="form-x">
+		<form id="ModuleUpload" action="#" method="post" class="form-x">
         <div class="tab-panel active" id="tab-get">
 		<div class="form-group">
         <div class="label"><label>模块上传</label></div>
@@ -102,7 +103,7 @@ input[type="file"]{
 				if (file_exists($tpath . $name . '/install.json')) 
 				{
 					$ahtml = "
-					<a class='pk-text-success pk-hover-underline' href='javascript:' onclick='location.href=\"admin.php?/system/module/{$name}&ml=install\"'>安装</a>
+					<a class='pk-text-success pk-hover-underline' href='javascript:' onclick='location.href=\"admin.php?/system/module/inst/{$name}\"'>安装</a>
 					";
 				} else if(file_exists($tpath . $name . '/unstall.json')) { 
 					$ahtml = "

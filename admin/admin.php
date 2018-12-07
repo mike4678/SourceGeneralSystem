@@ -28,7 +28,7 @@ $addr = $dou->AddrConvery($_GET);	 //初始化参数
 	
 if ($state == 'Access denied') 
 {
-	if( count($addr) > 0 ) 
+	if( count($addr) > 0 && $addr[1] != 'exit') 
 	{
 		header("Location: login.php?ref=/".$addr[1]."/".$addr[2]);
 		
@@ -73,7 +73,8 @@ if ($state == 'Access denied')
 		$data = $dou->convert('start','index');   //为空则判断为默认首页
 		$tab = $data[2];
 		$list = $data[3];
-		}	
+		}
+
 ?>
 <div class="lefter">
     <div class="logo">

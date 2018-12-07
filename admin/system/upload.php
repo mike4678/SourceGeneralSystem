@@ -96,6 +96,7 @@ if( $action == 'add' )
 			}
 			$zip -> extractTo('../../module/'.$picname);
 			$zip -> close();
+			$dou -> ModuleInstall('../../module/'.$picname);
 			$moduledata.= '&#10File Init Complete!';
 		}
 	
