@@ -36,7 +36,8 @@ class System extends DbMysql
 	{ 
    		if(empty($table) || empty($hterm) || empty($term) || empty($method))  //五个变量任意一个如果为空
 		{     
-		echo "<script language='JavaScript'>window.alert(操作请求所需要的值错误，请检查！)</script>";
+			echo "<script language='JavaScript'>window.alert(操作请求所需要的值错误，请检查！)</script>";
+			
 		} else {
 			switch ($method) {
 					
@@ -151,9 +152,10 @@ class System extends DbMysql
 		return $row['page'];
 	}
 	
-	function FormCheck()  //检查框架页面是否存在，即不允许直接访问
+	function FormCheck($address)  //检查框架页面是否存在，即不允许直接访问
 	{   
-		echo '<script>if(window.top==window.self){ window.alert("未检测到框架窗口，请从主窗口进入！") var browserName=navigator.appName; if (browserName=="Netscape") {window.open("","_self","");window.close(); } else {window.close();}  }</script>';
+		echo '<script>if(window.top==window.self){ window.alert("请勿试图在非授权区域运行！")'.$this -> WriteLog('Get','试图从外部访问地址:'.$address.'已被拦截',$address).'; var browserName=navigator.appName; if (browserName=="Netscape") {window.open("","_self","");window.close(); } else {window.close();}  }</script>';
+		
 	}
 	
 	

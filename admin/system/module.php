@@ -100,12 +100,12 @@ input[type="file"]{
 				$version = $xml -> version;
 				$link = $xml -> link;
 				$description = $xml -> description;
-				if (file_exists($tpath . $name . '/install.json')) 
+				if (file_exists($tpath . $name . '/install.php')) 
 				{
 					$ahtml = "
 					<a class='pk-text-success pk-hover-underline' href='javascript:' onclick='location.href=\"admin.php?/system/module/inst/{$name}\"'>安装</a>
 					";
-				} else if(file_exists($tpath . $name . '/unstall.json')) { 
+				} else if(file_exists($tpath . $name . '/unstall.php')) { 
 					$ahtml = "
 					<a class='pk-text-success pk-hover-underline' href='javascript:' onclick='pkalert(\"安装该模板后后台将被自动刷新，请保存当前设置，确认继续？\",\"提示\",\"pktip(\\\"正在安装请稍后...\\\",\\\"loading\\\",0);location.href=\\\"admin.php?/system/module/{$name}&ml=install\\\"\")'>卸载</a>
 					";

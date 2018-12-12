@@ -4,6 +4,9 @@ require("../../kernl/Init.php");
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 
+//判断是否在框架内，防止跨域
+$dou -> FormCheck();
+
 //请求方式处理
 switch($_GET['m']) 
 {	

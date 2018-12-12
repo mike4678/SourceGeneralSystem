@@ -149,17 +149,8 @@ $valIo = isset($_POST['pIo']) ? $_POST['pIo'] : "未测试";
 
 foreach ($_GET as $key=>$value) //把参数传入变量key中
 $arr = explode("/",$key);
-if ($arr[3] == "phpinfo") 
-{
-
-	$phpinfo = phpinfo();
-	echo "var jstext='$phpinfo';alert(jstext);";
-	exit();
-	
-
-} 
 //网速测试-开始
-elseif($_POST['act']=="开始测试")
+if($_POST['act']=="开始测试")
 {
 ?>
 	<script language="javascript" type="text/javascript">
@@ -182,18 +173,7 @@ elseif($_POST['act']=="开始测试")
 <?php
 }
 //网速测试-结束
-elseif($arr[3] == "Function")
-{
-	$arr = get_defined_functions();
-	Function php()
-	{
-	}
-	echo "<pre>";
-	Echo "这里显示系统所支持的所有函数,和自定义函数\n";
-	print_r($arr);
-	echo "</pre>";
-	exit();
-}elseif($arr[3] == "disable_functions")
+elseif($arr[3] == "disable_functions")
 {
 	$disFuns=get_cfg_var("disable_functions");
 	if(empty($disFuns))
@@ -929,7 +909,7 @@ box-shadow: 1px 1px 1px #CCC;
 
 <script language="JavaScript" type="text/javascript" src="../js/jquery-1.7.min.js"></script>
 	<script>
-function info(message) { art.dialog.open(message, {width: 420, height: 400}); }
+function info(message,title) { art.dialog.open(message, {width: 420, height: 400, title: title}); }
 </script>	
 <script type="text/javascript"> 
 
@@ -1378,7 +1358,7 @@ foreach ($able as $key=>$value) {
 
 		?>
 
-    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'].'/phpinfo\')"> PHPINFO</a>';?>
+    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/phpinfo\',\'PHP Information\')"> PHPINFO</a>';?>
 
     </td>
 
@@ -1563,7 +1543,7 @@ foreach ($able as $key=>$value) {
 
 	<tr>
 		<td>默认支持函数（enable_functions）：</td>
-		<td colspan="3"><?php echo '<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'/Function\')"> 请点这里查看详细！</a>'; ?></td>	
+		<td colspan="3"><?php echo '<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/Function\',\'PHP Function Information\')"> 请点这里查看详细！</a>'; ?></td>	
 		
 	</tr>
 	<tr>
@@ -1969,6 +1949,7 @@ else
   	if(function_exists("mysql_close")==1) {
 
   		$link = @mysql_connect($host.":".$port,$login,$password);
+		//$link = @mysqli_connect($host,$login,$password,'',$port,'');
 
   		if ($link){
 
@@ -1976,7 +1957,8 @@ else
 
   		} else {
 
-  			echo "<script>alert('无法连接到MySql数据库！')</script>";
+  			//echo mysql_connect_error();
+			echo "<script>alert('无法连接到MySql数据库！')</script>";
 
   		}
 

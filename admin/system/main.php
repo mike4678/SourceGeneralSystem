@@ -13,7 +13,7 @@ function info(message) { art.dialog.open(message, {title: '更新说明',width: 
 				<table class="table">
                     <tr><td width="110" align="right">开发：</td><td>Source</td></tr>
                     <tr><td width="110" align="right">官网：</td><td><a href="http://bbs.csource.com.cn" target="_blank">点击访问</a></td></tr>
-                    <tr><td width="110" align="right">技术参考：</td><td>前台：<a href="http://www.baidu.com" target="_blank">百度</a><br >后台：<a href="http://www.pintuer.com/" target="_blank">拼图框架</a><br >探针：<a href="http://www.yahei.net/tz/" target="_blank">雅黑系统探针</a><br >上传：<a href="https://www.helloweba.com/view-blog-189.html" target="_blank">Helloweba</a><td></tr>
+                    <tr><td width="110" align="right">技术参考：</td><td>界面：<a href="http://www.pintuer.com/" target="_blank">拼图框架</a><br >探针：<a href="http://www.yahei.net/tz/" target="_blank">雅黑系统探针</a><br >上传：<a href="https://www.helloweba.com/view-blog-189.html" target="_blank">Helloweba</a><td></tr>
                 </table>
             </div>
             <br />

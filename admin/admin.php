@@ -22,7 +22,7 @@ require("../kernl/Init.php");
 </head>
 <body>
 <?php 
-//******* 处理登陆状态
+//************** 处理登陆状态
 $state = $dou -> AccountState();
 $addr = $dou->AddrConvery($_GET);	 //初始化参数
 	
@@ -41,39 +41,57 @@ if ($state == 'Access denied')
 	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
 	
-//******* 处理页面请求
-	if($addr[1] == 'exit') 
-	{ 
+//************** 处理页面请求
+if($addr[1] == 'exit') 
+{ 
 		
-		session_start();
-		session_unset($Session);
-		session_destroy();
-		setcookie("usr", null, time()-3600);  
-		setcookie("pwd", null, time()-3600);  
-		setcookie("state", null, time()-3600); 
-		echo '<script language="JavaScript">window.alert("您已成功退出系统！")</script>';
-		echo '<script language="JavaScript">location.replace("login.php");</script>'; 
+	session_start();
+	session_unset($Session);
+	session_destroy();
+	setcookie("usr", null, time()-3600);  
+	setcookie("pwd", null, time()-3600);  
+	setcookie("state", null, time()-3600); 
+	echo '<script language="JavaScript">window.alert("您已成功退出系统！")</script>';
+	echo '<script language="JavaScript">location.replace("login.php");</script>'; 
 		
-	}
+}
 	
-	if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航必须参数
-	{ 
-		$data = $dou->convert($addr[1],$addr[2]);
-		if($data[2] != "" && $data[3] != "")  //判断当前要访问的变量是否存在，如
-		{
-			$tab = $data[2];      //如果存在，则继续执行当前变量
-			$list = $data[3];
-		} else {
-			$data = $dou->convert('start','index');   //如果不存在，返回空则执行默认首页代码
-			$tab = $data[2];
-			$list = $data[3];
-		}
-
-	} else { 
-		$data = $dou->convert('start','index');   //为空则判断为默认首页
+if($addr[1] == 'phpinfo') 
+{ 
+		
+	phpinfo();
+	exit();
+		
+}
+	
+if($addr[1] == "Function")
+{
+	$arr = get_defined_functions();
+	echo "<pre>";
+	echo "当前系统所支持的所有函数,和自定义函数\n";
+	print_r($arr);
+	echo "</pre>";
+	exit();
+}
+	
+if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航必须参数
+{ 
+	$data = $dou->convert($addr[1],$addr[2]);
+	if($data[2] != "" && $data[3] != "")  //判断当前要访问的变量是否存在，如
+	{
+		$tab = $data[2];      //如果存在，则继续执行当前变量
+		$list = $data[3];
+	} else {
+		$data = $dou->convert('start','index');   //如果不存在，返回空则执行默认首页代码
 		$tab = $data[2];
 		$list = $data[3];
-		}
+	}
+
+} else { 
+	$data = $dou->convert('start','index');   //为空则判断为默认首页
+	$tab = $data[2];
+	$list = $data[3];
+}
 
 ?>
 <div class="lefter">
