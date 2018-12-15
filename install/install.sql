@@ -57,7 +57,6 @@ CREATE TABLE `music_list` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `music_name` text NOT NULL,
   `singer_name` text,
-  `album_name` text,
   `address` text NOT NULL,
   `access` int(11) NOT NULL,
   `link` int(11) NOT NULL,
@@ -99,20 +98,6 @@ CREATE TABLE `table_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for `report`
--- ----------------------------
-
-DROP TABLE IF EXISTS `report`;
-CREATE TABLE `report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` text NOT NULL,
-  `address` text NOT NULL,
-  `type` text NOT NULL,
-  `data` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Records of adminlist
 -- ----------------------------
 INSERT INTO `adminlist` VALUES ('start', 'index', '系统', '关于');
@@ -121,7 +106,6 @@ INSERT INTO `adminlist` VALUES ('system', 'log', '系统', '系统日志');
 INSERT INTO `adminlist` VALUES ('system', 'info', '系统', '系统信息');
 INSERT INTO `adminlist` VALUES ('system', 'database', '系统', '数据库管理');
 INSERT INTO `adminlist` VALUES ('system', 'music', '系统', '音乐管理');
-INSERT INTO `adminlist` VALUES ('system', 'report', '系统', '反馈管理');
 
 -- ----------------------------
 -- Records of menu_list
@@ -132,23 +116,20 @@ INSERT INTO `menu_list` VALUES ('系统日志', 'admin.php?/system/log', '系统
 INSERT INTO `menu_list` VALUES ('系统设置', 'admin.php?/system/setting', '系统', 'system/system.php', '1');
 INSERT INTO `menu_list` VALUES ('音乐管理', 'admin.php?/system/music', '系统', 'system/music.php', '3');
 INSERT INTO `menu_list` VALUES ('数据库管理', 'admin.php?/system/database', '系统', 'system/database.php', '2');
-INSERT INTO `menu_list` VALUES ('反馈管理', 'admin.php?/system/report', '系统', 'system/report.php', '3');
 
 -- ----------------------------
 -- Records of system_setting
 -- ----------------------------
 INSERT INTO `system_setting` VALUES ('server_status', '0');
 INSERT INTO `system_setting` VALUES ('corp', 'Source');
-INSERT INTO `system_setting` VALUES ('version', '1.0.2');
+INSERT INTO `system_setting` VALUES ('version', '1.0.1');
 INSERT INTO `system_setting` VALUES ('logo', 'images/logo.png');
 INSERT INTO `system_setting` VALUES ('name', '音乐分享系统');
 INSERT INTO `system_setting` VALUES ('upload_size', '10');
 INSERT INTO `system_setting` VALUES ('upload_name', 'mp3');
 INSERT INTO `system_setting` VALUES ('bottom', 'Copyright © 2001-2022 Source. All Rights Reserved.');
 INSERT INTO `system_setting` VALUES ('server_infomaction', 'The system is under maintenance. Please visit later.<br>');
-INSERT INTO `system_setting` VALUES ('encrypted', '');
-INSERT INTO `system_setting` VALUES ('bugreport', '0');
-INSERT INTO `system_setting` VALUES ('reportaddress', '');
+INSERT INTO `system_setting` VALUES ('encrypted', 'music.csource.com.cn');
 
 -- ----------------------------
 -- Records of table_list

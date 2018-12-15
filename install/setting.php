@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 //配置文件检查
 $file = '../kernl/Conf.php';      
@@ -12,11 +13,7 @@ if(file_exists(strtolower($file)) != TRUE)  //如果不存在则跳转到安装�
 	}
 
 //初始化模块
-require('../kernl/Connect.Class.php');
-require('../kernl/System.Class.php');
 require('../kernl/Account.Class.php');
-
-
 $link = mysqli_connect(DBSERVER, USER, PASSWORD, DB) or die("不能连接数据库".DBSERVER);//连接数据库
 
 //判断当前是否传回Get值
@@ -37,19 +34,19 @@ if (isset($_GET['action']) && addslashes($_GET['action']) == "saveSet") {
 	$install = $_GET['session'];
 	if(!$session || !$install)
 	{
-		echo $dou -> Sys_ErrorPage('336:1');
+		echo '<script language="JavaScript">location.replace("../kernl/error.php?code=336:1");</script>';
 	}
 
 	if( $install< $session ) 
 	{
-		echo $dou -> Sys_ErrorPage('336:2');
+		echo '<script language="JavaScript">location.replace("../kernl/error.php?code=336:2");</script>';
 	}
 	
 	//这里验证是否已经创建有登陆用户信息
 	mysqli_query($link , "select * from admin_user;");
 	if( mysqli_affected_rows($link) != NULL)
 	{
-		echo $dou -> Sys_ErrorPage('336:3');
+		echo '<script language="JavaScript">location.replace("../kernl/error.php?code=336:3");</script>';
 	}
 	
 }

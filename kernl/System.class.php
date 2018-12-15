@@ -759,14 +759,15 @@ class System extends DbMysql
 		/* ---------------------------------------------------- */
 		function ModuleInstall($path) 
 		{
-			if(!file_exists($path . '/install.json')) 						 
+			if(!file_exists($path . '/install.php')) 						 
 			{
 
 				die("Install Failed！The File Was Not Module.");
 						
 			} else { //解析install.json
-				$str = file_get_contents($path . '/install.json');
-				print_r($str);
+				include($path . '/install.php');
+				//$str = file_get_contents($path . '/install.php');
+				//print_r($str);
 			}
 		}	
 
