@@ -7,7 +7,7 @@ $code = "";
 $rsi = new Utils_Caption();
 $rsi->TFontSize=array(15,17);
 $rsi->Width=50;
-$rsi->Height=25;
+$rsi->Height=20;
 $code = $rsi->RandRSI();
 session_start();
 $_SESSION["CHECKCODE"] = $code;

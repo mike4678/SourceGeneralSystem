@@ -4,7 +4,7 @@
 class Utils_Caption
 {
 	var $Width      = 60;           //图片宽
-	var $Height     = 30;           //图片高
+	var $Height     = 60;           //图片高
 	var $Length     = 4;            //验证码位数
 	var $BgColor    = "#FFFFFF";    //背景色
 

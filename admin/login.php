@@ -8,6 +8,7 @@ if ($state != 'Access denied')
 	header("Location: admin.php"); //重定向浏览器到播放界面
 }
 
+//判断登陆失败次数，后台增加设置尝试次数，超过则跳转到错误页，超过3次则加载验证码
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,9 +19,27 @@ if ($state != 'Access denied')
 <style type="text/css">
 <!--
 .STYLE1 {font-size: 24px}
+.login_boder{ background: url(../images/loginCode_m_bg.png) no-repeat; height:302px; overflow:hidden;}
+.login_padding{ padding:28px 47px 20px 47px ;}	
 -->
 </style>
 <script>
+function LoginStatus(value)
+{
+	if(value = 1) //Normal
+	{
+		document.getElementById("login_boder").style.backgroundImage="url(../images/login_m_bg.png)";
+		document.getElementById("login_boder").style.height='302px';
+		document.getElementById("login_padding").style.padding='28px 47px 20px 47px';
+		
+	} else {
+		
+		document.getElementById("login_boder").style.backgroundImage="url(../images/logincode_m_bg.png)";
+		document.getElementById("login_boder").style.height='380px';
+		document.getElementById("login_padding").style.padding='28px 47px 20px 47px';
+	}
+	
+}
 function GetCode() 
 {
 	var obj=document.getElementById("showcode");
@@ -33,7 +52,7 @@ function GetCode()
 	<div class="login_padding STYLE1">
 	  <div align="center"><strong><?php $dou -> Info('corp'); ?>中央认证系统</strong></div>
 	</div>
-<div class="login_boder">
+<div id="login_boder" class="login_boder">
 		<div class="login_padding">
 			<h2>用户名</h2>
 			<form method="post" action="login_check.php">
@@ -43,6 +62,10 @@ function GetCode()
 			<h2>密码</h2>
 			<label>
 				<input type="password" name="password" id="userpwd" class="txt_input" onfocus="if (value ==&#39;******&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;******&#39;}" value="******">
+			</label>
+			<h2>验证码</h2>
+				<input type="text" id="code" name="code" class="txt_input txt_input2" style='width: 240px; height: 38px;'>
+			<img src = 'code.php' id='showcode' onclick='GetCode();' style='top: -5px;'>
 			</label>
 			<p class="forgot"></p>
 			<div class="rem_sub">
@@ -62,4 +85,4 @@ function GetCode()
 <br />
 </body>
 </html>
-<img src = 'code.php' id='showcode' onclick='GetCode();'>
+
