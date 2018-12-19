@@ -1,5 +1,4 @@
 <?php 
-error_reporting(0);
 require("../kernl/Init.php"); //初始化基础参数
 
 //判断之前的登陆状态
@@ -8,6 +7,7 @@ if ($state != 'Access denied')
 {
 	header("Location: admin.php"); //重定向浏览器到播放界面
 }
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,6 +20,13 @@ if ($state != 'Access denied')
 .STYLE1 {font-size: 24px}
 -->
 </style>
+<script>
+function GetCode() 
+{
+	var obj=document.getElementById("showcode");
+	obj.src="code.php?"+ Math.random();
+}	
+</script>	
 </head>
 <body class="login">
 <div class="login_m">
@@ -55,3 +62,4 @@ if ($state != 'Access denied')
 <br />
 </body>
 </html>
+<img src = 'code.php' id='showcode' onclick='GetCode();'>

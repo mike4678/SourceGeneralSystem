@@ -21,7 +21,7 @@ if (empty($username) || empty($PWD))  //判断POST回来的用户名或密码是
 } 
 
 //首先更改用户tocket
-$passcode = PwdEnc($PWD, key); //加密密码，同时将明文密码清除掉
+$passcode = Account::PwdEnc($PWD, key); //加密密码，同时将明文密码清除掉
 $PWD = "";
 
 //判断密码是否正确

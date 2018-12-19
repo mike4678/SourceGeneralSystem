@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			{
 				$sql = 'select password from admin_user';
 				$old_pwd = $dou->fetch_array($dou -> query($sql));
-				$pwd = decrypt($old_pwd[0], $pwdencry); //反计算出原始密码
-				$newpwd = PwdEnc($pwd, $pwd_new);  //生成新的密码
+				$pwd = Account::decrypt($old_pwd[0], $pwdencry); //反计算出原始密码
+				$newpwd = Account::PwdEnc($pwd, $pwd_new);  //生成新的密码
 				$value = "update admin_user set password = '".$newpwd."' where username = 'admin';";
 				if (!$dou->query($value)) 
 				{
@@ -165,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			break;
 			
 		case 'tab-user':
-			$old_pwd = PwdEnc(empty($_POST['old_pwd']) ? '' : $_POST['old_pwd'],$dou->Info('encrypted')); //旧密码
+			$old_pwd = Account::PwdEnc(empty($_POST['old_pwd']) ? '' : $_POST['old_pwd'],$dou->Info('encrypted')); //旧密码
 			$new_pwd = empty($_POST['new_pwd']) ? '' : $_POST['new_pwd'];
 			$conf_new_pwd = empty($_POST['conf_new_pwd']) ? '' : $_POST['conf_new_pwd'];
 			if(empty($_POST['old_pwd']) && empty($_POST['new_pwd']) && empty($_POST['conf_new_pwd']))
@@ -187,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					echo '<script language="JavaScript">window.history.go(-1);</script>';
 					exit;
 				}
-				$encryption_pwd = PwdEnc($_POST['new_pwd'],$dou->Info('encrypted'));
+				$encryption_pwd = Account::PwdEnc($_POST['new_pwd'],$dou->Info('encrypted'));
 				$sql = "UPDATE admin_user SET password = '".$encryption_pwd."' where username = 'admin';";
 				if (!$dou->query($sql)) 
 				{
