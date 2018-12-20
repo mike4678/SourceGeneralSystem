@@ -8,9 +8,6 @@ if (!defined('source'))
 $dou -> FormCheck('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);
 
 
-
-
-
 //初始化接口列表
 $select = '<select name="attrib" id="attrib" onchange="SelectEdit();" >';
 $UData = $dou -> UploadFrame();
