@@ -11,12 +11,19 @@ $ref = empty($_POST['return']) ? '' : $_POST['return']; //跳转地址
 
 if( key == NULL) 
 {
-	header("Location: ../kernl/error.php?code=342"); //重定向浏览器
+	echo $dou -> Sys_ErrorPage(432);
+	exit;
 }
 
+if( $_COOKIE["SourceTryCount"] == NULL) 
+{
+	$dou->cookie("SourceTryCount", 0, time()+36000);	
+} 
 //判断最基本的两个值是否为空
 if (empty($username) || empty($PWD))  //判断POST回来的用户名或密码是否为空
 { 
+	$data = $_COOKIE["SourceTryCount"] + 1;
+	$dou->cookie("SourceTryCount", $data , time()+36000);
 	echo '<script language="JavaScript">window.alert("用户名或密码不能为空！");location.replace("login.php");<</script>';
 } 
 
@@ -28,9 +35,12 @@ $PWD = "";
 $dou -> query("select * from admin_user where username = '$username' and password = '$passcode'"); //执行登陆操作
 if( $dou -> affected_rows() == NULL)
 {
+	$data = $_COOKIE["SourceTryCount"] + 1;
+	$dou->cookie("SourceTryCount", $data , time()+36000);
 	echo '<script language="JavaScript">window.alert("密码错误！")</script>';
 	$dou -> WriteLog('POST', '用户尝试登陆，但密码错误！','Login.php');
 	echo '<script language="JavaScript">location.replace("login.php");</script>';
+	
 	
 } else {
 	session_start(); //标志Session的开始 
@@ -40,7 +50,7 @@ if( $dou -> affected_rows() == NULL)
 		$dou->cookie("pwd", $passcode, time()+36000); //一个小时3600*一天24小时*365天
 		$dou->cookie("state", time(), time()+36000);		
 		$_SESSION['username'] = $username; 
-		$iipp = $dou->Get_LocalIP(); //获取登录者ip
+		$iipp = $_G['IPS']['ClientIP']; //获取登录者ip
 		$time = constant("Time"); //获取登录时间
 		$_SESSION['time'] = $time;
 		$dou -> query("update admin_user set lasttime = '$time' , lastip = '$iipp' where username = '$username';");

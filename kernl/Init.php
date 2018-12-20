@@ -13,6 +13,7 @@ $root_url = strtolower(dirname(HttpsCheck() . $_SERVER['HTTP_HOST'] . $_SERVER['
 define('ROOT_PATH', str_replace(strtolower('kernl/Init.PHP'), '', str_replace('\\', '/', strtolower(__FILE__))));
 
 //全局通用数组
+$GLOBALS[$_G];
 $_G = array();
 
 //框架运行的目录路径
@@ -101,4 +102,7 @@ header('Pragma:no-cache'); //设置无缓存
 $_G['IPS']['STATUS'] = $dou->Info('ipfirewall_status');
 $_G['IPS']['MODE'] = $dou->Info('ipfirewall_mode');
 $_G['IPS']['ClientIP'] = $dou->Get_LocalIP();
+
+//初始化登陆框架
+$_G['Login']['MaxNumber'] = $dou->Info('MaxCount');
 ?>

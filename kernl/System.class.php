@@ -639,7 +639,12 @@ class System extends DbMysql
 			case '500':
 				$title = 'Access Denied';
 				$content = '您无权使用所提供的凭据查看此目录或页面。';
-				break;					
+				break;			
+				
+			case '999':
+				$title = 'Access Denied';
+				$content = '当前IP已被限制访问！';
+				break;			
 		
 		}
 		$time = date("y/m/d H:i:s",time());
