@@ -341,10 +341,9 @@ class System extends DbMysql
   					$str = iconv("GBK","UTF-8",$str);
 				}
 			$return_data = json_decode($str,true);
-			echo '<a href="javascript:info(\'http://service.csource.com.cn/update/update.php?product=' . $this -> Info("update_status") . '\')" >' . $return_data['version'] . '</a>'; 
+			echo '<a href="javascript:SystemBox(2,\'http://service.csource.com.cn/update/update.php?product=' . $this -> Info("update_status") . '\',\'\',\'系统更新\',400,420)" >' . $return_data['version'] . '</a>'; 
 			
 			}
-
 	}
 	
 	

@@ -1,7 +1,6 @@
 <?php 
 require("../kernl/Init.php"); //初始化基础参数
 
-echo Account::decrypt($_COOKIE["SourceTryCount"],key);
 //判断之前的登陆状态
 $state = $dou -> AccountState();
 if ($state != 'Access denied') 
@@ -69,10 +68,18 @@ $var = '<div class="login_m">
 </body>
 </html>
 <?php 
-if($_COOKIE["Laster"] == 0 || $_COOKIE["Laster"] <= 3 )
+//判断验证码是否启用
+if ($dou -> Info('VaildCode') == 1) 
 {
-	echo "<script>javascript:LoginStatus(1);</script>";
-} else {
 	echo "<script>javascript:LoginStatus(2);</script>";
+} else {
+	echo "<script>javascript:LoginStatus(1);</script>";
 }
+
+//if($_COOKIE["SourceTryCount"] == 0 || $_COOKIE["SourceTryCount"] <= 3 )
+//{
+	//echo "<script>javascript:LoginStatus(1);</script>";
+//} else {
+	//echo "<script>javascript:LoginStatus(2);</script>";
+//}
 ?>

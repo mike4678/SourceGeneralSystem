@@ -5,12 +5,12 @@ require_once("../kernl/Caption.Class.php");
 $rsi = "";
 $code = "";
 $rsi = new Utils_Caption();
-$rsi->TFontSize=array(15,17);
-$rsi->Width=50;
-$rsi->Height=20;
-$code = $rsi->RandRSI();
+$rsi -> TFontSize=array(15,17);
+$rsi -> Width=50;
+$rsi -> Height=20;
+$code = $rsi -> RandRSI();
 session_start();
-$_SESSION["CHECKCODE"] = $code;
-$rsi->Draw();
+$_SESSION["VaildCode"] = $code;
+$rsi -> Draw();
 exit;
 ?>

@@ -9,6 +9,19 @@ $username = $_POST['username'];  //用户名
 $PWD = $_POST['password'];  //密码
 $ref = empty($_POST['return']) ? '' : $_POST['return']; //跳转地址
 
+if ($dou -> Info('VaildCode') == 1)   //启用验证码
+{
+	session_start(); //初始化验证码Session
+	if(empty($_POST['code']) || $_POST['code'] != $_SESSION["VaildCode"])
+	{
+		$data = $_COOKIE["SourceTryCount"] + 1;
+		$dou->cookie("SourceTryCount", $data , time()+36000);
+		echo '<script language="JavaScript">window.alert("验证码错误或不能为空！");location.replace("login.php");<</script>';	
+	}
+	session_destroy(); //验证码Session销毁
+} 
+
+
 if( key == NULL) 
 {
 	echo $dou -> Sys_ErrorPage(432);
@@ -20,7 +33,7 @@ if( $_COOKIE["SourceTryCount"] == NULL)
 	$dou->cookie("SourceTryCount", 0, time()+36000);	
 } 
 //判断最基本的两个值是否为空
-if (empty($username) || empty($PWD))  //判断POST回来的用户名或密码是否为空
+if (empty($username) || empty($PWD) )  //判断POST回来的用户名或密码是否为空
 { 
 	$data = $_COOKIE["SourceTryCount"] + 1;
 	$dou->cookie("SourceTryCount", $data , time()+36000);
@@ -58,10 +71,13 @@ if( $dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo '<script language="JavaScript">window.alert("登陆状态更新失败！")</script>';
+			$_COOKIE["SourceTryCount"] = 0;
 			header("Location: admin.php?".$ref);
+			
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
 			echo '正在跳转。。。。';
+			$_COOKIE["SourceTryCount"] = 0;
 			header("Location: admin.php?".$ref);
 			}
 		
@@ -72,11 +88,13 @@ if( $dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo '<script language="JavaScript">window.alert("登陆状态更新失败！")</script>';
+			$_COOKIE["SourceTryCount"] = 0;
 			header("Location: admin.php?".$ref);
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
 			echo '正在跳转。。。。';
 			header("Location: admin.php?".$ref);
+			$_COOKIE["SourceTryCount"] = 0;
 								}
 					
 						}

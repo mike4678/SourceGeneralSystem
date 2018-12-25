@@ -19,6 +19,7 @@ require("../kernl/Init.php");
     <script src="../js/respond.js"></script>
     <script src="../js/artDialog.js?skin=default"></script>
     <script src="../js/iframeTools.js"></script>
+	<script src="../js/global.js"></script>
 </head>
 <body>
 <?php 
@@ -51,14 +52,16 @@ if($addr[1] == 'exit')
 	setcookie("usr", null, time()-3600);  
 	setcookie("pwd", null, time()-3600);  
 	setcookie("state", null, time()-3600); 
-	echo '<script language="JavaScript">window.alert("您已成功退出系统！")</script>';
-	echo '<script language="JavaScript">location.replace("login.php");</script>'; 
+	echo '<script language="JavaScript">SystemBox(1,"您已成功退出系统！",location.replace("login.php")) </script>';
+	//echo '<script language="JavaScript">window.alert("您已成功退出系统！")</script>';
+	//echo '<script language="JavaScript">location.replace("login.php");</script>'; 
 		
 }
-	
+
+//用于系统探针	
 if($addr[1] == 'phpinfo') 
 { 
-		
+	$dou -> FormCheck('phpinfo'); //防跨页面查看	
 	phpinfo();
 	exit();
 		
@@ -66,6 +69,7 @@ if($addr[1] == 'phpinfo')
 	
 if($addr[1] == "Function")
 {
+	$dou -> FormCheck('Function'); //防跨页面查看
 	$arr = get_defined_functions();
 	echo "<pre>";
 	echo "当前系统所支持的所有函数,和自定义函数\n";

@@ -35,3 +35,26 @@ function GetCode()
 	var obj=document.getElementById("showcode");
 	obj.src="../admin/code.php?"+ Math.random();
 }	
+
+//后台消息框函数
+//type 类型 : 1.信息框 2.网页框
+//data 内容 : 信息框对应弹出内容，网页框则为网址
+//control 控制方式，type为1生效
+//title 标题
+//height 高度
+//weight 宽度
+function SystemBox(type,data,control,title,height,width) 
+{
+	if(type == 1)
+		{
+			
+			var dialog = art.dialog({
+									title: title,
+    								content: data,
+									});
+			
+		} else {
+			
+			art.dialog.open(data, {title: title, width: width, height: height})
+		}
+}

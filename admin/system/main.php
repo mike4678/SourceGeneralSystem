@@ -2,9 +2,6 @@
 if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器到播放界面
 ?>  
-<script>
-function info(message) { art.dialog.open(message, {title: '更新说明',width: 420, height: 400}); }
-</script>	
 <div class="admin">
 	<div class="line-big">
     	<div class="xm3">
@@ -42,8 +39,4 @@ function info(message) { art.dialog.open(message, {title: '更新说明',width: 
             </div>
         </div>
     </div>    
-    <div class="clearfix text-center">
-        <br /><br />
-    </div>
-    <br />
 </div>
