@@ -23,23 +23,22 @@ $var = '<div class="login_m">
 				<div class="login_padding">
 					<label>
 						<h2>用户名</h2>
-						<form method="post" action="login_check.php">
 						<input type="hidden" id="return" name="return" value="'.$_GET['ref'].'">
-						<input type="text" id="username" name="username" class="txt_input txt_input2" onfocus="if (value ==&#39;Your name&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;Your name&#39;}" value="Your name">
+						<input type="text" id="username" name="username" class="txt_input txt_input2" value="Your name">
 					</label>
 					<label>
 						<h2>密码</h2>
-						<input type="password" name="password" id="userpwd" class="txt_input" onfocus="if (value ==&#39;******&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;******&#39;}" value="******">
+						<input type="password" name="password" id="password" class="txt_input" value="******">
 					</label>
 					<label id=\'code\'>
 						<h2>验证码</h2>
-						<input type="text" id="code" name="code" class="txt_input txt_input2" style=\'width: 235px; height: 38px;\'>
+						<input type="text" id="vaildcode" name="vaildcode" class="txt_input txt_input2" style=\'width: 235px; height: 38px;\'>
 						<img src = \'code.php\' id=\'showcode\' onclick=\'GetCode();\' style=\'top: -5px;\'>
 					</label>
 					<p class="forgot"></p>
 					<div id="rem_sub" class="rem_sub" style=\'margin-top: -10px;\'>
 						<div class="rem_sub_l">
-							<input type="checkbox" name="checkbox" id="save_me">
+							<input type="checkbox" name="save_me" id="save_me">
 							<label for="checkbox">记住登陆信息</label>
 						</div>
 						<label>
@@ -62,18 +61,68 @@ $var = '<div class="login_m">
 <title><?php $dou -> Info('corp'); ?>后台管理系统</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
 <script src="../js/global.js"></script>
+<script src="../js/jquery-1.9.1.js"></script>
+<script src="../js/artDialog.js?skin=default"></script>
+<script src="../js/iframeTools.js"></script>	
 </head>
 <body class="login">
 <?php echo $var; ?>
+<script>
+$(function(){
+	$(".sub_button").on('click',  function(event) {
+		event.preventDefault();
+		var user = $('#username').val();
+		var pass = $('#password').val();
+		var code = $('#vaildcode').val();
+		var saveme = $('#save_me').val();
+		var ref = $('#return').val();
+		if(user == ''){
+			SystemBox(1,'用户名不能为空！','error','错误'); 
+			//$('#msg').addClass('text-danger').text('用户名不能为空！');
+			return false;
+		}
+		if(pass == ''){
+			SystemBox(1,'密码不能为空！','error','错误'); 
+			return false;
+		}
+		if(Vaild == true){
+			if(code == ''){
+				SystemBox(1,'验证码不能为空！','error','错误'); 
+				return false;
+			}
+		}
+		$.ajax({
+			url: 'login_check.php',
+			type: 'POST',
+			dataType: 'json',
+			data: {username: user,password: pass,code: code,save: saveme},
+			beforeSend: function(){
+				$('#button').attr("value",'正在登录...');
+				//$(".hwLayer-ok").attr('disabled',true);
+			},
+			success: function(res){
+				var errcode = res.status;
+				var errmessage = res.message;
+				if(res.status == 0){ //登录成功
+					window.location.href="admin.php?".ref;
+				}else{
+					SystemBox(1,errmessage,'error','错误代码：'.errcode);
+					$('#button').attr("value",'登录');
+				}
+			}
+		});
+	});
+});
+</script>	
 </body>
 </html>
 <?php 
 //判断验证码是否启用
 if ($dou -> Info('VaildCode') == 1) 
 {
-	echo "<script>javascript:LoginStatus(2);</script>";
+	echo "<script>var Vaild = true;javascript:LoginStatus(2);</script>";
 } else {
-	echo "<script>javascript:LoginStatus(1);</script>";
+	echo "<script>var Vaild = false;javascript:LoginStatus(1);</script>";
 }
 
 //if($_COOKIE["SourceTryCount"] == 0 || $_COOKIE["SourceTryCount"] <= 3 )

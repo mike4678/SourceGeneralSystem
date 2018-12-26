@@ -43,7 +43,7 @@ function GetCode()
 //title 标题
 //height 高度
 //weight 宽度
-function SystemBox(type,data,control,title,height,width) 
+function SystemBox(type,data,icon,title,height,width) 
 {
 	if(type == 1)
 		{
@@ -51,6 +51,7 @@ function SystemBox(type,data,control,title,height,width)
 			var dialog = art.dialog({
 									title: title,
     								content: data,
+									icon: icon,
 									});
 			
 		} else {
