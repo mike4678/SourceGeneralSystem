@@ -111,3 +111,38 @@ function Tips(data) //名单提示信息
 		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;黑名单：不允许特定IP访问&nbsp;';
 	}
 }
+
+//设置界面处理
+function SettingStatus(servicestate,codestate,indexable)
+{
+   if(servicestate == 0)
+   {
+	   document.getElementById("open").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("close").className = "button active";
+   }
+	
+	if(codestate == 0)
+   {
+	   document.getElementById("enable").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("disable").className = "button active";
+   }
+	
+	if(indexable == 0)
+   {
+	   document.getElementById("Indexenable").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("Indexdisable").className = "button active";
+   }
+	
+}

@@ -302,17 +302,8 @@ $(function () {
                 	<div class="label"><label>网站状态</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-                        <?php 
-	switch ($status) {
-	case 1:
-		echo  "<label class='button'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 正常模式</label><label class='button active'><input name='pintuer' value='no' type='radio'><span class='icon icon-times'></span> 维护模式</label>";
-		break;
-	case 0:
-		echo "<label class='button active'><input name='pintuer' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 正常模式</label><label class='button'><input name='pintuer' value='no' type='radio'><span class='icon icon-times'></span> 维护模式</label>";
-		break;
-		 }
-?>
-          </div>
+						  <label id='open' class='button'><input name='pintuer' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 正常模式</label><label id='close' class='button'><input name='pintuer' value='1' type='radio'><span class='icon icon-times'></span> 维护模式</label>
+       			 	  </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -364,6 +355,14 @@ $(function () {
                     	<input type="text" class="input" id="disp" name="disp" size="50" placeholder="请填写每页可显示内容数" data-validate="required:请填写每页可显示内容数" value=<?php echo $dou->Info('pagedisplay'); ?> >
                     </div>
                 </div>
+				<div class="form-group">
+                	<div class="label"><label>后台验证码</label></div>
+                	<div class="field">
+                        <div class="button-group button-group-small radio">
+						  <label id='enable' class='button'><input name='pintuer' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label id='disable' class='button'><input name='pintuer' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>
+         			 	</div>
+                    </div>
+                </div>
                 <div class="form-button"><button class="button bg-main" type="submit">提交</button></div>
             </form>
         </div>
@@ -399,17 +398,8 @@ $(function () {
                 	<div class="label"><label>首页功能</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-                        <?php 
-	switch ($IndexStatus) {
-	case 1:
-		echo  "<label class='button'><input name='activeIndex' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button active'><input name='activeIndex' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
-		break;
-	case 0:
-		echo "<label class='button active'><input name='activeIndex' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label class='button'><input name='activeIndex' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>";
-		break;
-		 }
-?>
-          </div>
+						<label id='Indexenable' class='button'><input name='activeIndex' value='yes' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label id='Indexdisable' class='button'><input name='activeIndex' value='no' type='radio'><span class='icon icon-times'></span> 禁用</label>
+          				</div>
                     </div>
           </div>
           <div class="form-group">
@@ -495,3 +485,5 @@ $(function () {
         </div>
       </div>
     </div>
+<?php echo '<script>javascript:SettingStatus('.$dou->Info('server_status').','.$dou->Info('VaildCode').','.$dou->Info('index_status').');</script>'; ?>
+      
