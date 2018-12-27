@@ -9,7 +9,7 @@ $username = $_POST['username'];  //用户名
 $PWD = $_POST['password'];  //密码
 $ref = empty($_POST['return']) ? '' : $_POST['return']; //跳转地址
 
-if ($dou -> Info('VaildCode') == 1)   //启用验证码
+if ($dou -> Info('VaildCode') == 0)   //启用验证码
 {
 	session_start(); //初始化验证码Session
 	if(empty($_POST['code']) || $_POST['code'] != $_SESSION["VaildCode"])

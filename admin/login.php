@@ -60,10 +60,8 @@ $var = '<div class="login_m">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php $dou -> Info('corp'); ?>后台管理系统</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
-<script src="../js/global.js"></script>
-<script src="../js/jquery-1.8.3.min.js"></script>	
-<script src="../js/artDialog.js?skin=default"></script>	
-<script src="../js/iframeTools.js"></script>	
+<script src="../js/jquery-1.8.3.min.js"></script>
+<script src="../js/global.js"></script>	
 </head>
 <body class="login">
 <?php echo $var; ?>
@@ -118,7 +116,7 @@ $(function(){
 </html>
 <?php 
 //判断验证码是否启用
-if ($dou -> Info('VaildCode') == 1) 
+if ($dou -> Info('VaildCode') == 0) 
 {
 	echo "<script>var Vaild = true;javascript:LoginStatus(2);</script>";
 } else {

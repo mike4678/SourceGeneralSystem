@@ -5,11 +5,14 @@
  * (c) 2009-2029 Source, http://bbs.csource.com.cn
  *
  */
-var script=document.createElement("script"); 
-script.type="text/javascript"; 
-script.src="../js/jquery-1.9.1.js"; 
-document.getElementsByTagName('head')[0].appendChild(script); 
-
+var arr = Array('iframeTools.js','artDialog.js?skin=default');
+for (i = 0 ; i < arr.length; i++)
+{
+	var script=document.createElement("script"); 
+	script.type="text/javascript"; 
+	script.src="../js/" + arr[i]; 
+	document.getElementsByTagName('head')[0].appendChild(script); 
+}
 // 后台登陆界面核心处理函数
 function LoginStatus(value)
 {
@@ -20,7 +23,6 @@ function LoginStatus(value)
 		document.getElementById("login_boder").style.height='302px';
 		document.getElementById("rem_sub").style='margin-top: 0px;';
 		document.getElementById("corp").style='margin-top: 0px;';
-		console.log('set success');
 		
 	} else if(value == 2) {
 		
@@ -29,7 +31,6 @@ function LoginStatus(value)
 		document.getElementById("login_boder").style.height='350px';
 		document.getElementById("rem_sub").style='margin-top: -10px;';
 		document.getElementById("corp").style='margin-top: 60px;';
-		console.log('setting success');
 	}
 	
 }
@@ -75,28 +76,20 @@ function SystemBox(type,data,icon,title,height,width)
 	}
 }
 
-//IPS界面处理
-function MoniterStatus(stat,mode)
+function StatusEdit(value,fvalue,svalue)
 {
-   if(stat == 0)
-   {
-	   document.getElementById("run").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("stop").className = "button active";
-   }
-	
-	if(mode == 0)
-   {
-	   document.getElementById("black").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("block").className = "button active";
-   }
+	//value 返回值
+	//fvalue 为0执行
+	//svalue 为1执行
+	if(value == 0)
+	{
+		document.getElementById(fvalue).className = "button active";
+		
+	} else {
+		
+		document.getElementById(svalue).className = "button active";
+		
+	}
 	
 }
 
@@ -110,39 +103,4 @@ function Tips(data) //名单提示信息
 		
 		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;黑名单：不允许特定IP访问&nbsp;';
 	}
-}
-
-//设置界面处理
-function SettingStatus(servicestate,codestate,indexable)
-{
-   if(servicestate == 0)
-   {
-	   document.getElementById("open").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("close").className = "button active";
-   }
-	
-	if(codestate == 0)
-   {
-	   document.getElementById("enable").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("disable").className = "button active";
-   }
-	
-	if(indexable == 0)
-   {
-	   document.getElementById("Indexenable").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("Indexdisable").className = "button active";
-   }
-	
 }

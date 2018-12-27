@@ -485,5 +485,5 @@ $(function () {
         </div>
       </div>
     </div>
-<?php echo '<script>javascript:SettingStatus('.$dou->Info('server_status').','.$dou->Info('VaildCode').','.$dou->Info('index_status').');</script>'; ?>
+<?php echo '<script>javascript:StatusEdit('.$dou->Info('server_status').',\'open\',\'close\');StatusEdit('.$dou->Info('VaildCode').',\'enable\',\'disable\');StatusEdit('.$dou->Info('index_status').',\'Indexenable\',\'Indexdisable\');</script>'; ?>
       

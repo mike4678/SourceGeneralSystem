@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 								} 
 								
 							}
-							echo '<script>javascript:MoniterStatus('.$dou->Info('ipfirewall_status').','.$dou->Info('ipfirewall_mode').');</script>';
+							echo '<script>StatusEdit('.$dou->Info('ipfirewall_status').',\'run\',\'stop\');StatusEdit('.$dou->Info('ipfirewall_mode').',\'black\',\'block\');</script>';
 							?>
             			</select></div>
                     </div>
