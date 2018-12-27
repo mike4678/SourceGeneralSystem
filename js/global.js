@@ -5,6 +5,10 @@
  * (c) 2009-2029 Source, http://bbs.csource.com.cn
  *
  */
+var script=document.createElement("script"); 
+script.type="text/javascript"; 
+script.src="../js/jquery-1.9.1.js"; 
+document.getElementsByTagName('head')[0].appendChild(script); 
 
 // 后台登陆界面核心处理函数
 function LoginStatus(value)
@@ -37,25 +41,73 @@ function GetCode()
 }	
 
 //后台消息框函数
-//type 类型 : 1.信息框 2.网页框
+//type 类型 : 1.信息框 2.网页框  3.弹窗
 //data 内容 : 信息框对应弹出内容，网页框则为网址
-//control 控制方式，type为1生效
+//icon 图标，type为1生效
 //title 标题
 //height 高度
 //weight 宽度
+
 function SystemBox(type,data,icon,title,height,width) 
 {
-	if(type == 1)
-		{
-			
+	switch(type)
+	{
+		case 1:
 			var dialog = art.dialog({
 									title: title,
     								content: data,
 									icon: icon,
 									});
+			break;
 			
-		} else {
+		case 2:
+			art.dialog.open( data, {
+									title: title, 
+									width: width, 
+									height: height
+							});
+			break;
+		
+		case 3:
+			art.dialog.tips(data,3);
+			break;
 			
-			art.dialog.open(data, {title: title, width: width, height: height})
-		}
+	}
+}
+
+//IPS界面处理
+function MoniterStatus(stat,mode)
+{
+   if(stat == 0)
+   {
+	   document.getElementById("run").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("stop").className = "button active";
+   }
+	
+	if(mode == 0)
+   {
+	   document.getElementById("black").className = "button active";
+	   
+   } else 
+   
+   {
+	   document.getElementById("block").className = "button active";
+   }
+	
+}
+
+function Tips(data) //名单提示信息
+{
+	if(data == 1)
+	{
+		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;白名单：仅允许特定IP访问&nbsp;';
+		
+	} else { 
+		
+		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;黑名单：不允许特定IP访问&nbsp;';
+	}
 }

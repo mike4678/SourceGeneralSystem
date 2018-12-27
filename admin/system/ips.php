@@ -33,53 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 	if (!$dou->query($sql)) 
 	{
-		echo '<script language="JavaScript">window.alert("更新失败")</script>';
+		echo '<script language="JavaScript">SystemBox(3,"更新失败")</script>';
 		
 	} else {
 		
-		echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
+		echo '<script language="JavaScript">SystemBox(3,"参数已更新")</script>';
 	}		
 }
 
-//更新变量值
-echo '<script> var stat = '.$dou->Info('ipfirewall_status').'; var mode = '.$dou->Info('ipfirewall_mode').';</script>';
 ?>
-<script>
-function MoniterStatus()
-{
-   if(stat == 0)
-   {
-	   document.getElementById("run").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("stop").className = "button active";
-   }
-	
-	if(mode == 0)
-   {
-	   document.getElementById("black").className = "button active";
-	   
-   } else 
-   
-   {
-	   document.getElementById("block").className = "button active";
-   }
-	
-}	
-function Tips(data) //名单提示信息
-{
-	if(data == 1)
-	{
-		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;白名单：仅允许特定IP访问&nbsp;';
-		
-	} else { 
-		
-		document.getElementsByName("info")[0].innerHTML='&nbsp;&nbsp;&nbsp;黑名单：不允许特定IP访问&nbsp;';
-	}
-}
-</script>
+
       <div class="tab-body">
         <div class="tab-panel " id="tab-ips">
          	<form method="post" class="form-x" action="#">
@@ -115,7 +78,7 @@ function Tips(data) //名单提示信息
 								} 
 								
 							}
-							echo '<script>javascript:MoniterStatus()</script>';
+							echo '<script>javascript:MoniterStatus('.$dou->Info('ipfirewall_status').','.$dou->Info('ipfirewall_mode').');</script>';
 							?>
             			</select></div>
                     </div>

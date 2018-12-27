@@ -13,13 +13,12 @@ require("../kernl/Init.php");
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="../css/popup.css">
 	<link rel="stylesheet" href="../css/puyuetian.css">
-    <!-- script src="../js/jquery.js"></script -->
-    <script type="text/javascript" src="http://api.csource.com.cn/1.8.1/jquery-1.8.1.min.js"></script>
+	<script src="../js/jquery-1.8.3.min.js"></script>
     <script src="../js/pintuer.js"></script>
     <script src="../js/respond.js"></script>
-    <script src="../js/artDialog.js?skin=default"></script>
-    <script src="../js/iframeTools.js"></script>
 	<script src="../js/global.js"></script>
+	<script src="../js/artDialog.js?skin=default"></script>	
+	<script src="../js/iframeTools.js"></script>
 </head>
 <body>
 <?php 
@@ -52,9 +51,9 @@ if($addr[1] == 'exit')
 	setcookie("usr", null, time()-3600);  
 	setcookie("pwd", null, time()-3600);  
 	setcookie("state", null, time()-3600); 
-	echo '<script language="JavaScript">SystemBox(1,"您已成功退出系统！",location.replace("login.php")) </script>';
-	//echo '<script language="JavaScript">window.alert("您已成功退出系统！")</script>';
-	//echo '<script language="JavaScript">location.replace("login.php");</script>'; 
+	//exit;
+	echo '<script language="JavaScript">SystemBox(3,"您已成功退出系统！");</script>';
+	echo '<script language="JavaScript">location.replace("login.php");</script>'; 
 		
 }
 

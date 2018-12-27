@@ -907,7 +907,7 @@ box-shadow: 1px 1px 1px #CCC;
 </style>
 
 
-<script language="JavaScript" type="text/javascript" src="../js/jquery-1.7.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
 	<script>
 function info(message,title) { art.dialog.open(message, {width: 420, height: 400, title: title}); }
 </script>	

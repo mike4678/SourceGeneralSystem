@@ -16,8 +16,7 @@ if ($dou -> Info('VaildCode') == 1)   //启用验证码
 	{
 		$data = $_COOKIE["SourceTryCount"] + 1;
 		$dou->cookie("SourceTryCount", $data , time()+36000);
-		echo json_encode(array('status'=>'-1','message'=>'验证码错误'));//不存在返回nameerror
-		//echo '<script language="JavaScript">window.alert("验证码错误或不能为空！");location.replace("login.php");<</script>';	
+		echo json_encode(array('status'=>'-1','message'=>'验证码错误'));
 	}
 	session_destroy(); //验证码Session销毁
 } 
@@ -38,9 +37,8 @@ if (empty($username) || empty($PWD) )  //判断POST回来的用户名或密码�
 { 
 	$data = $_COOKIE["SourceTryCount"] + 1;
 	$dou->cookie("SourceTryCount", $data , time()+36000);
-	echo json_encode(array('status'=>'-2','message'=>'用户名或密码不能为空'));//不存在返回nameerror
+	echo json_encode(array('status'=>'-2','message'=>'用户名或密码不能为空'));
 	exit;
-	//echo '<script language="JavaScript">window.alert("用户名或密码不能为空！");location.replace("login.php");<</script>';
 } 
 
 //首先更改用户tocket
@@ -53,7 +51,7 @@ if( $dou -> affected_rows() == NULL)
 {
 	$data = $_COOKIE["SourceTryCount"] + 1;
 	$dou->cookie("SourceTryCount", $data , time()+36000);
-	echo json_encode(array('status'=>'-3','message'=>'密码错误'));//不存在返回nameerror
+	echo json_encode(array('status'=>'-3','message'=>'密码错误'));
 	$dou -> WriteLog('POST', '用户尝试登陆，但密码错误！','Login.php');
 	exit;
 	
@@ -72,15 +70,13 @@ if( $dou -> affected_rows() == NULL)
 		if($dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
-			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));//不存在返回nameerror
+			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
 			$_COOKIE["SourceTryCount"] = 0;
-			//header("Location: admin.php?".$ref);
 			
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
-			echo json_encode(array('status'=>'0','message'=>'success'));//不存在返回nameerror
+			echo json_encode(array('status'=>'0','message'=>'success'));
 			$_COOKIE["SourceTryCount"] = 0;
-			//header("Location: admin.php?".$ref);
 			}
 		
 	} else {
@@ -89,15 +85,12 @@ if( $dou -> affected_rows() == NULL)
 		if($dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
-			echo json_encode('{status:-4,data:状态更新失败}');//不存在返回nameerror
-			//echo '<script language="JavaScript">window.alert("登陆状态更新失败！")</script>';
+			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
 			$_COOKIE["SourceTryCount"] = 0;
-			//header("Location: admin.php?".$ref);
+			
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
 			echo json_encode(array('status'=>'0','message'=>'success'));//不存在返回nameerror
-			//echo '正在跳转。。。。';
-			//header("Location: admin.php?".$ref);
 			$_COOKIE["SourceTryCount"] = 0;
 								}
 					

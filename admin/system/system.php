@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$value = "update admin_user set password = '".$newpwd."' where username = 'admin';";
 				if (!$dou->query($value)) 
 				{
-					echo '<script language="JavaScript">window.alert("密码更新失败！")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"密码更新失败！")</script>';
 					} 
 			}	
 			
@@ -86,9 +86,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 			if (!$dou->query($sql)) 
 				{
-					echo '<script language="JavaScript">window.alert("更新失败")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"更新失败")</script>';
 					} else {
-						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
+						echo '<script language="JavaScript">SystemBox(3,"参数已更新！")</script>';
 						$dou->cookie("set", 'active' , 300);
 						$dou->cookie("up", '' , 300);
 						$dou->cookie("adv", '' , 300);
@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$phpsize = str_replace("M","",$_POST['php_size']);
 			if($_POST['file_size'] > $phpsize)   //如果文件大小超过PHP系统限定大小
 			{
-				echo '<script language="JavaScript">window.alert("当前允许上传文件大小超过PHP系统限定值！")</script>';
+				echo '<script language="JavaScript">SystemBox(3,"当前允许上传文件大小超过PHP系统限定值！")</script>';
 				echo '<script language="JavaScript">window.history.back();</script>';
 			} else {
 				$sql = "UPDATE system_setting 
@@ -109,9 +109,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 						END WHERE vars IN ('upload_size','upload_name')";
 				if (!$dou->query($sql)) 
 				{
-					echo '<script language="JavaScript">window.alert("更新失败")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"更新失败")</script>';
 					} else {
-						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
+						echo '<script language="JavaScript">SystemBox(3,"参数已更新！")</script>';
 						$dou->cookie("set", '', 300);
 						$dou->cookie("up", 'active' , 300);
 						$dou->cookie("adv", '' , 300);
@@ -154,9 +154,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 				if (!$dou->query($sql)) 
 				{
-					echo '<script language="JavaScript">window.alert("更新失败")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"更新失败")</script>';
 					} else {
-						echo '<script language="JavaScript">window.alert("参数已更新！")</script>';
+						echo '<script language="JavaScript">SystemBox(3,"参数已更新！")</script>';
 						$dou->cookie("set", '', 300);
 						$dou->cookie("up", '' , 300);
 						$dou->cookie("adv", 'active' , 300);
@@ -177,13 +177,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$dou -> query($sql);
 				if(!$dou -> affected_rows())  //如果未返回结果则认为密码错误。
 				{
-					echo '<script language="JavaScript">window.alert("旧密码输入错误，请重新输入！")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"旧密码输入错误，请重新输入！")</script>';
 					echo '<script language="JavaScript">window.history.go(-1);</script>';
 					exit;
 				} 
 				if($new_pwd != $conf_new_pwd) 
 				{
-					echo '<script language="JavaScript">window.alert("两次输入的密码不一致，请重新输入！")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"两次输入的密码不一致，请重新输入！")</script>';
 					echo '<script language="JavaScript">window.history.go(-1);</script>';
 					exit;
 				}
@@ -191,10 +191,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$sql = "UPDATE admin_user SET password = '".$encryption_pwd."' where username = 'admin';";
 				if (!$dou->query($sql)) 
 				{
-					echo '<script language="JavaScript">window.alert("修改密码失败")</script>';
+					echo '<script language="JavaScript">SystemBox(3,"修改密码失败")</script>';
 					echo '<script language="JavaScript">window.history.go(-1);</script>';
 					} else {
-						echo '<script language="JavaScript">window.alert("密码已更新，请重新登陆")</script>';
+						echo '<script language="JavaScript">SystemBox(3,"密码已更新，请重新登陆")</script>';
 						echo '<script language="JavaScript">window.location.href="admin.php?/exit"</script>';
 					}
 			}
@@ -486,7 +486,7 @@ $(function () {
 					}
 				?>
 				</select><br />
-				<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=add', {title: '新增上传框架', width: 420, height: 400})" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('system/uploadframe.php?m=edit', {title: '修改上传框架', width: 420, height: 402})" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('/admin/system/uploadframe.php?m=del', {title: '删除上传框架', width: 420, height: 235})" value="删除" />	
+				<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:SystemBox(2,'/admin/system/uploadframe.php?m=add', '','新增上传框架', 400,420)" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:SystemBox(2,'system/uploadframe.php?m=edit','','修改上传框架',402,420)" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:SystemBox(2,'/admin/system/uploadframe.php?m=del', '','删除上传框架',235,420)" value="删除" />	
 				</div>
                 </div>
 		  <div class="form-button"><button class="button bg-main" type="submit">提交</button></div>	  

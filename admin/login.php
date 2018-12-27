@@ -61,8 +61,8 @@ $var = '<div class="login_m">
 <title><?php $dou -> Info('corp'); ?>后台管理系统</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
 <script src="../js/global.js"></script>
-<script src="../js/jquery-1.9.1.js"></script>
-<script src="../js/artDialog.js?skin=default"></script>
+<script src="../js/jquery-1.8.3.min.js"></script>	
+<script src="../js/artDialog.js?skin=default"></script>	
 <script src="../js/iframeTools.js"></script>	
 </head>
 <body class="login">
@@ -77,17 +77,17 @@ $(function(){
 		var saveme = $('#save_me').val();
 		var ref = $('#return').val();
 		if(user == ''){
-			SystemBox(1,'用户名不能为空！','error','错误'); 
+			SystemBox(3,'用户名不能为空！'); 
 			//$('#msg').addClass('text-danger').text('用户名不能为空！');
 			return false;
 		}
 		if(pass == ''){
-			SystemBox(1,'密码不能为空！','error','错误'); 
+			SystemBox(3,'密码不能为空！'); 
 			return false;
 		}
 		if(Vaild == true){
 			if(code == ''){
-				SystemBox(1,'验证码不能为空！','error','错误'); 
+				SystemBox(3,'验证码不能为空！'); 
 				return false;
 			}
 		}
@@ -104,9 +104,9 @@ $(function(){
 				var errcode = res.status;
 				var errmessage = res.message;
 				if(res.status == 0){ //登录成功
-					window.location.href="admin.php?".ref;
+					window.location.href="admin.php?" + ref;
 				}else{
-					SystemBox(1,errmessage,'error','错误代码：'.errcode);
+					SystemBox(3,errmessage);
 					$('#button').attr("value",'登录');
 				}
 			}
