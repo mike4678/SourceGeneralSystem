@@ -5,14 +5,20 @@
  * (c) 2009-2029 Source, http://bbs.csource.com.cn
  *
  */
-var arr = Array('iframeTools.js','artDialog.js?skin=default');
-for (i = 0 ; i < arr.length; i++)
-{
-	var script=document.createElement("script"); 
+var script=document.createElement("script"); 
 	script.type="text/javascript"; 
-	script.src="../js/" + arr[i]; 
+	script.src="../js/jquery-1.9.1.js"; 
 	document.getElementsByTagName('head')[0].appendChild(script); 
-}
+
+//var arr = Array('iframeTools.js','artDialog.js?skin=default');
+//for (i = 0 ; i < arr.length; i++)
+//{
+	///var script=document.createElement("script"); 
+	//script.type="text/javascript"; 
+	//script.src="../js/" + arr[i]; 
+	//document.getElementsByTagName('head')[0].appendChild(script); 
+//}
+
 // 后台登陆界面核心处理函数
 function LoginStatus(value)
 {
@@ -34,7 +40,21 @@ function LoginStatus(value)
 	}
 	
 }
+
+function XZSelect() 
+{
+    if (document.getElementById('Select').options[2].selected == true) 
+	{
+		document.getElementById('w').style.display = '';
+			
+    } else if (document.getElementById('Select').options[2].selected == false) 
 	
+	{
+       document.getElementById('w').style.display = 'none';
+		
+    } 
+}
+
 function GetCode() 
 {
 	var obj=document.getElementById("showcode");

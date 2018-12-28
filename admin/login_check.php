@@ -17,6 +17,7 @@ if ($dou -> Info('VaildCode') == 0)   //启用验证码
 		$data = $_COOKIE["SourceTryCount"] + 1;
 		$dou->cookie("SourceTryCount", $data , time()+36000);
 		echo json_encode(array('status'=>'-1','message'=>'验证码错误'));
+		exit;
 	}
 	session_destroy(); //验证码Session销毁
 } 

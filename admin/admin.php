@@ -17,6 +17,8 @@ require("../kernl/Init.php");
     <script src="../js/pintuer.js"></script>
     <script src="../js/respond.js"></script>
 	<script src="../js/global.js"></script>
+	<script src="../js/artDialog.js?skin=default"></script>	
+	<script src="../js/iframeTools.js"></script>
 
 </head>
 <body>

@@ -60,12 +60,15 @@ $var = '<div class="login_m">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php $dou -> Info('corp'); ?>后台管理系统</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
+<script src="../js/global.js"></script>
 <script src="../js/jquery-1.8.3.min.js"></script>
-<script src="../js/global.js"></script>	
+<script src="../js/artDialog.js?skin=default"></script>	
+<script src="../js/iframeTools.js"></script>	
 </head>
 <body class="login">
 <?php echo $var; ?>
 <script>
+var var_name="{:session('code')}";	
 $(function(){
 	$(".sub_button").on('click',  function(event) {
 		event.preventDefault();
@@ -74,6 +77,7 @@ $(function(){
 		var code = $('#vaildcode').val();
 		var saveme = $('#save_me').val();
 		var ref = $('#return').val();
+		
 		if(user == ''){
 			SystemBox(3,'用户名不能为空！'); 
 			//$('#msg').addClass('text-danger').text('用户名不能为空！');

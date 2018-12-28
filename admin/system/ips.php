@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="form-group" style="margin-top:6px" >
                 	<div class="label"><label>操作</label></div>
                 	<div class="field">
-					<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:art.dialog.open('/admin/system/ipsetting.php?m=add', {title: '新增IP地址', width: 420, height: 320})" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('system/ipsetting.php?m=edit', {title: '修改IP地址信息', width: 420, height: 320})" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:art.dialog.open('/admin/system/ipsetting.php?m=del', {title: '删除IP地址', width: 420, height: 235})" value="删除" />	
+					<input name="databasebak" type="button" class="button" id="databasebak" href='#' onclick="javascript:SystemBox(2,'/admin/system/ipsetting.php?m=add', '','新增IP地址', 320, 420)" value="添加" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:SystemBox(2,'system/ipsetting.php?m=edit', '', '修改IP地址信息', 320, 420)" value="编辑" />&nbsp;&nbsp;<input type="button" class="button" href='#' onclick="javascript:SystemBox(2,'/admin/system/ipsetting.php?m=del','', '删除IP地址', 235, 420)" value="删除" />	
                     </div>
                 </div>
                 <div class="form-button"><button class="button bg-main" type="submit">应用</button></div> 

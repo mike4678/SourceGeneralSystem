@@ -8,7 +8,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 { 
 	$status = $dou->Info('server_status');
 	$IndexStatus = $dou->Info('index_status');
-	$dou->CheckUploadSize();  //上传大小检查，如果超过设定，则自动修改为正常值
+	$dou->CheckUploadSize();  //上传大小检查，如果超过设定，则自动强制修正
 	if($_COOKIE['set'] == NULL && $_COOKIE['up'] == NULL)
 	{
 		$dou->cookie("set", 'active');
@@ -52,36 +52,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 			//检查结束
 			
-			if($_POST['pintuer'] == 'yes') //网站当前状态
-			{
-				$state = '0';    //开放
-				
-			} else { $state = '1'; }  //禁用
-			
 			if($_POST['path'] == Null) 
 			{
 				$sql = "UPDATE system_setting 
 				  		  SET value = CASE vars 
-				  		 WHEN 'server_status' THEN '".$state."'  
+				  		 WHEN 'server_status' THEN '".$_POST['serverstate']."'  
 				  		 WHEN 'server_infomaction' THEN '".$_POST['sys']."' 
 						 WHEN 'name' THEN '".$_POST['sitename']."' 
 						 WHEN 'bottom' THEN '".$_POST['sysinfo']."' 
 						 WHEN 'encrypted' THEN '".$_POST['pwdreq']."'
 						 WHEN 'pagedisplay' THEN '".$Page_Display."'
+						 WHEN 'VaildCode' THEN '".$_POST['vaildcode']."'
 				 		END 
-						 WHERE vars IN ('server_status','server_infomaction','name','bottom','encrypted','pagedisplay')";
+						 WHERE vars IN ('server_status','server_infomaction','name','bottom','encrypted','pagedisplay','VaildCode')";
 			} else {
 				$sql = "UPDATE system_setting 
 				  		  SET value = CASE vars 
-				  		 WHEN 'server_status' THEN '".$state."'  
+				  		 WHEN 'server_status' THEN '".$_POST['serverstate']."'  
 				  		 WHEN 'server_infomaction' THEN '".$_POST['sys']."' 
 						 WHEN 'name' THEN '".$_POST['sitename']."' 
 						 WHEN 'bottom' THEN '".$_POST['sysinfo']."' 
 						 WHEN 'logo' THEN '".$_POST['path']."' 
 						 WHEN 'encrypted' THEN '".$_POST['pwdreq']."'
 						 WHEN 'pagedisplay' THEN '".$Page_Display."'
+						 WHEN 'VaildCode' THEN '".$_POST['vaildcode']."'
 				 		END 
-						 WHERE vars IN ('server_status','server_infomaction','name','bottom','logo','encrypted','pagedisplay')";
+						 WHERE vars IN ('server_status','server_infomaction','name','bottom','logo','encrypted','pagedisplay','VaildCode')";
 			}
 			
 			if (!$dou->query($sql)) 
@@ -170,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$conf_new_pwd = empty($_POST['conf_new_pwd']) ? '' : $_POST['conf_new_pwd'];
 			if(empty($_POST['old_pwd']) && empty($_POST['new_pwd']) && empty($_POST['conf_new_pwd']))
 			{
-				echo '<script language="JavaScript">window.alert("密码不允许为空！")</script>';
+				echo '<script language="JavaScript">SystemBox(3,"密码不允许为空！")</script>';
 				echo '<script language="JavaScript">window.location.href="admin.php?/system/setting"</script>';
 			} else {
 				$sql = "select username from admin_user where password = '".$old_pwd."';";
@@ -281,15 +277,7 @@ $(function () {
 	});
 	
 }); 
-		function XZSelect() {
-        if (document.getElementById('Select').options[2].selected == true) {
-			document.getElementById('w').style.display = '';
-			
-        } else if (document.getElementById('Select').options[2].selected == false) {
-            document.getElementById('w').style.display = 'none';
-
-        } 
-    }
+		
 	
 	
 </script>
@@ -302,7 +290,7 @@ $(function () {
                 	<div class="label"><label>网站状态</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-						  <label id='open' class='button'><input name='pintuer' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 正常模式</label><label id='close' class='button'><input name='pintuer' value='1' type='radio'><span class='icon icon-times'></span> 维护模式</label>
+						  <label id='open' class='button'><input name='serverstate' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 正常模式</label><label id='close' class='button'><input name='serverstate' value='1' type='radio'><span class='icon icon-times'></span> 维护模式</label>
        			 	  </div>
                     </div>
                 </div>
@@ -359,7 +347,7 @@ $(function () {
                 	<div class="label"><label>后台验证码</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
-						  <label id='enable' class='button'><input name='pintuer' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label id='disable' class='button'><input name='pintuer' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>
+						  <label id='enable' class='button'><input name='vaildcode' value='0' checked='checked' type='radio'><span class='icon icon-check'></span> 启用</label><label id='disable' class='button'><input name='vaildcode' value='1' type='radio'><span class='icon icon-times'></span> 禁用</label>
          			 	</div>
                     </div>
                 </div>
