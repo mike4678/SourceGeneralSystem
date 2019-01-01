@@ -57,8 +57,8 @@ function XZSelect()
 
 function GetCode() 
 {
-	var obj=document.getElementById("showcode");
-	obj.src="../admin/code.php?"+ Math.random();
+	var obj = document.getElementById("showcode");
+	obj.src = "../admin/code.php?"+ Math.random();
 }	
 
 //后台消息框函数
@@ -69,7 +69,7 @@ function GetCode()
 //height 高度
 //weight 宽度
 
-function SystemBox(type,data,icon,title,height,width) 
+function SystemBox(type,data,icon,title,height,width,time) 
 {
 	switch(type)
 	{
@@ -90,7 +90,11 @@ function SystemBox(type,data,icon,title,height,width)
 			break;
 		
 		case 3:
-			art.dialog.tips(data,3);
+			if(time == null)
+			{
+				time = 3;
+			} 
+			art.dialog.tips(data,time);
 			break;
 			
 	}

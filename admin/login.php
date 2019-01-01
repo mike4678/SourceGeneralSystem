@@ -68,7 +68,6 @@ $var = '<div class="login_m">
 <body class="login">
 <?php echo $var; ?>
 <script>
-var var_name="{:session('code')}";	
 $(function(){
 	$(".sub_button").on('click',  function(event) {
 		event.preventDefault();
@@ -109,6 +108,7 @@ $(function(){
 					window.location.href="admin.php?" + ref;
 				}else{
 					SystemBox(3,errmessage);
+					GetCode();
 					$('#button').attr("value",'登录');
 				}
 			}

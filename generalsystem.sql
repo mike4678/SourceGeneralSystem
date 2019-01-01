@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50710
 File Encoding         : 65001
 
-Date: 2018-12-28 07:40:10
+Date: 2018-12-29 20:14:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,7 +54,7 @@ CREATE TABLE `admin_user` (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES ('admin', 'k5WfnKA=', '192.168.2.101', '18/12/27 22:08:29');
+INSERT INTO `admin_user` VALUES ('admin', 'k5WfnKA=', '192.168.2.101', '18/12/29 18:23:04');
 
 -- ----------------------------
 -- Table structure for `content_data`
@@ -71,7 +71,7 @@ CREATE TABLE `content_data` (
 -- ----------------------------
 -- Records of content_data
 -- ----------------------------
-INSERT INTO `content_data` VALUES ('log', 'system_log', 'function Del(addr) \r\n{\r\n	art.dialog.confirm(\'你确定要删除这条消息吗？\', function () {\r\n		window.location.href=\'http://\' + window.location.host + addr;\r\n		//art.dialog.content(\'http://\' + window.location.host + addr);// 填充对话框内容\r\n		//art.dialog.open(\'http://\' + window.location.host + addr)\r\n		//myDialog.dialog.close();\r\n    //art.dialog.tips(\'执行确定操作\');\r\n}, function () {\r\n	art.dialog.close();\r\n    art.dialog.tips(\'操作被用户取消！\');\r\n});\r\n}\r\n\r\nfunction info(message) {\r\n		art.dialog.tips(message,10);}', '<div class=\"panel-head\"><strong>系统日志</strong></div>\r\n        <div class=\"padding border-bottom\">\r\n        	<input type=\"button\" class=\"button button-small checkall\" name=\"checkall\" checkfor=\"id[]\" value=\"全选\">\r\n            <input type=\"submit\" class=\"button button-small border-yellow\" value=\"批量删除\"  />\r\n        </div>\r\n        <table class=\"table table-hover\">\r\n        	<tr><th width=\"5%\">选择</th><th width=\"10%\">请求方式</th><th width=\"25%\" style=\"text-align:center\">操作内容</th><th width=\"14%\" style=\"text-align:center\">操作ip</th><th width=\"8%\" >&nbsp;&nbsp;&nbsp;时间</th><th width=\"8%\">&nbsp;操作</th></tr>', '<tr><td>&nbsp;<input type=\'checkbox\' name=\'id[]\' value=\'{id}\'><input name=\'d\' type=\'hidden\' value=\'systemlog\'></td><td>&nbsp;&nbsp;{method}</td><td align=center><a href=\'javascript:info(\"{data}<br/>操作IP：{ip}&nbsp;&nbsp;操作时间：{time}\")\'>点击查看</td><td style=\'text-align:center\'>{ip}</td><td>{time}</td><td>&nbsp;<a class=\'button border-yellow button-little\' href=\'#\' onclick=\"javascript:Del(\'$_SERVER[PHP_SELF]?$_SERVER[QUERY_STRING]/id{id} \')\">删除</a></td></tr>');
+INSERT INTO `content_data` VALUES ('log', 'system_log', 'function Del(addr) \r\n{\r\n	art.dialog.confirm(\'你确定要删除这条消息吗？\', function () {\r\n		window.location.href=\'http://\' + window.location.host + addr;\r\n		//art.dialog.content(\'http://\' + window.location.host + addr);// 填充对话框内容\r\n		//art.dialog.open(\'http://\' + window.location.host + addr)\r\n		//myDialog.dialog.close();\r\n    //art.dialog.tips(\'执行确定操作\');\r\n}, function () {\r\n	art.dialog.close();\r\n    art.dialog.tips(\'操作被用户取消！\');\r\n});\r\n}', '<div class=\"panel-head\"><strong>系统日志</strong></div>\r\n        <div class=\"padding border-bottom\">\r\n        	<input type=\"button\" class=\"button button-small checkall\" name=\"checkall\" checkfor=\"id[]\" value=\"全选\">\r\n            <input type=\"submit\" class=\"button button-small border-yellow\" value=\"批量删除\"  />\r\n        </div>\r\n        <table class=\"table table-hover\">\r\n        	<tr><th width=\"5%\">选择</th><th width=\"10%\">请求方式</th><th width=\"25%\" style=\"text-align:center\">操作内容</th><th width=\"14%\" style=\"text-align:center\">操作ip</th><th width=\"8%\" >&nbsp;&nbsp;&nbsp;时间</th><th width=\"8%\">&nbsp;操作</th></tr>', '<tr><td>&nbsp;<input type=\'checkbox\' name=\'id[]\' value=\'{id}\'><input name=\'d\' type=\'hidden\' value=\'systemlog\'></td><td>&nbsp;&nbsp;{method}</td><td align=center><a href=\'javascript:SystemBox(3,\"{data}<br/>操作IP：{ip}&nbsp;&nbsp;操作时间：{time}\")\'>点击查看</td><td style=\'text-align:center\'>{ip}</td><td>{time}</td><td>&nbsp;<a class=\'button border-yellow button-little\' href=\'#\' onclick=\"javascript:Del(\'$_SERVER[PHP_SELF]?$_SERVER[QUERY_STRING]/id{id} \')\">删除</a></td></tr>');
 
 -- ----------------------------
 -- Table structure for `system_ips`
@@ -105,150 +105,11 @@ CREATE TABLE `system_log` (
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
-INSERT INTO `system_log` VALUES ('1', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/12');
-INSERT INTO `system_log` VALUES ('2', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/12');
-INSERT INTO `system_log` VALUES ('3', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/12');
-INSERT INTO `system_log` VALUES ('4', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/12');
-INSERT INTO `system_log` VALUES ('5', 'Get', '127.0.0.1', '试图从外部访问地址:已被拦截', '', '18/12/12');
-INSERT INTO `system_log` VALUES ('6', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/13');
-INSERT INTO `system_log` VALUES ('7', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/13');
-INSERT INTO `system_log` VALUES ('8', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/13');
-INSERT INTO `system_log` VALUES ('9', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/15');
-INSERT INTO `system_log` VALUES ('10', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/15');
-INSERT INTO `system_log` VALUES ('11', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/16');
-INSERT INTO `system_log` VALUES ('12', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('13', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('14', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('15', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('16', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('17', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('18', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('19', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('20', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('21', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('22', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('23', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('24', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('25', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('26', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('27', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('28', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('29', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('30', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('31', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('32', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('33', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('34', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('35', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('36', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('37', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('38', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('39', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('40', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('41', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('42', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('43', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('44', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('45', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('46', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('47', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('48', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('49', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('50', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('51', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('52', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('53', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('54', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('55', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('56', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('57', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('58', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('59', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('60', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('61', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('62', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('63', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('64', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('65', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('66', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('67', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('68', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('69', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('70', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('71', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('72', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('73', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('74', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/20');
-INSERT INTO `system_log` VALUES ('75', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('76', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('77', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('78', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('79', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('80', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('81', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('82', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('83', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('84', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('85', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('86', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/24');
-INSERT INTO `system_log` VALUES ('87', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/24');
-INSERT INTO `system_log` VALUES ('88', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/24');
-INSERT INTO `system_log` VALUES ('89', 'Get', '192.168.2.101', '试图从外部访问地址:已被拦截', '', '18/12/24');
-INSERT INTO `system_log` VALUES ('90', 'Get', '192.168.2.101', '试图从外部访问地址:phpinfo已被拦截', 'phpinfo', '18/12/24');
-INSERT INTO `system_log` VALUES ('91', 'POST', '192.168.2.101', '管理员执行数据库备份', '/admin/admin.php?databasebak=%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93', '18/12/24');
-INSERT INTO `system_log` VALUES ('92', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/25');
-INSERT INTO `system_log` VALUES ('93', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/25');
-INSERT INTO `system_log` VALUES ('94', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/25');
-INSERT INTO `system_log` VALUES ('95', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/25');
-INSERT INTO `system_log` VALUES ('96', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('97', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('98', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('99', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('100', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('101', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('102', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('103', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('104', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('105', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('106', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('107', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('108', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('109', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('110', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('111', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('112', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('113', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('114', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('115', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('116', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('117', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('118', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('119', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('120', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('121', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('122', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('123', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('124', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('125', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('126', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('127', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('128', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('129', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('130', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('131', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('132', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('133', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('134', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('135', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('136', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('137', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('138', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('139', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('140', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/26');
-INSERT INTO `system_log` VALUES ('141', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/27');
-INSERT INTO `system_log` VALUES ('142', 'POST', '192.168.2.101', '用户尝试登陆，但密码错误！', 'Login.php', '18/12/27');
-INSERT INTO `system_log` VALUES ('143', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/27');
-INSERT INTO `system_log` VALUES ('144', 'POST', '192.168.2.101', '用户登陆成功', 'Login.php', '18/12/27');
+INSERT INTO `system_log` VALUES ('1', 'POST', '192.168.2.101', '管理员执行清空数据表操作', '/admin/system/databasecontrol.php?control=%E6%B8%85%E7%A9%BA%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '18/12/29');
+INSERT INTO `system_log` VALUES ('2', 'POST', '192.168.2.101', '管理员执行数据库备份', '/admin/system/databasecontrol.php?control=%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '18/12/29');
+INSERT INTO `system_log` VALUES ('3', 'POST', '192.168.2.101', '管理员执行数据库备份', '/admin/system/databasecontrol.php?control=%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '18/12/29');
+INSERT INTO `system_log` VALUES ('4', 'POST', '192.168.2.101', '管理员执行数据库备份', '/admin/system/databasecontrol.php?control=%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '18/12/29');
+INSERT INTO `system_log` VALUES ('5', 'POST', '192.168.2.101', '管理员执行数据库备份', '/admin/system/databasecontrol.php?control=%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '18/12/29');
 
 -- ----------------------------
 -- Table structure for `system_setting`
@@ -285,3 +146,4 @@ INSERT INTO `system_setting` VALUES ('system_table', '系统;icon-cog;admin.php|
 INSERT INTO `system_setting` VALUES ('upload_frame', 'system;.png、.jpg、.gif;../../images/|module;.zip;../../module/|', '上传框架,格式：框架名;允许文件类型，多个用、隔开;要上传到的目录，多个框架用|分割');
 INSERT INTO `system_setting` VALUES ('MaxCount', '4', '后台登陆界面最大尝试次数');
 INSERT INTO `system_setting` VALUES ('VaildCode', '0', '后台登陆是否启用验证码，0为启用，1为关闭');
+INSERT INTO `system_setting` VALUES ('AllowDatabase', 'system_log;', '允许清空的数据表');

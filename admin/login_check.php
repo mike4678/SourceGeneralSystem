@@ -2,6 +2,9 @@
 //载入函数PHP
 require("../kernl/Init.php"); //初始化基础参数
 
+//来路判断
+
+
 //初始化变量
 $method = $_SERVER['REQUEST_METHOD']; //操作方式，post/GET
 $addr = $_SERVER['PHP_SELF'].'?'.file_get_contents('php://input'); //提交地址
