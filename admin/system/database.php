@@ -42,7 +42,7 @@ if (!file_exists('backup')) {
 				<div class="form-group" style="margin-top:6px" >
                 	<div class="label"><label>数据库操作</label></div>
                 	<div class="field">
-                       <input name="databasebak" type="submit" class="button" id="databasebak" value="备份数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="恢复数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="清空数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="删除备份" />
+                       <input name="databasebak" type="submit" class="button" id="databasebak" value="备份数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="恢复数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="清空数据库" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="删除备份" />&nbsp;&nbsp;<input name="databasebak" type="submit" class="button" id="databasebak" value="下载备份" />
                     </div>
                 </div>
             
@@ -57,6 +57,11 @@ $(function(){
 		event.preventDefault();
 		var ControlType = $(event.target).val();
 		var name = $('#tableSelect').val();
+		if(ControlType == "下载备份")
+		{
+			SystemBox(2,'system/databasedown.php','','','','','');
+		}
+		
 		$.ajax({
 			url: 'system/databasecontrol.php',
 			type: 'POST',

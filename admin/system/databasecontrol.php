@@ -1,6 +1,19 @@
 <?php 
 require("../../kernl/Init.php"); //初始化基础参数
-
+if (!defined('source'))
+{
+	echo json_encode(array('status'=>'-1','message'=>"账户状态异常，请重试！"));
+	exit;
+}
+//账户状态
+$state = $dou -> AccountState();	
+if ($state == 'Access denied') 
+{
+	
+	echo json_encode(array('status'=>'-1','message'=>"账户状态异常，请重试！"));
+	exit;
+	
+} 
 $method = $_SERVER['REQUEST_METHOD'];
 $addr = $_SERVER['PHP_SELF'].'?'.file_get_contents('php://input');
 $filename = $_POST['filename'];						
@@ -29,7 +42,7 @@ switch($_POST['control'])
 				}
 		}
 		
-		$filename = "../backup/".date('Ymjgi').".sql"; //存放路径，默认存放到项目最外层
+		$filename = "../backup/".date('YmdjGis').".sql"; //存放路径，默认存放到项目最外层
 		$fp = fopen($filename,'w');
 		fputs($fp,$mysql);
 		fclose($fp);
@@ -141,6 +154,33 @@ switch($_POST['control'])
 		echo json_encode(array('status'=>'0','message'=>$info));
 		$dou -> WriteLog('POST', '管理员执行清空数据表操作', $addr); 
 		
+		break;
+		
+	case '下载备份':
+		echo "<script>javascritp:SystemBox('2','databsedown.php','','','','','')</script>";
+		
+		
+		if (empty($filename))
+		{
+			echo json_encode(array('status'=>'-1','message'=>'待下载的备份为空！'));
+				
+		} else {
+			
+			$file = ROOT_PATH."/admin/backup/".$filename; 
+			if(!file_exists($file))     //判断文件是否存在
+			{  
+				echo json_encode(array('status'=>'-1','message'=>"读取文件失败！"));
+				exit;
+			}
+				Header("Content-type: application/octet-stream"); 
+				Header("Accept-Ranges: bytes"); 
+				Header("Accept-Length: ".filesize($file)); 
+				Header("Content-Disposition: attachment; filename=" . $filename); 
+				// 输出文件内容 
+				echo fread($file,filesize($file)); 
+				fclose($file); 
+				exit;
+		}
 		break;	
 } 	
 
