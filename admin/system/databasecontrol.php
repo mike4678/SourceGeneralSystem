@@ -157,29 +157,23 @@ switch($_POST['control'])
 		break;
 		
 	case '下载备份':
-		echo "<script>javascritp:SystemBox('2','databsedown.php','','','','','')</script>";
-		
-		
 		if (empty($filename))
 		{
 			echo json_encode(array('status'=>'-1','message'=>'待下载的备份为空！'));
 				
 		} else {
 			
-			$file = ROOT_PATH."/admin/backup/".$filename; 
+			$file = ROOT_PATH."admin/backup/".$filename; 
+			
 			if(!file_exists($file))     //判断文件是否存在
 			{  
 				echo json_encode(array('status'=>'-1','message'=>"读取文件失败！"));
 				exit;
 			}
-				Header("Content-type: application/octet-stream"); 
-				Header("Accept-Ranges: bytes"); 
-				Header("Accept-Length: ".filesize($file)); 
-				Header("Content-Disposition: attachment; filename=" . $filename); 
-				// 输出文件内容 
-				echo fread($file,filesize($file)); 
-				fclose($file); 
-				exit;
+				session_start();
+				$_SESSION["sqlfile"] = $file;
+				$_SESSION["filename"] = $filename;
+				echo json_encode(array('status'=>'99','message'=>"开始下载..."));
 		}
 		break;	
 } 	

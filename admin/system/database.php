@@ -56,12 +56,7 @@ $(function(){
 	$(".button").on('click',  function(event) {
 		event.preventDefault();
 		var ControlType = $(event.target).val();
-		var name = $('#tableSelect').val();
-		if(ControlType == "下载备份")
-		{
-			SystemBox(2,'system/databasedown.php','','','','','');
-		}
-		
+		var name = $('#tableSelect').val();		
 		$.ajax({
 			url: 'system/databasecontrol.php',
 			type: 'POST',
@@ -75,6 +70,10 @@ $(function(){
 				if(code == 0)
 				{
 					history.go(0);
+				}
+				if(code == 99)
+				{
+					SystemBox(2,'http://'+ document.domain + ':' + window.location.port + window.location.pathname + '?/downbackup','','','','','')
 				}
 			}
 		});

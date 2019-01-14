@@ -122,9 +122,9 @@ class System extends DbMysql
 			$query = $this->select('adminlist', '*', "adminlist.table='".$table."'  AND adminlist.menu = '".$table_list."' UNION ALL SELECT * FROM `adminlist` where adminlist.table = '".$table."' ORDER BY count ASC limit 2;", $debug = '');
 			while (	$row = $this->fetch_array($query))   
 			{
-				echo "<li><a href='index.php' class='icon-home'> 开始</a></li>";
-				echo "<li><a href=".$row[1].">".$row[2]."管理</a></li>"; 
-				echo "<li>".$table_list."</li>";
+				echo "<a href='admin.php' class='icon-home'> 首页</a> > ";
+				echo "<ui>".$row[2]."管理</ui> > "; 
+				echo "".$table_list."";
 				break;
 			}
 		}
@@ -139,9 +139,20 @@ class System extends DbMysql
 	
 	function AddrConvery($data)  //处理请求
 	{  
+		if(count($data) > 1)
+		{
+			
+			//获取第一个主Key值
+			reset($data);
+			$first_key = key($data);
+			$arr = explode("/",$first_key);
+			return $arr;
+		}
+		
 		foreach ($data as $key=>$value) //把参数传入变量key中
 		$arr = explode("/",$key);
 		return $arr;
+		
 	}	
 	
 	function PageLoading($table,$table_list = '')    //载入框架页面

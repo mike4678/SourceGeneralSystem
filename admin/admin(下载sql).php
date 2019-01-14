@@ -26,6 +26,7 @@ require("../kernl/Init.php");
 //************** 处理登陆状态
 $state = $dou -> AccountState();
 $addr = $dou->AddrConvery($_GET);	 //初始化参数
+	
 if ($state == 'Access denied') 
 {
 	if( count($addr) > 0 && $addr[1] != 'exit') 
@@ -60,7 +61,7 @@ if($addr[1] == 'exit')
 //用于系统探针	
 if($addr[1] == 'phpinfo') 
 { 
-	//$dou -> FormCheck('phpinfo'); //防跨页面查看	
+	$dou -> FormCheck('phpinfo'); //防跨页面查看	
 	phpinfo();
 	exit();
 		
@@ -68,7 +69,7 @@ if($addr[1] == 'phpinfo')
 	
 if($addr[1] == "Function")
 {
-	//$dou -> FormCheck('Function'); //防跨页面查看
+	$dou -> FormCheck('Function'); //防跨页面查看
 	$arr = get_defined_functions();
 	echo "<pre>";
 	echo "当前系统所支持的所有函数,和自定义函数\n";
@@ -76,6 +77,22 @@ if($addr[1] == "Function")
 	echo "</pre>";
 	exit();
 }
+
+if($addr[1] == "downbackup")
+{
+	session_start();
+	$file = fopen($_SESSION["sqlfile"],"r");
+	$filename = $_SESSION["filename"];
+	Header("Content-type: application/octet-stream"); 
+	Header("Accept-Ranges: bytes"); 
+	Header("Accept-Length: ".filesize($file)); 
+	Header("Content-Disposition: attachment; filename=" . $filename); 
+	// 输出文件内容 
+	var_dump($file); 
+	var_dump(fread($file,filesize($file))); 
+	fclose($file); 
+	exit();
+}	
 	
 if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航必须参数
 { 
@@ -128,7 +145,7 @@ if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航�
 					
 				} else
 				 {
-					echo "<a href='admin.php' class='icon-home'> 首页</a> > <li>后台首页</li>";
+					echo "<li><a href='admin.php' class='icon-home'> 开始</a></li><li>后台首页</li>";
 					
 					}
 				 ?>

@@ -28,10 +28,7 @@ $title = '雅黑系统探针[Source修改版]';
 
 $version = "v0.4.7"; //版本号
 
-
 define('HTTP_HOST', preg_replace('~^www\.~i', '', $_SERVER['HTTP_HOST']));
-
-
 
 $time_start = microtime_float();
 
@@ -908,9 +905,6 @@ box-shadow: 1px 1px 1px #CCC;
 
 
 <script language="JavaScript" type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
-	<script>
-function info(message,title) { art.dialog.open(message, {width: 420, height: 400, title: title}); }
-</script>	
 <script type="text/javascript"> 
 
 <!--
@@ -928,11 +922,12 @@ var InputSpeed5=<?php echo floor($NetInputSpeed[5]) ?>;
 function getJSONData()
 
 {
-
-	setTimeout("getJSONData()", 1000);
-
-	$.getJSON('?act=rt&callback=?', displayData);
-
+	
+	if(PHP_OS == 'Linux' || PHP_OS == "FreeBSD")
+	{
+		setTimeout("getJSONData()", 1000);
+		$.getJSON('admin.php?/system/info/?act=rtcallback=?', displayData);
+	}
 }
 function ForDight(Dight,How)
 { 
@@ -1046,7 +1041,7 @@ function displayData(dataJSON)
 <a name="gotop"></a>
 
 <div id="page">
-<table><tr style='text-align:center;' ><th ><?php echo $title . " " .$version ;?></th></tr></table>
+<!--<table><tr style='text-align:center;' ><th ><?php //echo $title . " " .$version ;?></th></tr></table>-->
 	
 	<table>
 		<tr id="page">
@@ -1358,10 +1353,9 @@ foreach ($able as $key=>$value) {
 
 		?>
 
-    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/phpinfo\',\'PHP Information\')"> PHPINFO</a>';?>
+    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:SystemBox(2,\'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/phpinfo\',\'\',\'PHP Information\',600,800,\'\')"> PHPINFO</a>';?>
 
     </td>
-
     <td width="31%">PHP版本（php_version）：</td>
 
     <td width="19%"><?php echo PHP_VERSION;?></td>
@@ -1543,8 +1537,7 @@ foreach ($able as $key=>$value) {
 
 	<tr>
 		<td>默认支持函数（enable_functions）：</td>
-		<td colspan="3"><?php echo '<a href="javascript:info(\''.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/Function\',\'PHP Function Information\')"> 请点这里查看详细！</a>'; ?></td>	
-		
+		<td colspan="3"><?php echo '<a href="javascript:SystemBox(2,\'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/Function\',\'\',\'PHP Function Information\',400,600,\'\')"> 请点这里查看详细！</a>'; ?></td>	
 	</tr>
 	<tr>
 		<td>被禁用的函数（disable_functions）：</td>
