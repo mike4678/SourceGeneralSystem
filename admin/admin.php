@@ -61,7 +61,7 @@ if($addr[1] == 'exit')
 //用于系统探针	
 if($addr[1] == 'phpinfo') 
 { 
-	$dou -> FormCheck('phpinfo'); //防跨页面查看	
+	//$dou -> FormCheck('phpinfo'); //防跨页面查看	
 	phpinfo();
 	exit();
 		
@@ -69,7 +69,7 @@ if($addr[1] == 'phpinfo')
 	
 if($addr[1] == "Function")
 {
-	$dou -> FormCheck('Function'); //防跨页面查看
+	//$dou -> FormCheck('Function'); //防跨页面查看
 	$arr = get_defined_functions();
 	echo "<pre>";
 	echo "当前系统所支持的所有函数,和自定义函数\n";

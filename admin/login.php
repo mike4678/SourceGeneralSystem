@@ -8,12 +8,6 @@ if ($state != 'Access denied')
 	header("Location: admin.php"); //重定向浏览器到播放界面
 }
 
-if ($_COOKIE["SourceTryCount"] >= $_G['Login']['MaxNumber']) 
-
-{ 
-	//echo $dou -> Sys_ErrorPage(999);
-	//exit; 
-}
 //基础网页内容
 $var = '<div class="login_m">
 			<div class="login_padding login_title">
@@ -24,11 +18,11 @@ $var = '<div class="login_m">
 					<label>
 						<h2>用户名</h2>
 						<input type="hidden" id="return" name="return" value="'.$_GET['ref'].'">
-						<input type="text" id="username" name="username" class="txt_input txt_input2" value="Your name">
+						<input type="text" id="username" name="username" class="txt_input txt_input2" >
 					</label>
 					<label>
 						<h2>密码</h2>
-						<input type="password" name="password" id="password" class="txt_input" value="******">
+						<input type="password" name="password" id="password" class="txt_input" >
 					</label>
 					<label id=\'code\'>
 						<h2>验证码</h2>
@@ -74,12 +68,11 @@ $(function(){
 		var user = $('#username').val();
 		var pass = $('#password').val();
 		var code = $('#vaildcode').val();
-		var saveme = $('#save_me').val();
+		var saveme = $('#save_me').prop('checked');
 		var ref = $('#return').val();
 		
 		if(user == ''){
 			SystemBox(3,'用户名不能为空！'); 
-			//$('#msg').addClass('text-danger').text('用户名不能为空！');
 			return false;
 		}
 		if(pass == ''){
@@ -99,7 +92,6 @@ $(function(){
 			data: {username: user,password: pass,code: code,save: saveme},
 			beforeSend: function(){
 				$('#button').attr("value",'正在登录...');
-				//$(".hwLayer-ok").attr('disabled',true);
 			},
 			success: function(res){
 				var errcode = res.status;

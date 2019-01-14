@@ -12,6 +12,17 @@ $username = $_POST['username'];  //用户名
 $PWD = $_POST['password'];  //密码
 $ref = empty($_POST['return']) ? '' : $_POST['return']; //跳转地址
 
+if( $_COOKIE["SourceTryCount"] == NULL) 
+{
+	$dou->cookie("SourceTryCount", 0, time()+36000);	
+	
+} elseif($_COOKIE["SourceTryCount"] >= $_G['Login']['MaxNumber']) {
+	
+	echo json_encode(array('status'=>'-1','message'=>'超过最大尝试次数！'));
+	exit;
+	
+}
+
 if ($dou -> Info('VaildCode') == 0)   //启用验证码
 {
 	session_start(); //初始化验证码Session
@@ -32,10 +43,6 @@ if( key == NULL)
 	exit;
 }
 
-if( $_COOKIE["SourceTryCount"] == NULL) 
-{
-	$dou->cookie("SourceTryCount", 0, time()+36000);	
-} 
 //判断最基本的两个值是否为空
 if (empty($username) || empty($PWD) )  //判断POST回来的用户名或密码是否为空
 { 
@@ -61,7 +68,8 @@ if( $dou -> affected_rows() == NULL)
 	
 } else {
 	session_start(); //标志Session的开始 
-	if($_POST['checkbox'] = 'on')   //判断是否记住登陆信息
+	$_COOKIE["SourceTryCount"] = 0;
+	if($_POST['save'] = 'true')   //判断是否记住登陆信息
 	{
 		$dou->cookie("usr", $username, time()+36000);
 		$dou->cookie("pwd", $passcode, time()+36000); //一个小时3600*一天24小时*365天
@@ -75,12 +83,11 @@ if( $dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
-			$_COOKIE["SourceTryCount"] = 0;
 			
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
 			echo json_encode(array('status'=>'0','message'=>'success'));
-			$_COOKIE["SourceTryCount"] = 0;
+
 			}
 		
 	} else {
@@ -90,12 +97,10 @@ if( $dou -> affected_rows() == NULL)
 		{
 			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
-			$_COOKIE["SourceTryCount"] = 0;
 			
 		}  else { 						
 			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
 			echo json_encode(array('status'=>'0','message'=>'success'));//不存在返回nameerror
-			$_COOKIE["SourceTryCount"] = 0;
 								}
 					
 						}
