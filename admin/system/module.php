@@ -6,9 +6,9 @@ $(function () {
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
-	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=module' method='post' enctype='multipart/form-data'></form>");
-    $("#fileupload").change(function(){
-		$("#myupload").ajaxSubmit({
+	$181("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=module' method='post' enctype='multipart/form-data'></form>");
+    $181("#fileupload").change(function(){
+		$181("#myupload").ajaxSubmit({
 			dataType:  'json',
 			beforeSend: function() {
 				progress.show();

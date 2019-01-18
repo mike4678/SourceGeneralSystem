@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </div>
                 <div class="form-group">
-                	<div class="label"><label>IP防火墙黑名单/白名单</label></div>
+                	<div class="label"><label>IP防火墙黑/白名单</label></div>
                 	<div class="field">
                         <div class="button-group button-group-small radio">
                         <select name="tableSelect" size="10" id="tableSelect" class='select' style="margin-top:6px">

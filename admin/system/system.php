@@ -231,9 +231,9 @@ $(function () {
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
-	$("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=system' method='post' enctype='multipart/form-data'></form>");
-    $("#fileupload").change(function(){
-		$("#myupload").ajaxSubmit({
+	$181("#fileupload").wrap("<form id='myupload' action='system/upload.php?act=add&ifr=system' method='post' enctype='multipart/form-data'></form>");
+    $181("#fileupload").change(function(){
+		$181("#myupload").ajaxSubmit({
 			dataType:  'json',
 			beforeSend: function() {
         		showimg.empty();
@@ -249,29 +249,34 @@ $(function () {
         		percent.html(percentVal);
     		},
 			success:function(data) {
-				var img = "../images/"+data.pic;
-				showimg.html("<input type='hidden' name='path' value='"+img+"'><img src='"+img+"'><span class='delimg' rel='"+data.pic+"'>删除</span>");
-				$("#fileupload").hide();
-				progress.hide();
+				if(data.status == '0')
+				{
+					var img = "../images/"+data.pic;
+					showimg.html("<input type='hidden' name='path' value='"+img+"'><img src='"+img+"'><span class='delimg' rel='"+data.pic+"'>删除</span>");
+					$("#fileupload").hide();
+					progress.hide();
+				} else {
+					btn.html("上传失败");
+					bar.width('0')
+					files.html(data.message);	
+				}
+
 			},
-			error:function(xhr){
-				btn.html("上传失败");
-				bar.width('0')
-				files.html(xhr.responseText);
-			}
 		});
 		
 	});
 	
-	$(".delimg").live('click',function(){
+	$181(".delimg").live('click',function(){
 		var pic = $(this).attr("rel");
-		$.post("system/upload.php?act=del&ifr=system",{imagename:pic},function(msg){
-			if(msg==1){
+		$181.post("system/upload.php?act=del&ifr=system",{imagename:pic},function(msg){
+			var objs = eval(msg);
+			console.log(objs);
+			if(objs.status == 1){
 				files.html("删除成功.&nbsp;&nbsp;<a href='javascript:history.go(0)'>刷新</a>");
 				showimg.empty();
 				progress.hide();
 			}else{
-				alert(msg);
+				alert(objs.message);
 			}
 		});
 	});
@@ -398,11 +403,11 @@ $(function () {
 			if($dou -> Info("index_status") == 1)				
 			{
 				
-				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px" disable readonly><option value=>功能未启用</option>';
+				echo '<select name="tableSelect" size="10" id="styleSelect" class="select" style="margin-top:6px" disable readonly><option value=>功能未启用</option>';
 				
 			} else {
 				
-				echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
+				echo '<select name="tableSelect" size="10" id="styleSelect" class="select" style="margin-top:6px">';
 					if($dou -> Info("index_page_all") == NULL)							 
 					{
 						echo '<option value=>未安装任何包含首页风格的模块或功能</option>';
@@ -441,14 +446,14 @@ $(function () {
            <div class="form-group">
            <div class="label"><label for="sitename">允许文件最大大小<br>(upload_max_filesize)</label></div>
            <div class="field">
-             <input type="text" class="input" id="php_size" name="php_size" size="50"  value=<?php echo ini_get('upload_max_filesize'); ?> disable readonly> 
+             <input type="text" class="input" id="upload_size" name="php_size" size="50"  value=<?php echo ini_get('upload_max_filesize'); ?> disable readonly> 
              <a href="http://bbs.csource.com.cn/read-273-1.html" target="_blank">(如何修改该值？)</a>
            </div>
           </div>
           <div class="form-group">
            <div class="label"><label for="sitename">允许上传最大大小<br>(post_max_size)</label></div>
            <div class="field">
-             <input type="text" class="input" id="php_size" name="php_size" size="50"  value=<?php echo ini_get('post_max_size'); ?> disable readonly> 
+             <input type="text" class="input" id="post_size" name="php_size" size="50"  value=<?php echo ini_get('post_max_size'); ?> disable readonly> 
              <a href="http://bbs.csource.com.cn/read-273-1.html" target="_blank">(如何修改该值？)</a>
            </div>
           </div>
@@ -456,7 +461,7 @@ $(function () {
            <div class="label"><label for="sitename">上传参数</label></div>
              <div class="field">
 				 <?php
-					echo '<select name="tableSelect" size="10" id="tableSelect" class="select" style="margin-top:6px">';
+					echo '<select name="tableSelect" size="10" id="uploadSelect" class="select" style="margin-top:6px">';
 				 	$UData = $dou -> UploadFrame();
 				 	foreach ($UData as $value)
 					{

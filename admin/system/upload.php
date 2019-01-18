@@ -44,7 +44,8 @@ $syssize = $dou -> Info('upload_size');  //上传大小
 //获取参数
 if($action == NULL || $frame == NULL )
 {
-	die ("请求参数错误");
+	echo json_encode(array('status'=>'-1','message'=>'请求参数错误'));
+	exit;
 	
 } else {
 	
@@ -61,7 +62,8 @@ if( $action == 'add' )
 	{
 		if ($picsize > $syssize * 1024 * 1024) 
 		{
-			die('文件大小超过系统限制');
+			echo json_encode(array('status'=>'-1','message'=>'文件大小超过限制'));
+			exit;
 		}
 	} 
 	
@@ -70,7 +72,7 @@ if( $action == 'add' )
 	$tmp = explode('、', $fileico[$key]);
 	for ($x=0; $x<count($tmp); $x++) 
 	{
-  		if ($type == $tmp[$x] ) 
+  		if (strtolower($type) == strtolower($tmp[$x]) ) 
 		{	
   			$upstatus = 'success';
 		} 
@@ -111,7 +113,8 @@ if( $action == 'add' )
 		
 	} else 
 	{
-		die('文件格式错误！');
+		echo json_encode(array('status'=>'-1','message'=>'文件格式错误！'));
+		exit;
 	}
 
 } elseif ( $action == 'del' ) 
@@ -121,9 +124,9 @@ if( $action == 'add' )
 	if(!empty($filename))
 	{
 		unlink($filepath[$key].$filename);
-		echo '1';
+		echo json_encode(array('status'=>'0','message'=>''));
 	} else {
-		echo '删除失败.';
+		echo json_encode(array('status'=>'-1','message'=>'删除失败！'));
 	}
 	
 }

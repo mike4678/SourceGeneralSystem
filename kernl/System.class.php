@@ -141,7 +141,6 @@ class System extends DbMysql
 	{  
 		if(count($data) > 1)
 		{
-			
 			//获取第一个主Key值
 			reset($data);
 			$first_key = key($data);
@@ -159,7 +158,6 @@ class System extends DbMysql
 	{  
 		$query = $this->select('adminlist', '*', "adminlist.table = '".$table."' AND adminlist.menu = '".$table_list."'", $debug = '');
 		$row = $this->fetch_array($query);
-		//print_r("Menu_list.table = '".$table."' AND Menu_list.list = '".$table_list."'");
 		return $row['page'];
 	}
 	
@@ -191,7 +189,6 @@ class System extends DbMysql
 	{  
 		$query = $this->select('adminlist', '*', "adminlist.table = '".$table."' AND adminlist.menu = '".$table_list."'", $debug = '');
 		$row = $this->fetch_array($query);
-		//print_r("Menu_list.table = '".$table."' AND Menu_list.list = '".$table_list."'");
 		return $row['value'];
 	}
 	
@@ -204,7 +201,7 @@ class System extends DbMysql
 		} else {
 			$row = $this->fetch_array($query);
 			return $row[$value];
-			}
+		}
 
 	}
 	/* ---------------------------------------------------- */
@@ -221,9 +218,10 @@ class System extends DbMysql
 			$id = $row['max(id)'] + 1;
 		}
 		$this->query("INSERT INTO system_log (id, method, ip, data, addr, time) VALUES ('$id','$method','$ip','$data','$addr','$time')");
- 	 	if ($this->affected_rows() == NULL) {
-      	echo '<script language="JavaScript">window.alert("写入日志失败！")</script>';
-    		 }
+ 	 	if ($this->affected_rows() == NULL) 
+		{
+      		echo '<script language="JavaScript">window.alert("写入日志失败！")</script>';
+    	}
 	} 
 	/* ---------------------------------------------------- */
 	
@@ -308,16 +306,18 @@ class System extends DbMysql
 	/* ---------------------------------------------------- */
 	function cookie($var, $value = '', $time = 0, $path = '', $domain = '', $s = false)
 	{
-    $_COOKIE[$var] = $value;
-    if (is_array($value)) 
+    	$_COOKIE[$var] = $value;
+    	if (is_array($value)) 
 		{
-        foreach ($value as $k => $v)
+        	foreach ($value as $k => $v)
 			{
-            setcookie($var . '[' . $k . ']', $v, $time, $path, $domain, $s);
+            	setcookie($var . '[' . $k . ']', $v, $time, $path, $domain, $s);
         	}
+			
     	} else {
+			
         	setcookie($var, $value, $time, $path, $domain, $s);
-    		}
+    	}
 	}
 	
 	/* ---------------------------------------------------- */
@@ -467,9 +467,9 @@ class System extends DbMysql
 					if($Allow != 'TRUE') 
 					{
 						$return = array(
-       									'status'=>2,
-       									'msg'=>'该IP无权限访问',
-       									'data'=>$Check_IP_Arrary
+       									'status' => 2,
+       									'msg' => '该IP无权限访问',
+       									'data' => $Check_IP_Arrary
        									);
     					return json_encode($return);
 						exit();
@@ -480,9 +480,9 @@ class System extends DbMysql
 					if($Allow == 'TRUE') 
 					{
 						$return = array(
-       									'status'=>2,
-       									'msg'=>'该IP无权限访问',
-       									'data'=>$Check_IP_Arrary
+       									'status' => 2,
+       									'msg' => '该IP无权限访问',
+       									'data' => $Check_IP_Arrary
        									);
     					return json_encode($return);
 						exit();
@@ -649,7 +649,12 @@ class System extends DbMysql
 			case '500':
 				$title = 'Access Denied';
 				$content = '您无权使用所提供的凭据查看此目录或页面。';
-				break;			
+				break;
+				
+			case '701':
+				$title = 'Access Denied';
+				$content = '当前请求包含违禁字符，已被系统拦截！';
+				break;	
 				
 			case '999':
 				$title = 'Access Denied';
@@ -787,6 +792,46 @@ class System extends DbMysql
 		}	
 
 		/* ---------------------------------------------------- */
+	
+			
+		//WebSite Safe Check System(wscs 网站安全检查系统)
+	/* ---------------------------------------------------- */	
+	
+	function WSCS_Check( ) 
+	{
+    // 密码字符集，可任意添加你需要的字符
+    	$CurrentAddr = HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		foreach ($_GET as $key => $value) 
+		{
+			$check = array('"', '>', '<', '\'', '(', ')', '%27','‘','%E2%80%98');
+			if (!empty($value) && !json_decode($value)) 
+			{
+				$value = strtoupper($value);
+				foreach ($check as $_str) 
+				{
+					if (strpos($value, $_str) !== false) 
+					{
+						$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $value ,$CurrentAddr);     
+						echo $this -> Sys_ErrorPage (701);
+						exit;
+					}
+				}
+				
+			} else {
+				
+				foreach ($check as $_str) 
+				{
+					if (strpos($CurrentAddr, $_str) !== false) 
+					{
+						$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $CurrentAddr ,$CurrentAddr);    
+						echo $this -> Sys_ErrorPage (701);
+						exit;
+					}
+				}
+			}
+		}
+	}
+	/* ---------------------------------------------------- */
 
 }
 ?>

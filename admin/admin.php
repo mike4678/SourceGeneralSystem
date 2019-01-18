@@ -1,31 +1,10 @@
 <?php 
 require("../kernl/Init.php"); 
-?>
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit">
-    <title><?php echo $dou -> Info('corp'); ?>后台管理系统</title>
-    <link rel="stylesheet" href="../css/pintuer.css">
-    <link rel="stylesheet" href="../css/admin.css">
-    <link rel="stylesheet" href="../css/popup.css">
-	<link rel="stylesheet" href="../css/puyuetian.css">
-	<script src="../js/jquery-1.8.3.min.js"></script>
-    <script src="../js/pintuer.js"></script>
-    <script src="../js/respond.js"></script>
-	<script src="../js/global.js"></script>
-	<script src="../js/artDialog.js?skin=default"></script>	
-	<script src="../js/iframeTools.js"></script>
 
-</head>
-<body>
-<?php 
 //************** 处理登陆状态
+$dou -> WSCS_Check();                    //安全检查，防护系统
 $state = $dou -> AccountState();
-$addr = $dou->AddrConvery($_GET);	 //初始化参数
+$addr = $dou -> AddrConvery($_GET);	 //初始化参数
 if ($state == 'Access denied') 
 {
 	if( count($addr) > 0 && $addr[1] != 'exit') 
@@ -41,6 +20,7 @@ if ($state == 'Access denied')
 	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
 	
+echo str_replace("\$corp$",$dou -> Info('corp'),$dou -> Info('Index_head')); //初始化页面Head
 //************** 处理页面请求
 if($addr[1] == 'exit') 
 { 
