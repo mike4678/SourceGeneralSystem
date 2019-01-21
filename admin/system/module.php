@@ -23,14 +23,15 @@ $(function () {
         		percent.html(percentVal);
     		},
 			success:function(data) {
-				//$("#fileupload").hide();
-				//progress.hide();
-				files.html(data.status);
-			},
-			error:function(xhr){
-				btn.html("上传失败");
-				bar.width('0')
-				files.html("上传失败！错误：" + xhr.responseText);
+				if(data.status == '0' || data.status == null)
+				{
+					files.html(data.status);
+					
+				} else {
+					
+				    files.html("上传失败！错误：" + data.message);
+					
+				}
 			}
 		});
 		

@@ -122,12 +122,13 @@ class System extends DbMysql
 			$query = $this->select('adminlist', '*', "adminlist.table='".$table."'  AND adminlist.menu = '".$table_list."' UNION ALL SELECT * FROM `adminlist` where adminlist.table = '".$table."' ORDER BY count ASC limit 2;", $debug = '');
 			while (	$row = $this->fetch_array($query))   
 			{
-				echo "<a href='admin.php' class='icon-home'> 首页</a> > ";
-				echo "<ui>".$row[2]."管理</ui> > "; 
-				echo "".$table_list."";
+				$TaskBar = "<a href='admin.php' class='icon-home'> 首页</a> > ";
+				$TaskBar.= "<ui>".$row[2]."管理</ui> > "; 
+				$TaskBar.="".$table_list."";
 				break;
 			}
 		}
+		return $TaskBar;
 	}
 
 	function convert($table,$table_list)  //将英文名称转换为中文

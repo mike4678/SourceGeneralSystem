@@ -56,8 +56,7 @@ switch ($_SERVER['REQUEST_METHOD'])  //获取操作方式
 </script>
 <form method="post" action="#">
     <div class="panel admin-panel">
-    	<?php print($dou->content($addr[2],'table_head')) ; ?>	
-             <?php 
+    	<?php print($dou->content($addr[2],'table_head')) ; 
 $Page_size = $dou->Info('pagedisplay'); 
 
 $result = $dou->query('select * from '. $table_name ); 

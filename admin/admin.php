@@ -20,7 +20,6 @@ if ($state == 'Access denied')
 	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
 	
-echo str_replace("\$corp$",$dou -> Info('corp'),$dou -> Info('Index_head')); //初始化页面Head
 //************** 处理页面请求
 if($addr[1] == 'exit') 
 { 
@@ -76,56 +75,54 @@ if ($addr[1] != "" && $addr[2] != "" )     //生成顶部导航和左边导航�
 	$list = $data[3];
 }
 
-?>
-<div class="lefter">
-    <div class="logo">
-    <a href='#' target='_blank'><img src='<?php echo $dou->Info('logo'); ?>' alt='Logo' width='94' height='40'/></a></div>	
-</div>
-<div class="righter nav-navicon" id="admin-nav">
-    <div class="mainer">
-        <div class="admin-navbar">
-            <span class="float-right">
-            	<a class="button button-little bg-main" href="../index.php" target="_blank">前台首页</a>
-                <a class="button button-little bg-yellow" href="?/exit">注销登录</a>
-            </span>
-            <ul class="nav nav-inline admin-nav">
-            <?php echo $dou->table_list($tab,$list); ?>
-            </ul>
-        </div>
-        <div class="admin-bread">
-         <?php
-          if(Debug == "on") 
-          {
-          	echo '<span style="color: red">(测试模式)</span>';
-          } 
-          ?> 
-            <ul class="bread">
-                <?php 
-				if ($addr[1] != "") 
-				{
+//生成首页Heard部分
+$value = $dou -> Info('Index_head');
+preg_match_all("|{(.*)}|U", $value, $out, PREG_PATTERN_ORDER); //寻找文本中的{}字段内容
+$tlist = 0;
+while ($tlist <= count($out[1]) - 1)  
+{
+	$name = "{".$out[1][$tlist]."}";
+	if($out[1][$tlist] != 'table_list')
+	{
+		
+		$HeadData = $dou -> Info($out[1][$tlist]);
+		
+	} else {
+		
+		$HeadData = $dou->table_list($tab,$list);
+		
+	}
+	$value = str_ireplace($name,$HeadData,$value);	
+	$tlist = $tlist + 1;
+	
+} 
+//生成结束
+$PageData = $value;
+	
+if ($addr[1] != "") 
+{
+	$PageData.= $dou->navigation($tab,$list);
 					
-					echo $dou->navigation($tab,$list);
+} else {
+	
+	$PageData.= "<a href='admin.php' class='icon-home'> 首页</a> > <li>后台首页</li>";
 					
-				} else
-				 {
-					echo "<a href='admin.php' class='icon-home'> 首页</a> > <li>后台首页</li>";
-					
-					}
-				 ?>
-            </ul></div></div></div>
-<div class="admin">
-<?php 
+}
+
+$PageData.='</ul></div></div></div><div class="admin">';
+
+echo $PageData;
+
+// 初始化框架页面
 $bottom = $dou->PageLoading($data[2],$data[3]);
 $file = dirname(__FILE__) . '/' . $bottom; 
 if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
 {  
-	include 'system/404.php';   //如果不存在则跳转到错误界面
+	 include 'system/404.php';   //如果不存在则跳转到错误界面
 	
 } else 
 	{    
-		include $bottom;
+		 include $bottom;
 	}
 ?>
-</div>
-</body>
-</html>
+</div></body></html>

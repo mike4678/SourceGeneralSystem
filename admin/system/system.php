@@ -249,12 +249,13 @@ $(function () {
         		percent.html(percentVal);
     		},
 			success:function(data) {
-				if(data.status == '0')
+				if(data.status == '0' || data.status == null)
 				{
 					var img = "../images/"+data.pic;
 					showimg.html("<input type='hidden' name='path' value='"+img+"'><img src='"+img+"'><span class='delimg' rel='"+data.pic+"'>删除</span>");
 					$("#fileupload").hide();
 					progress.hide();
+					files.hide();
 				} else {
 					btn.html("上传失败");
 					bar.width('0')
@@ -269,9 +270,9 @@ $(function () {
 	$181(".delimg").live('click',function(){
 		var pic = $(this).attr("rel");
 		$181.post("system/upload.php?act=del&ifr=system",{imagename:pic},function(msg){
-			var objs = eval(msg);
-			console.log(objs);
-			if(objs.status == 1){
+			var objs = $.parseJSON(msg);
+			if(objs.status == 0){
+				files.show();
 				files.html("删除成功.&nbsp;&nbsp;<a href='javascript:history.go(0)'>刷新</a>");
 				showimg.empty();
 				progress.hide();

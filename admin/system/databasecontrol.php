@@ -51,62 +51,69 @@ switch($_POST['control'])
 		break;
 			
 	case '恢复数据库':
-		set_time_limit(0); //设置超时时间为0，表示一直执行。当php在safe mode模式下无效，此时可能会导致导入超时，此时需要分段导入 
-		$info ="<p>正在恢复数据库，步骤一，清理数据表<br>"; 
-		$result = $dou -> query("SHOW tables"); 
-		while ($currow=$dou -> fetch_array($result)) 
-		{ 
-			$dou -> query("drop TABLE IF EXISTS $currow[0]"); 
-			$info.= "清空数据表【".$currow[0]."】成功！<br>"; 
-		} 
-		$info.= "正在恢复数据库，步骤一，清理数据表....完成<br>正在恢复数据库，步骤二，导入数据<br>"; 
-		$mysql_file = "../backup/".$filename; //指定要恢复的MySQL备份文件路径,请自已修改此路径
-		if(file_exists($mysql_file)) 
+		if (empty($filename))
 		{
-			$sql_value = "";
-  			$cg = 0;
-  			$sb = 0;
-  			$sqls = file($mysql_file);
-  			foreach($sqls as $sql)
-  			{
-  				$sql_value.= $sql;
-  			}
-  			$a = explode(";\r\n", $sql_value); //根据";\r\n"条件对数据库中分条执行
-  			$total = count($a) - 1;
-  			$dou -> query("set names 'utf8'");
-  			for ($i = 0; $i < $total ; $i++)
-  			{
- 				$dou -> query("set names 'utf8'");
-  				//执行命令
-  				if($dou -> query($a[$i]))
-  				{
-   					$cg+=1;
-						
-  				} else {
-					
-   					$sb+=1;
-					$sb_command[$sb] = $a[$i];
-  					}
-  			}
+			echo json_encode(array('status'=>'-1','message'=>'请选择需要恢复的备份！'));
+				
+		} else {
 			
-  			$info.= "操作完毕，共处理 $total 条命令，成功 $cg 条，失败 $sb 条<br>";
-  			//显示错误信息
-				
-			if(constant("Debug") == 'on' & $sb>0)   //调试模式开启，并且存在失败条数的时候才显示错误语句
-  			{
-  				$info.= "<hr><br>失败命令如下：<br>";
-  				for ($ii = 1; $ii<= $sb; $ii++)
+			set_time_limit(0); //设置超时时间为0，表示一直执行。当php在safe mode模式下无效，此时可能会导致导入超时，此时需要分段导入 
+			$info = "<p>正在恢复数据库，步骤一，清理数据表<br>"; 
+			$result = $dou -> query("SHOW tables"); 
+			while ($currow=$dou -> fetch_array($result)) 
+			{ 
+				$dou -> query("drop TABLE IF EXISTS $currow[0]"); 
+				$info.= "清空数据表【".$currow[0]."】成功！<br>"; 
+			} 
+			$info.= "正在恢复数据库，步骤一，清理数据表....完成<br>正在恢复数据库，步骤二，导入数据<br>"; 
+			$mysql_file = "../backup/".$filename; //指定要恢复的MySQL备份文件路径,请自已修改此路径
+			if(file_exists($mysql_file)) 
+			{
+				$sql_value = "";
+  				$cg = 0;
+  				$sb = 0;
+  				$sqls = file($mysql_file);
+  				foreach($sqls as $sql)
   				{
-   					$info.= "<b>第 ".$ii." 条命令（内容如下）：</b><br>".$sb_command[$ii]."<br>";
+  					$sql_value.= $sql;
   				}
+  				$a = explode(";\r\n", $sql_value); //根据";\r\n"条件对数据库中分条执行
+  				$total = count($a) - 1;
+  				$dou -> query("set names 'utf8'");
+  				for ($i = 0; $i < $total ; $i++)
+  				{
+ 					$dou -> query("set names 'utf8'");
+  					//执行命令
+  					if($dou -> query($a[$i]))
+  					{
+   						$cg+=1;
+						
+  					} else {
+					
+   						$sb+=1;
+						$sb_command[$sb] = $a[$i];
+  					}
+  				}
+			
+  				$info.= "操作完毕，共处理 $total 条命令，成功 $cg 条，失败 $sb 条<br>";
+  				//显示错误信息
+				
+				if(constant("Debug") == 'on' & $sb>0)   //调试模式开启，并且存在失败条数的时候才显示错误语句
+  				{
+  					$info.= "<hr><br>失败命令如下：<br>";
+  					for ($ii = 1; $ii<= $sb; $ii++)
+  					{
+   						$info.= "<b>第 ".$ii." 条命令（内容如下）：</b><br>".$sb_command[$ii]."<br>";
+  					}
 										
-  			}  
+  				}  
 				
-			echo json_encode(array('status'=>'0','message'=>$info));
+				echo json_encode(array('status'=>'0','message'=>$info));
 				
-		}  else {
+			}  else {
 				
-  			echo json_encode(array('status'=>'-1','message'=>'备份文件不存在！'));
+  				echo json_encode(array('status'=>'-1','message'=>'备份文件不存在！'));
+			}
 		}
 			
 		$dou -> WriteLog('POST', '管理员执行恢复数据库', $addr); 
