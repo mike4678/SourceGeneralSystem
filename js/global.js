@@ -69,7 +69,7 @@ function GetCode()
 //height 高度
 //weight 宽度
 
-function SystemBox(type,data,icon,title,height,width,time) 
+function SystemBox(type,data,icon,title,height,width) 
 {
 	switch(type)
 	{
@@ -90,11 +90,7 @@ function SystemBox(type,data,icon,title,height,width,time)
 			break;
 		
 		case 3:
-			if(time == null)
-			{
-				time = 3;
-			} 
-			art.dialog.tips(data,time);
+			art.dialog.tips(data);
 			break;
 			
 	}

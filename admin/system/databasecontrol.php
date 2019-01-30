@@ -126,7 +126,7 @@ switch($_POST['control'])
 				
 		} else {
 			
-			$file = dirname(__FILE__)."/../backup/".$filename; 
+			$file = ROOT_PATH."admin/backup/".$filename;  
 			$result = @unlink ($file); 
 			if ($result == false) 
 			{ 
@@ -178,7 +178,6 @@ switch($_POST['control'])
 				exit;
 			}
 				session_start();
-				$_SESSION["sqlfile"] = $file;
 				$_SESSION["filename"] = $filename;
 				echo json_encode(array('status'=>'99','message'=>"开始下载..."));
 		}

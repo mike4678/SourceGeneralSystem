@@ -73,7 +73,8 @@ $(function(){
 				}
 				if(code == 99)
 				{
-					SystemBox(2,'http://'+ document.domain + ':' + window.location.port + window.location.pathname + '?/downbackup','','','','','')
+					SystemBox(2,'http://'+ document.domain + ':' + window.location.port + window.location.pathname + '?/downbackup','','','','','1');
+					
 				}
 			}
 		});
