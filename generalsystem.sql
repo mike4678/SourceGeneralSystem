@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50710
+Source Server Version : 50721
 Source Host           : localhost:3306
 Source Database       : generalsystem
 
 Target Server Type    : MYSQL
-Target Server Version : 50710
+Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-01-21 21:33:02
+Date: 2019-01-30 16:51:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,7 +54,7 @@ CREATE TABLE `admin_user` (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES ('admin', 'k5WfnKA=', '::1', '19/01/18 15:16:17');
+INSERT INTO `admin_user` VALUES ('admin', 'k5WfnKA=', '::1', '19/01/29 16:30:17');
 
 -- ----------------------------
 -- Table structure for `content_data`
@@ -105,6 +105,7 @@ CREATE TABLE `system_log` (
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
+INSERT INTO `system_log` VALUES ('1', 'POST', '::1', '管理员执行清空数据表操作', '/admin/system/databasecontrol.php?control=%E6%B8%85%E7%A9%BA%E6%95%B0%E6%8D%AE%E5%BA%93&filename=', '19/01/29');
 
 -- ----------------------------
 -- Table structure for `system_setting`
@@ -143,3 +144,4 @@ INSERT INTO `system_setting` VALUES ('MaxCount', '4', '后台登陆界面最大�
 INSERT INTO `system_setting` VALUES ('VaildCode', '0', '后台登陆是否启用验证码，0为启用，1为关闭');
 INSERT INTO `system_setting` VALUES ('AllowDatabase', 'system_log;', '可清空的数据库表名');
 INSERT INTO `system_setting` VALUES ('Index_head', '<!DOCTYPE html>\r\n<html lang=\"zh-cn\">\r\n<head>\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\r\n    <meta name=\"renderer\" content=\"webkit\">\r\n    <title>{corp}后台管理系统</title>\r\n    <link rel=\"stylesheet\" href=\"../css/pintuer.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/admin.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/popup.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/puyuetian.css\">\r\n    <script src=\"../js/jquery-1.8.3.min.js\"></script>\r\n    <script src=\"../js/pintuer.js\"></script>\r\n    <script src=\"../js/respond.js\"></script>\r\n    <script src=\"../js/global.js\"></script>\r\n    <script src=\"../js/artDialog.js?skin=default\"></script>	\r\n    <script src=\"../js/iframeTools.js\"></script>\r\n    <script type=\"text/javascript\" src=\"../js/jquery-1.8.1.min.js\"></script>\r\n     <script type=\"text/javascript\">\r\n        var $181 = $;\r\n     </script>\r\n</head>\r\n<body>\r\n<div class=\"lefter\">\r\n    <div class=\"logo\">\r\n    <a href=\'#\' target=\'_blank\'><img src=\'{logo}\' alt=\'Logo\' width=\'94\' height=\'40\'/></a></div>	\r\n</div>\r\n<div class=\"righter nav-navicon\" id=\"admin-nav\">\r\n    <div class=\"mainer\">\r\n        <div class=\"admin-navbar\">\r\n            <span class=\"float-right\">\r\n            	<a class=\"button button-little bg-main\" href=\"../index.php\" target=\"_blank\">前台首页</a>\r\n                <a class=\"button button-little bg-yellow\" href=\"?/exit\">注销登录</a>\r\n            </span>\r\n            <ul class=\"nav nav-inline admin-nav\">\r\n            {table_list}\r\n            </ul>\r\n        </div>\r\n        <div class=\"admin-bread\">\r\n            <ul class=\"bread\">', '后台界面头部');
+INSERT INTO `system_setting` VALUES ('BackupFilePath', 'backup', '备份文件存放路径');
