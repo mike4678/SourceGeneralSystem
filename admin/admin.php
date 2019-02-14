@@ -67,13 +67,16 @@ switch ($addr[1])
 			{
 				$tab = $data[2];      //如果存在，则继续执行当前变量
 				$list = $data[3];
+				
 			} else {
+				
 				$data = $dou->convert('start','index');   //如果不存在，返回空则执行默认首页代码
 				$tab = $data[2];
 				$list = $data[3];
 			}
 
 		} else { 
+			
 			$data = $dou->convert('start','index');   //为空则判断为默认首页
 			$tab = $data[2];
 			$list = $data[3];
@@ -122,12 +125,12 @@ echo $PageData;
 $bottom = $dou->PageLoading($data[2],$data[3]);
 $file = dirname(__FILE__) . '/' . $bottom; 
 if(file_exists(strtolower($file)) != TRUE)  //检查页面是否存在
-{  
-	 include 'system/404.php';   //如果不存在则跳转到错误界面
-	
+{  //不存在
+	echo $dou -> Admin_ErrorPage ( $addr[1] , $addr[2] , $file); 
+		
 } else 
-	{    
-		 include $bottom;
-	}
+{    
+	include $bottom;
+}
 ?>
 </div></body></html>

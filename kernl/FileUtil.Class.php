@@ -187,7 +187,8 @@ class FileUtil {
                 FileUtil :: copyDir($oldDir . $file, $aimDir . $file, $overWrite);
             }
         }
-        return closedir($dirHandle);
+        closedir($dirHandle);
+		return 'success';
     }
 
     /**

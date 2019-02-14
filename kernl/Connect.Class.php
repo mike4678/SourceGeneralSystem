@@ -226,7 +226,12 @@ class DbMysql {
         $msg = $msg ? "AS Error: $msg" : '<b>MySQL server error report</b><br>' . $this->error_msg;
         exit($msg);
     }
-    
+	
+    // 执行错误信息
+	function SystemError() {
+        return mysqli_error($this->dou_link);
+    }
+	
     // 数据库导入
     function fn_execute($sql) {
         $sqls = $this->fn_split($sql);

@@ -1,6 +1,6 @@
 <?php 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 $data = array
 (
   "TabName"=>array("TabName"=>"数据库设置"), //第一个为标题

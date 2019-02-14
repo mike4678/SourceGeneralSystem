@@ -81,7 +81,9 @@ class System extends DbMysql
 	{  
 		if( empty($table) && empty($table_list) )   //检查，如果这两个参数都为空，则返回错误信息，
 		{ 
+			
 			echo '<script language="JavaScript">window.alert("初始化页面失败！");history.back(-1);</script>';
+			
  	 	} else { 
 			$tab = ""; //初始化变量
 			$TableData = explode("|", $this -> Info("system_table"));
@@ -117,6 +119,7 @@ class System extends DbMysql
 		if( empty($table) || empty($table_list) )   //检查
 		{ 
 			echo '<script language="JavaScript">window.alert("初始化导航栏失败！");history.back(-1);</script>';
+			
 		} else { 
 			$infor = array(); 
 			$query = $this->select('adminlist', '*', "adminlist.table='".$table."'  AND adminlist.menu = '".$table_list."' UNION ALL SELECT * FROM `adminlist` where adminlist.table = '".$table."' ORDER BY count ASC limit 2;", $debug = '');
@@ -562,7 +565,20 @@ class System extends DbMysql
     return $password;
 	}
 	/* ---------------------------------------------------- */
-	
+			//首页错误页生成
+	/* ---------------------------------------------------- */	
+	function getNeedBetween($kw,$mark1,$mark2)
+	{
+		$st = stripos($kw,$mark1);
+		$ed = stripos($kw,$mark2);
+		if(($st == false || $ed == false) || $st >= $ed)
+		{
+			return 0;
+		}
+		$kw = substr($kw,($st+1),($ed-$st-1));
+		return $kw;
+	}
+	/* ---------------------------------------------------- */
 		//首页错误页生成
 	/* ---------------------------------------------------- */	
 	
@@ -596,6 +612,27 @@ class System extends DbMysql
 	}
 		/* ---------------------------------------------------- */
 	
+			//后台404错误页生成
+	/* ---------------------------------------------------- */	
+	
+	function Admin_ErrorPage ( $MainParameter , $SubParameter , $FilePath) 
+	{
+		
+		$data = $this -> convert($MainParameter,$SubParameter);
+		$this -> WriteLog('GET', '加载模块：' . $data[2] . '/' . $data[3] .'<br />实例对象：'. $FilePath . '失败','404.php'); //记录错误日志
+	 	$Page ='<div id="main">
+				<header id="header">
+      			<h1><span class="sub">模块加载失败！</span></h1>
+    			</header>
+    			<div id="content">
+      			<p>[ 主参数 ] ' . $data[2] . ' ( ' . $MainParameter . ' )<br />[ 子参数 ] ' . $data[3] . ' ( ' . $SubParameter . ' )<br />[ 模块名称 ] ' . $FilePath . '<br />[ 错误原因 ] 由于模块未找到或出现异常，加载失败！ (处理出现异常)<br /> [ 记录时间 ] ' . constant("Time") . ' [ 访问IP ] ' . $_SERVER["REMOTE_ADDR"] . '</p>
+    			</div>
+				</div>';    //输出错误信息	
+
+		return $Page;
+		
+	}
+		/* ---------------------------------------------------- */
 		
 		//系统错误页生成
 	/* ---------------------------------------------------- */	
@@ -780,59 +817,137 @@ class System extends DbMysql
 		/* ---------------------------------------------------- */
 		function ModuleInstall($path) 
 		{
-			if(!file_exists($path . '/install.php')) 						 
+			if(!file_exists('../../' . $path . '/install.xml')) 						 
 			{
 
-				die("Install Failed！The File Was Not Module.");
+				return "Install Failed！The File Was Not Module.";
 						
-			} else { //解析install.json
-				include($path . '/install.php');
-				//$str = file_get_contents($path . '/install.php');
-				//print_r($str);
+			} else { //解析install.xhr
+				//初始化安装文件中的所有值
+				$database = iconv("gb2312","utf-8", file_get_contents('../../' . $path . '/data.sql'));
+    			$xml_array = simplexml_load_string(file_get_contents('../../' . $path . '/install.xml')); //将XML中的数据,读取到数组对象中
+				//初始化结束，开始处理
+				if($database != NULL)  //判断是否读入数据库
+				{
+					if($xml_array -> Type == 1) //
+					{
+						$InstallTable = $this -> Info("system_table");
+						$InstallSqlData = str_replace("\$InstallSystemTable$",$InstallTable,$database);
+						if($xml_array -> Index == 1) //是否存在前台模块
+						{
+							$InstallIndex = $this -> Info("index_page_all");
+							if($InstallIndex != NULL)
+							{
+								$InstallIndexCount = sizeof(explode("|",$InstallIndex));
+							}
+							$InstallIndexCount = isset($InstallIndexCount)?$InstallIndexCount:1;
+							$InstallSqlData = str_replace("\$InstallSystemIndex$",$InstallIndex,$InstallSqlData);
+							$InstallSqlData = str_replace("\$InstallSystemIndexCount$",$InstallIndexCount,$InstallSqlData);
+							
+						}
+						$InstallData = explode(";\r\n",$InstallSqlData);
+						foreach ($InstallData as $value) 
+						{
+							$this -> query($value);
+						}
+					}
+				}
+				//数据库安装结束
+				//处理文件操作
+				include_once('FileUtil.Class.php');
+				$FileControl = new FileUtil();
+				$FileRootPath = str_replace('\\','/',realpath(dirname(__FILE__).'/../'));
+				if($xml_array -> IndexFile != NULL && $xml_array -> Index == 1) //是否存在前台模块文件
+				{
+					$InstallFile = explode(";",$xml_array -> IndexFile);
+					foreach ($InstallFile as $value) 
+					{
+						$FileControl -> copyDir($FileRootPath . '/' . $path . '/' . $value , $FileRootPath . '/' . $value );
+					}
+				}
+				if($xml_array -> KernlFile != NULL) //是否存在Kernl核心文件
+				{
+					$InstallFile = explode(";",$xml_array -> KernlFile);
+					foreach ($InstallFile as $value) 
+					{
+						$FileControl -> copyDir($FileRootPath . '/' . $path . '/' . $value , $FileRootPath . '/kernl/' . $value );
+					}
+				}
+				if($xml_array -> ManagerFile != NULL) //是否存在后台管理文件
+				{
+					$InstallFile = explode(";",$xml_array -> ManagerFile);
+					foreach ($InstallFile as $value) 
+					{
+						$FileControl -> copyDir($FileRootPath . '/' . $path . '/' . $value , $FileRootPath . '/admin/' . $value );
+					}
+				}
+				rename($FileRootPath . '/' . $path . '/' .  'install.xml', $FileRootPath . '/' . $path . '/' . "uninstall.xml"); //执行重命名，将文件修改为卸载
+				$FileControl -> createFile($FileRootPath . '/' . $path . '/' . $value . 'Init.Lock');   //创建安装锁
+			return "Install Success!";
 			}
 		}	
-
+		
+		function ModuleUninstall($name)
+		{
+			
+		}	
 		/* ---------------------------------------------------- */
 	
 			
 		//WebSite Safe Check System(wscs 网站安全检查系统)
-	/* ---------------------------------------------------- */	
+		/* ---------------------------------------------------- */	
 	
-	function WSCS_Check( ) 
-	{
-    // 密码字符集，可任意添加你需要的字符
-    	$CurrentAddr = HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
-		foreach ($_GET as $key => $value) 
+		function WSCS_Check( ) 
 		{
-			$check = array('"', '>', '<', '\'', '(', ')', '%27','‘','%E2%80%98');
-			if (!empty($value) && !json_decode($value)) 
+			// 密码字符集，可任意添加你需要的字符
+    		$CurrentAddr = HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+			foreach ($_GET as $key => $value) 
 			{
-				$value = strtoupper($value);
-				foreach ($check as $_str) 
+				$check = array('"', '>', '<', '\'', '(', ')', '%27','‘','%E2%80%98');
+				if (!empty($value) && !json_decode($value)) 
 				{
-					if (strpos($value, $_str) !== false) 
+					$value = strtoupper($value);
+					foreach ($check as $_str) 
 					{
-						$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $value ,$CurrentAddr);     
-						echo $this -> Sys_ErrorPage (701);
-						exit;
+						if (strpos($value, $_str) !== false) 
+						{
+							$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $value ,$CurrentAddr);     
+							echo $this -> Sys_ErrorPage (701);
+							exit;
+						}	
 					}
-				}
 				
-			} else {
+				} else {
 				
-				foreach ($check as $_str) 
-				{
-					if (strpos($CurrentAddr, $_str) !== false) 
+					foreach ($check as $_str) 
 					{
-						$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $CurrentAddr ,$CurrentAddr);    
-						echo $this -> Sys_ErrorPage (701);
-						exit;
+						if (strpos($CurrentAddr, $_str) !== false) 
+						{
+							$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $CurrentAddr ,$CurrentAddr);    
+							echo $this -> Sys_ErrorPage (701);
+							exit;
+						}
 					}
 				}
 			}
 		}
-	}
-	/* ---------------------------------------------------- */
-
+		/* ---------------------------------------------------- */
+		
+			
+		//取特定部分内容
+		/* ---------------------------------------------------- */	
+		function getSubstr($str, $leftStr, $rightStr)
+		{
+    		$left = strpos($str, $leftStr);
+    		//echo '左边:'.$left;
+    		$right = strpos($str, $rightStr,$left);
+    		//echo '<br>右边:'.$right;
+    		if($left < 0 or $right < $left) 
+			{
+				return '';
+			}
+    		return substr($str, $left + strlen($leftStr), $right-$left-strlen($leftStr));
+		}
+		/* ---------------------------------------------------- */	
 }
 ?>

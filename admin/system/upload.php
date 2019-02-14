@@ -72,50 +72,45 @@ if( $action == 'add' )
 	$tmp = explode('、', $fileico[$key]);
 	for ($x=0; $x<count($tmp); $x++) 
 	{
-  		if (strtolower($type) == strtolower($tmp[$x]) ) 
+  		if (strtolower($type) != strtolower($tmp[$x]) ) 
 		{	
-  			$upstatus = 'success';
+  			echo json_encode(array('status'=>'-1','message'=>'文件格式错误！'));
+			exit;
 		} 
 	} 
 	
-	if($upstatus == 'success')
-	{
+
 		//文件上传并保存
-		$rand = rand(100, 999);
-		$pics = date("YmdHis") . $rand . $type;
+	$rand = rand(100, 999);
+	$pics = date("YmdHis") . $rand . $type;
+	$modulename = str_replace(strrchr($picname, "."),"",$picname);
 		//上传路径
-		$pic_path = $filepath[$key] . $pics;
-		move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
+	$pic_path = $filepath[$key] . $pics;
+	move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
 	
-		if($frame == 'module')  //如果为模块，则执行解压操作
+	if($frame == 'module')  //如果为模块，则执行解压操作
+	{
+		$zip = new ZipArchive();
+		if($zip -> open($pic_path) != true)
 		{
-			$moduledata = 'Init '.$picname.' files  &#10';
-			$moduledata.= 'File Size:'.round($picsize/1024,2)." KB";
-			$zip = new ZipArchive();
-			if($zip -> open($pic_path) != true)
-			{
-				$moduledata.= ' &#10Could not open archive';
-			}
-			$zip -> extractTo('../../module/'.$picname);
-			$zip -> close();
-			$dou -> ModuleInstall('../../module/'.$picname);
-			$moduledata.= '&#10File Init Complete!';
+			$moduledata = 'Could not open Module Files';
 		}
+		$zip -> extractTo('../../module/'.$modulename);
+		$zip -> close();
+		$dou -> ModuleInstall('module/'.$modulename);
+		$moduledata = 'Module File Install Complete!';
+	}
 	
 		$size = round($picsize/1024,2);
 		$arr = array(
 			'name'=>$picname,
 			'pic'=>$pics,
 			'size'=>$size,
-			'status'=>$moduledata
+			'status'=>'0',
+			'message'=>$moduledata
 		);
 		echo json_encode($arr);
 		
-	} else 
-	{
-		echo json_encode(array('status'=>'-1','message'=>'文件格式错误！'));
-		exit;
-	}
 
 } elseif ( $action == 'del' ) 
 	

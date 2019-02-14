@@ -1,8 +1,7 @@
 <?php
-error_reporting(0);
 require("../../kernl/Init.php"); 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 
 //判断是否在框架内，防止跨域
 $dou -> FormCheck('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);

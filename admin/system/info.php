@@ -19,7 +19,7 @@
 /* ---------------------------------------------------- */
 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 @header("content-Type: text/html; charset=utf-8"); //语言强制
 ob_start();
 date_default_timezone_set('Asia/Shanghai');//此句用于消除时间差

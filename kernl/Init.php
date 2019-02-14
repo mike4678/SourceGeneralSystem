@@ -4,7 +4,7 @@
 // 调整时区
 if (PHP_VERSION >= '5.1') 
 {
-date_default_timezone_set('PRC');
+	date_default_timezone_set('PRC');
 }
 
 // 取得当前站点所在的根目录
@@ -51,22 +51,27 @@ if(file_exists(strtolower($file)) != TRUE)  //如果不存在则跳转到安装�
 	}
 
 //初始化核心模块
-$arr = array('Connect','System','Account','Mobile');
-for ($i = 0 ; $i < count($arr); $i++){
+$arr = array('Connect','FileUtil','System','Account','Mobile');
+for ($i = 0 ; $i < count($arr); $i++)
+{
 	require($arr[$i].'.Class.php');
 }
 
 //Debug
-if (Debug == "on") {
+if (Debug == "on") 
+{
 	ini_set("display_errors", "On");
 	error_reporting(E_ALL | E_STRICT);
+	
 } else {
+	
 	ini_set("display_errors", "Off");
 	error_reporting(0);
 }
 
 // 实例化类
 $dou = new System(DBSERVER, USER, PASSWORD, DB, 'utf8');
+$FileControl = new FileUtil();
 
 //校验基础表数据是否存在
 $sql = "SHOW TABLES;";

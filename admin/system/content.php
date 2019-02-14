@@ -1,19 +1,20 @@
 <?php 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 
+$FilePath = str_replace('\\','/',__FILE__)?str_replace('\\','/',__FILE__):$_SERVER['SCRIPT_FILENAME'];
 
-if($dou->content($addr[2],'list_name') == 'error')
+if($dou -> content($addr[2],'list_name') == 'error')
 {
-	include 'system/404.php';   //如果不存在则跳转到错误界面
+	echo $dou -> Admin_ErrorPage ( $addr[1] , $addr[2] , $FilePath) ;   //如果不存在则跳转到错误界面
 	exit;
+	
 } else {
+	
 	$table_name = $dou->content($addr[2],'list_name');
 	$table = $dou->content($addr[2],'table');
 	
 }
-
-
 
 //处理页码
 $PageNum = $dou->AddrConvery($_GET);

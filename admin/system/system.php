@@ -1,6 +1,6 @@
 <?php 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 
 //初始化相关参数信息
 

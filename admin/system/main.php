@@ -1,6 +1,6 @@
 <?php 
 if (!defined('source'))
-	header("Location: ../login.php"); //重定向浏览器到播放界面
+	header("Location: ../login.php"); //重定向浏览器
 ?>  
 <div class="admin">
 	<div class="line-big">
