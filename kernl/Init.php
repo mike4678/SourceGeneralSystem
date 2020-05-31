@@ -38,8 +38,9 @@ function HttpsCheck()
         return 'http://';
  }
 
+
 //配置文件检查
-$file = ROOT_PATH .'kernl/Conf.php';      
+$file = $_G['SYSTEM']['PATH'] .'kernl/Conf.php';      
 
 if(file_exists(strtolower($file)) != TRUE)  //如果不存在则跳转到安装界面
 {  

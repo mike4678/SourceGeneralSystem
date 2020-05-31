@@ -77,7 +77,7 @@ class System extends DbMysql
 	
 	//页面功能生成
 	/* ---------------------------------------------------- */
-	function table_list($table,$table_list) //自动生成顶部选项位置以及当前选中的左边列表
+	function Table_list($table,$table_list) //自动生成顶部选项位置以及当前选中的左边列表
 	{  
 		if( empty($table) && empty($table_list) )   //检查，如果这两个参数都为空，则返回错误信息，
 		{ 
@@ -114,7 +114,7 @@ class System extends DbMysql
 	}
 	
 	
-	function navigation ($table,$table_list)   //导航栏内容
+	function Navigation ($table,$table_list)   //导航栏内容
 	{   
 		if( empty($table) || empty($table_list) )   //检查
 		{ 
@@ -134,7 +134,7 @@ class System extends DbMysql
 		return $TaskBar;
 	}
 
-	function convert($table,$table_list)  //将英文名称转换为中文
+	function Convert($table,$table_list)  //将英文名称转换为中文
 	{  
 		$query = $this->select('Adminlist', '*', "Adminlist.t_e = '".$table."' AND m_e = '".$table_list."'", $debug = '');
 		$row = $this->fetch_array($query);
@@ -165,9 +165,17 @@ class System extends DbMysql
 		return $row['page'];
 	}
 	
-	function FormCheck($address)  //检查框架页面是否存在，即不允许直接访问
+	function FormCheck($str)  //检查框架页面是否存在，即不允许直接访问
 	{   
-		echo '<script>if(window.top==window.self){ window.alert("请勿试图在非授权区域运行！")'.$this -> WriteLog('Get','试图从外部访问地址:'.$address.'已被拦截',$address).'; var browserName=navigator.appName; if (browserName=="Netscape") {window.open("","_self","");window.close(); } else {window.close();}  }</script>';
+		$CurrentAddr = HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		echo '<script>
+				if ( $("#'.$str.'", window.parent.document).length == "0" || $("#'.$str.'", window.parent.document).length == "") 
+				{ '
+					.$this -> WriteLog('Get','Request','用户执行特定操作请求:'.$CurrentAddr,$CurrentAddr).' 
+					window.location.href = "'.HttpsCheck().$_SERVER['HTTP_HOST'].'/admin/admin.php?";
+
+				}
+			  </script>';
 		
 	}
 	
@@ -196,7 +204,7 @@ class System extends DbMysql
 		return $row['value'];
 	}
 	
-	function content($data,$value)
+	function Content($data,$value)
 	{                     //内容页面相关参数返回
 		$query = $this -> query("select * from content_data where list = '$data'");	
 		if($this -> affected_rows() == NULL )  
@@ -212,17 +220,17 @@ class System extends DbMysql
 	
 	//写入系统日志
 	/* ---------------------------------------------------- */
-	function WriteLog($method,$data,$addr)     //参数：请求方式、操作内容、操作页面
+	function WriteLog($method,$type,$data,$addr)     //参数：请求方式、操作内容、操作页面
 	{    
 		$ip = $_SERVER["REMOTE_ADDR"]; //获取IP
 		$time = date("y/m/d",time());  //获取现在时间
-		$query = $this->select('system_log', 'max(id)', "", $debug = '');
-		while ($row = $this->fetch_array($query)) 
+		$query = $this -> select('system_log', 'max(id)', "", $debug = '');
+		while ($row = $this -> fetch_array($query)) 
 		{ 
 			$id = $row['max(id)'] + 1;
 		}
-		$this->query("INSERT INTO system_log (id, method, ip, data, addr, time) VALUES ('$id','$method','$ip','$data','$addr','$time')");
- 	 	if ($this->affected_rows() == NULL) 
+		$this -> query("INSERT INTO system_log (id, method, datatype, ip, data, addr, time) VALUES ('$id','$method','$type','$ip','$data','$addr','$time')");
+ 	 	if ($this -> affected_rows() == NULL) 
 		{
       		echo '<script language="JavaScript">window.alert("写入日志失败！")</script>';
     	}
@@ -351,12 +359,12 @@ class System extends DbMysql
 			$html = file_get_contents($url,false, $context); 
 			$str = strtr($html, "\t", ' ');
 			$encode = mb_detect_encoding($str, array("ASCII","UTF-8","GB2312","GBK","BIG5"));
-				if($encode != "UTF-8")
-				{
-  					$str = iconv("GBK","UTF-8",$str);
-				}
+			if($encode != "UTF-8")
+			{
+  				$str = iconv("GBK","UTF-8",$str);
+			}
 			$return_data = json_decode($str,true);
-			echo '<a href="javascript:SystemBox(2,\'http://service.csource.com.cn/update/update.php?product=' . $this -> Info("update_status") . '\',\'\',\'系统更新\',400,420)" >' . $return_data['version'] . '</a>'; 
+			echo '<a href="javascript:SystemBox(2,\'http://service.csource.com.cn/update/update.php?product=' . $this -> Info("update_status") . '\',\'\',\'系统更新\',400,420)" >' . $return_data['version'] . '</a>';	
 			
 			}
 	}
@@ -619,7 +627,7 @@ class System extends DbMysql
 	{
 		
 		$data = $this -> convert($MainParameter,$SubParameter);
-		$this -> WriteLog('GET', '加载模块：' . $data[2] . '/' . $data[3] .'<br />实例对象：'. $FilePath . '失败','404.php'); //记录错误日志
+		$this -> WriteLog('GET', 'Module Init','加载模块：' . $data[2] . '/' . $data[3] .'<br />实例对象：'. $FilePath . '失败','404.php'); //记录错误日志
 	 	$Page ='<div id="main">
 				<header id="header">
       			<h1><span class="sub">模块加载失败！</span></h1>
@@ -646,7 +654,7 @@ class System extends DbMysql
 			case '503':
 				$title = '系统正在维护中！';
 				$content = $this->Info('server_infomaction');
-				$this -> WriteLog('GET', '访问请求由于 系统维护中 被拦截<br />','error.php');
+				$this -> WriteLog('GET', 'Web Access','访问请求由于 系统维护中 被拦截<br />','error.php');
 				break;
 			
 			case '342':
@@ -911,7 +919,7 @@ class System extends DbMysql
 					{
 						if (strpos($value, $_str) !== false) 
 						{
-							$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $value ,$CurrentAddr);     
+							$this -> WriteLog('Get','Request','请求存在违禁内容<br />'.'请求内容：' . $value ,$CurrentAddr);     
 							echo $this -> Sys_ErrorPage (701);
 							exit;
 						}	
@@ -923,7 +931,7 @@ class System extends DbMysql
 					{
 						if (strpos($CurrentAddr, $_str) !== false) 
 						{
-							$this -> WriteLog('Get','请求存在违禁内容<br />'.'请求内容：' . $CurrentAddr ,$CurrentAddr);    
+							$this -> WriteLog('Get','Request','请求存在违禁内容<br />'.'请求内容：' . $CurrentAddr ,$CurrentAddr);    
 							echo $this -> Sys_ErrorPage (701);
 							exit;
 						}

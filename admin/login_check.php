@@ -2,15 +2,29 @@
 //载入函数PHP
 require("../kernl/Init.php"); //初始化基础参数
 
-//来路判断
-
-
 //初始化变量
 $method = $_SERVER['REQUEST_METHOD']; //操作方式，post/GET
 $addr = $_SERVER['PHP_SELF'].'?'.file_get_contents('php://input'); //提交地址
+$source = parse_url($_SERVER['HTTP_REFERER']);
 $username = $_POST['username'];  //用户名
 $PWD = $_POST['password'];  //密码
 $ref = empty($_POST['return']) ? '' : $_POST['return']; //跳转地址
+
+//请求判断
+if($method == 'GET')
+{
+	echo json_encode(array('status'=>'-1','message'=>'无效的数据请求方式'));
+	$dou -> WriteLog($method, 'Login','用户尝试使用无效的数据请求方式','Login.php');
+	exit;	
+}
+
+//来路判断
+if($source['path'] != '/admin/login.php')
+{
+	echo json_encode(array('status'=>'-1','message'=>'越权执行！'));
+	$dou -> WriteLog($method, 'Login','用户尝试使用越权操作！','Login.php');
+	exit;
+}
 
 if( $_COOKIE["SourceTryCount"] == NULL) 
 {
@@ -62,8 +76,8 @@ if( $dou -> affected_rows() == NULL)
 {
 	$data = $_COOKIE["SourceTryCount"] + 1;
 	$dou->cookie("SourceTryCount", $data , time()+36000);
+	$dou -> WriteLog('POST', 'Login','用户尝试登陆，但密码错误！','Login.php');
 	echo json_encode(array('status'=>'-3','message'=>'密码错误'));
-	$dou -> WriteLog('POST', '用户尝试登陆，但密码错误！','Login.php');
 	exit;
 	
 } else {
@@ -81,11 +95,11 @@ if( $dou -> affected_rows() == NULL)
 		$dou -> query("update admin_user set lasttime = '$time' , lastip = '$iipp' where username = '$username';");
 		if($dou -> affected_rows() == NULL)
 		{
-			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
+			$dou -> WriteLog($method, 'Login','用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
 			
 		}  else { 						
-			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
+			$dou -> WriteLog($method, 'Login','用户登陆成功','Login.php');
 			echo json_encode(array('status'=>'0','message'=>'success'));
 
 			}
@@ -95,11 +109,11 @@ if( $dou -> affected_rows() == NULL)
 		$dou -> query("update admin_user set lasttime = '$time' , lastip = '$iipp' where username = '$username';");
 		if($dou -> affected_rows() == NULL)
 		{
-			$dou -> WriteLog('POST', '用户登陆成功，但登陆状态更新失败！','Login.php');
+			$dou -> WriteLog($method, 'Login','用户登陆成功，但登陆状态更新失败！','Login.php');
 			echo json_encode(array('status'=>'-4','message'=>'状态更新失败'));
 			
 		}  else { 						
-			$dou -> WriteLog('POST', '用户登陆成功','Login.php');
+			$dou -> WriteLog($method, 'Login','用户登陆成功','Login.php');
 			echo json_encode(array('status'=>'0','message'=>'success'));//不存在返回nameerror
 								}
 					

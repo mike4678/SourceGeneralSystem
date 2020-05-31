@@ -1039,11 +1039,10 @@ function displayData(dataJSON)
 
 <body>
 <a name="gotop"></a>
-
 <div id="page">
 <!--<table><tr style='text-align:center;' ><th ><?php //echo $title . " " .$version ;?></th></tr></table>-->
 	
-	<table>
+	<table id="systeminfo">
 		<tr id="page">
 			<th width="12%" class="w_logo">快速导航</th>
 			<th width="11%" class="w_top"><a href="#w_php">PHP参数</a></th>
@@ -1353,7 +1352,7 @@ foreach ($able as $key=>$value) {
 
 		?>
 
-    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:SystemBox(2,\'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/phpinfo\',\'\',\'PHP Information\',600,800,\'\')"> PHPINFO</a>';?>
+    <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :'<a href="javascript:SystemBox(2,\''.HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/phpinfo\',\'\',\'PHP Information\',600,800,\'\')"> PHPINFO</a>';?>
 
     </td>
     <td width="31%">PHP版本（php_version）：</td>
@@ -1537,7 +1536,7 @@ foreach ($able as $key=>$value) {
 
 	<tr>
 		<td>默认支持函数（enable_functions）：</td>
-		<td colspan="3"><?php echo '<a href="javascript:SystemBox(2,\'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/Function\',\'\',\'PHP Function Information\',400,600,\'\')"> 请点这里查看详细！</a>'; ?></td>	
+		<td colspan="3"><?php echo '<a href="javascript:SystemBox(2,\''.HttpsCheck().$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?/Function\',\'\',\'PHP Function Information\',400,600,\'\')"> 请点这里查看详细！</a>'; ?></td>	
 	</tr>
 	<tr>
 		<td>被禁用的函数（disable_functions）：</td>
@@ -2058,5 +2057,4 @@ else
 	<a title="返回底部" class="bottom" href="#gobottom">至底</a>
 </div>
 </body>
-
 </html>

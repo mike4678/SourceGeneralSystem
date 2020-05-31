@@ -1,9 +1,10 @@
 <?php 
-require("../kernl/Init.php"); 
+$_G['SYSTEM']['PATH'] = str_replace(strtolower('admin/admin.php'), '', str_replace('\\', '/', strtolower(__FILE__)));
+require($_G['SYSTEM']['PATH'] . "kernl/Init.php"); 
 
 //************** 处理登陆状态
-$dou -> WSCS_Check();                    //安全检查，防护系统
-$state = $dou -> AccountState();
+$dou -> WSCS_Check();                //请求代码安全检查
+$state = $dou -> AccountState();     //获取账户状态
 $addr = $dou -> AddrConvery($_GET);	 //初始化参数
 if ($state == 'Access denied') 
 {
@@ -20,7 +21,7 @@ if ($state == 'Access denied')
 	$dou->cookie("state", time(), time()+3600);  //更新时间
 }
 	
-//************** 处理页面请求
+//************** 开始处理页面请求
 switch ($addr[1])
 {
 	case 'exit':
@@ -36,10 +37,14 @@ switch ($addr[1])
 	break;
 		
 	case 'phpinfo':
+		echo '<script src="../js/jquery-1.8.3.min.js"></script>';   //防止非正常调用查看
+		$dou -> FormCheck('systeminfo');
 		phpinfo();
 	exit();
 	
 	case 'Function':
+		echo '<script src="../js/jquery-1.8.3.min.js"></script>';   //防止非正常调用查看
+		$dou -> FormCheck('systeminfo');
 		$arr = get_defined_functions();
 		echo "<pre>";
 		echo "当前系统所支持的所有函数,和自定义函数\n";
@@ -49,14 +54,19 @@ switch ($addr[1])
 	
 	case 'downbackup':
 		session_start();
-		$file = file_get_contents($dou->info('BackupFilePath').'/'.$_SESSION["filename"]);
 		$filename = $_SESSION["filename"];
-		Header("Content-type: application/octet-stream"); 
-		Header("Accept-Ranges: bytes"); 
-		Header("Accept-Length: ".filesize($file)); 
-		Header("Content-Disposition: attachment; filename=" . $filename); 
-		// 输出文件内容 
-		print_r($file);
+		if($filename != NULL || $filename != '' || file_get_contents($dou -> info('BackupFilePath') . '/' . $filename) != '')
+		{
+			$file = file_get_contents($dou -> info('BackupFilePath') . '/' . $filename);
+			Header("Content-type: application/octet-stream"); 
+			Header("Accept-Ranges: bytes"); 
+			Header("Accept-Length: ".filesize($file)); 
+			Header("Content-Disposition: attachment; filename=" . $filename); 
+			// 输出文件内容 
+			print_r($file);
+		} else {   //非正常调用
+			echo "<script language='JavaScript'>window.location.href = 'admin.php?'</script>";
+		}
 	exit();
 		
 	default:
@@ -97,7 +107,7 @@ while ($tlist <= count($out[1]) - 1)
 		
 	} else {
 		
-		$HeadData = $dou->table_list($tab,$list);
+		$HeadData = $dou -> table_list($tab,$list);
 		
 	}
 	$value = str_ireplace($name,$HeadData,$value);	
@@ -109,7 +119,7 @@ $PageData = $value;
 	
 if ($addr[1] != "") 
 {
-	$PageData.= $dou->navigation($tab,$list);
+	$PageData.= $dou -> navigation($tab,$list);
 					
 } else {
 	

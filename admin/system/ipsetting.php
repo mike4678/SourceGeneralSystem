@@ -4,7 +4,8 @@ if (!defined('source'))
 	header("Location: ../login.php"); //重定向浏览器
 
 //判断是否在框架内，防止跨域
-$dou -> FormCheck();
+echo '<script src="../../js/jquery-1.8.3.min.js"></script>';   //防止非正常调用查看
+$dou -> FormCheck('tab-ips');
 
 //请求方式处理
 switch($_GET['m']) 

@@ -1,5 +1,7 @@
 <?php 
-require("../kernl/Init.php"); //初始化基础参数
+
+$_G['SYSTEM']['PATH'] = str_replace(strtolower('admin/login.php'), '', str_replace('\\', '/', strtolower(__FILE__)));
+require($_G['SYSTEM']['PATH'] . "kernl/Init.php"); //初始化基础参数
 
 //判断之前的登陆状态
 $state = $dou -> AccountState();
@@ -62,51 +64,7 @@ $var = '<div class="login_m">
 <body class="login">
 <?php echo $var; ?>
 <script>
-$(function(){
-	$(".sub_button").on('click',  function(event) {
-		event.preventDefault();
-		var user = $('#username').val();
-		var pass = $('#password').val();
-		var code = $('#vaildcode').val();
-		var saveme = $('#save_me').prop('checked');
-		var ref = $('#return').val();
-		
-		if(user == ''){
-			SystemBox(3,'用户名不能为空！'); 
-			return false;
-		}
-		if(pass == ''){
-			SystemBox(3,'密码不能为空！'); 
-			return false;
-		}
-		if(Vaild == true){
-			if(code == ''){
-				SystemBox(3,'验证码不能为空！'); 
-				return false;
-			}
-		}
-		$.ajax({
-			url: 'login_check.php',
-			type: 'POST',
-			dataType: 'json',
-			data: {username: user,password: pass,code: code,save: saveme},
-			beforeSend: function(){
-				$('#button').attr("value",'正在登录...');
-			},
-			success: function(res){
-				var errcode = res.status;
-				var errmessage = res.message;
-				if(res.status == 0){ //登录成功
-					window.location.href="admin.php?" + ref;
-				}else{
-					SystemBox(3,errmessage);
-					GetCode();
-					$('#button').attr("value",'登录');
-				}
-			}
-		});
-	});
-});
+eval(function(p,a,c,k,e,r){e=function(c){return c.toString(36)};if('0'.replace(0,e)==0){while(c--)r[e(c)]=k[c];k=[function(e){return r[e]||e}];e=function(){return'[124-9a-df-t]'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('$("#login_boder").bind("keydown",5(e){1 6=e||h.c;1 2=6.keyCode||6.which||6.charCode;4(2==13){$(".i").j()}});$(5(){$(".i").on(\'j\',5(c){c.preventDefault();1 d=$(\'#k\').7();1 f=$(\'#l\').7();1 2=$(\'#vaildcode\').7();1 m=$(\'#save_me\').prop(\'checked\');1 n=$(\'#8\').7();4(d==\'\'){9(3,\'错误：用户名不能为空！\');a();8 g}4(f==\'\'){9(3,\'错误：密码不能为空！\');a();8 g}4(Vaild==true){4(2==\'\'){9(3,\'错误：验证码不能为空！\');a();8 g}}$.ajax({url:\'login_check.o\',type:\'POST\',dataType:\'json\',data:{k:d,l:f,2:2,save:m},beforeSend:5(){$(\'#p\').q("r",\'正在登录...\')},success:5(b){1 errcode=b.s;1 t=b.message;4(b.s==0){h.location.href="admin.o?"+n}else{9(3,t);a();$(\'#p\').q("r",\'登录\')}}})})});',[],30,'|var|code||if|function|theEvent|val|return|SystemBox|GetCode|res|event|user||pass|false|window|sub_button|click|username|password|saveme|ref|php|button|attr|value|status|errmessage'.split('|'),0,{}))	
 </script>	
 </body>
 </html>

@@ -9,10 +9,8 @@ if (!defined('source'))
 $state = $dou -> AccountState();	
 if ($state == 'Access denied') 
 {
-	
 	echo json_encode(array('status'=>'-1','message'=>"账户状态异常，请重试！"));
 	exit;
-	
 } 
 $method = $_SERVER['REQUEST_METHOD'];
 $addr = $_SERVER['PHP_SELF'].'?'.file_get_contents('php://input');
@@ -47,7 +45,7 @@ switch($_POST['control'])
 		fputs($fp,$mysql);
 		fclose($fp);
 		echo json_encode(array('status'=>'0','message'=>'数据备份成功<br>备份文件 [ ' .$filename.' ]'));
-		$dou -> WriteLog('POST', '管理员执行数据库备份', $addr); 
+		$dou -> WriteLog('POST', 'Database','管理员执行数据库备份', $addr); 
 		break;
 			
 	case '恢复数据库':
@@ -131,12 +129,12 @@ switch($_POST['control'])
 			if ($result == false) 
 			{ 
 				echo json_encode(array('status'=>'-1','message'=>'× 删除失败!'));
-				$dou -> WriteLog('POST', "删除备份：".$filename."失败！", $addr); 
+				$dou -> WriteLog('POST', 'Database',"删除备份：".$filename."失败！", $addr); 
 				
 			} else { 
 				
 				echo json_encode(array('status'=>'0','message'=>'√ 删除成功!'));
-				$dou -> WriteLog('POST', "删除备份：".$filename."成功！", $addr); 
+				$dou -> WriteLog('POST', 'Database',"删除备份：".$filename."成功！", $addr); 
 			} 
 		}
 		break;
@@ -159,7 +157,7 @@ switch($_POST['control'])
 
 		}
 		echo json_encode(array('status'=>'0','message'=>$info));
-		$dou -> WriteLog('POST', '管理员执行清空数据表操作', $addr); 
+		$dou -> WriteLog('POST', 'Database','管理员执行清空数据表操作', $addr); 
 		
 		break;
 		
